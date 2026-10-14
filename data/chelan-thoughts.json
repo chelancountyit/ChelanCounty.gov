@@ -1,0 +1,1790 @@
+{
+  "_comment": "Rotating \"did you know\" historical facts for the homepage hero intro (see js/hero-thought.js and .hero-heading-block p/#hero-thought-source in hero.html). One is picked at random on each page load, along with its cited source. Researched from HistoryLink.org, Wikipedia, ChelanCounty.gov, NPS, and local historical societies -- 357 distinct, sourced facts (short of the requested 500 because that many DISTINCT, VERIFIABLE facts could not be found without fabricating detail; padding with invented facts was avoided on purpose). Dates/details should still get a human spot-check against the cited source before any real production use.",
+  "thoughts": [
+    {
+      "text": "Chelan County was formally established by the Washington State Legislature on March 13, 1899, carved from parts of Okanogan and Kittitas counties.",
+      "source": "Wikipedia: Chelan County, Washington",
+      "url": "https://en.wikipedia.org/wiki/Chelan_County,_Washington"
+    },
+    {
+      "text": "Governor John Rogers formally proclaimed Chelan County's creation on December 7, 1899, completing the county's organization.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/7616"
+    },
+    {
+      "text": "Chelan County's name comes from a Salish word, sometimes rendered 'Tsi-Laan,' meaning 'deep water,' referring to Lake Chelan.",
+      "source": "Wikipedia: Lake Chelan",
+      "url": "https://en.wikipedia.org/wiki/Lake_Chelan"
+    },
+    {
+      "text": "At 2,994 square miles, Chelan County is the third-largest county in Washington State by land area.",
+      "source": "Wikipedia: Chelan County, Washington",
+      "url": "https://en.wikipedia.org/wiki/Chelan_County,_Washington"
+    },
+    {
+      "text": "Chelan County's population was just 3,931 in the 1900 census, its first count after formation.",
+      "source": "Wikipedia: Chelan County, Washington",
+      "url": "https://en.wikipedia.org/wiki/Chelan_County,_Washington"
+    },
+    {
+      "text": "Between 1900 and 1910, Chelan County's population grew 284 percent, from 3,931 to 15,104 residents.",
+      "source": "Wikipedia: Chelan County, Washington",
+      "url": "https://en.wikipedia.org/wiki/Chelan_County,_Washington"
+    },
+    {
+      "text": "Wenatchee was designated the seat of Chelan County when the county was created in 1899.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/8634"
+    },
+    {
+      "text": "Explorer William Clark recorded the name 'Wahnaachee' in 1804, an early rendering of the Wenatchee tribal name.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/7624"
+    },
+    {
+      "text": "Fur trappers from the Pacific Fur Company, North West Company, and Hudson's Bay Company worked the Chelan County region from the 1810s through the 1840s.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/7624"
+    },
+    {
+      "text": "Fur trader and cartographer David Thompson passed the mouth of the Wenatchee River on June 6, 1811, during his Columbia River expedition.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/8634"
+    },
+    {
+      "text": "In 1811, David Thompson found a large Wenatchi (P'squosa) village of about 800 people at the Wenatchee-Columbia confluence.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/7551"
+    },
+    {
+      "text": "Explorer Alexander Ross documented the 'Tsill-ane' River and its people between 1811 and 1813 during his travels along the Columbia River.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/10160"
+    },
+    {
+      "text": "The Wenatchi people's name for themselves means roughly 'people of the river which comes from canyons.'",
+      "source": "Wikipedia: Wenatchee, Washington",
+      "url": "https://en.wikipedia.org/wiki/Wenatchee,_Washington"
+    },
+    {
+      "text": "Historically, six distinct Wenatchi bands lived along the Columbia, Wenatchee, and Entiat rivers, each tied to a specific stretch of water.",
+      "source": "Wikipedia: Wenatchi",
+      "url": "https://en.wikipedia.org/wiki/Wenatchi"
+    },
+    {
+      "text": "One Wenatchi band, the Sinpusqôisoh, lived near the forks of the Wenatchee River close to present-day Leavenworth.",
+      "source": "Wikipedia: Wenatchi",
+      "url": "https://en.wikipedia.org/wiki/Wenatchi"
+    },
+    {
+      "text": "Before dam-building and pollution, the Wenatchee River supported one of the greatest salmon runs in the world.",
+      "source": "Wikipedia: Wenatchi",
+      "url": "https://en.wikipedia.org/wiki/Wenatchi"
+    },
+    {
+      "text": "The Wenatchi, Chelan, and Entiat peoples all spoke closely related dialects of Interior Salish.",
+      "source": "Wikipedia: Wenatchi",
+      "url": "https://en.wikipedia.org/wiki/Wenatchi"
+    },
+    {
+      "text": "On June 9, 1855, Chief Tecolekun and 13 other Native leaders signed the Yakima Treaty, ceding roughly 10.8 million acres including the Chelan County area.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/7624"
+    },
+    {
+      "text": "The 1855 Walla Walla Council set aside the Wenatchapam Fishery, near present-day Leavenworth, as reserved tribal land for the Wenatchi.",
+      "source": "Wikipedia: Wenatchi",
+      "url": "https://en.wikipedia.org/wiki/Wenatchi"
+    },
+    {
+      "text": "In 1893, federal negotiators paid Yakama leaders $20,000 for the Wenatchapam Fishery reservation without the consent of the Wenatchi themselves.",
+      "source": "Wikipedia: Wenatchi",
+      "url": "https://en.wikipedia.org/wiki/Wenatchi"
+    },
+    {
+      "text": "Fighting during the Yakima War led to the hanging of four Wenatchee men by Major R. S. Garnett's expedition in 1858.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/7624"
+    },
+    {
+      "text": "Chief Tecolekun was reportedly killed in a May 1858 battle against U.S. troops under Colonel Edward Steptoe.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/7624"
+    },
+    {
+      "text": "Chief Moses, leader of the Columbia-Sinkiuse people, was born around 1829 near the Wenatchee Flat or Moses Coulee.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/8870"
+    },
+    {
+      "text": "As a boy, Chief Moses was sent to missionary Henry Spalding's school at Lapwai, Idaho, where he received the name 'Moses.'",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/8870"
+    },
+    {
+      "text": "President Rutherford B. Hayes created the Moses (Columbia) Reservation by executive order in 1879, covering land from the Okanogan River to the Cascades.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/8870"
+    },
+    {
+      "text": "In 1884, Chief Moses agreed to give up the Columbia Reservation and move his people to the Colville Reservation.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/8870"
+    },
+    {
+      "text": "Chief Moses died at Nespelem on March 15, 1899, the same year Chelan County was created.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/8870"
+    },
+    {
+      "text": "The Confederated Tribes of the Colville Reservation was formed by executive order under President Ulysses S. Grant in 1872.",
+      "source": "Wikipedia: Confederated Tribes of the Colville Reservation",
+      "url": "https://en.wikipedia.org/wiki/Confederated_Tribes_of_the_Colville_Reservation"
+    },
+    {
+      "text": "The Chelan band is one of twelve constituent tribes that make up today's Confederated Tribes of the Colville Reservation.",
+      "source": "Wikipedia: Confederated Tribes of the Colville Reservation",
+      "url": "https://en.wikipedia.org/wiki/Confederated_Tribes_of_the_Colville_Reservation"
+    },
+    {
+      "text": "In 1879, U.S. Army Lieutenant Colonel Henry Clay Merriam established Camp Chelan to oversee the region's Native population.",
+      "source": "Wikipedia: Chelan, Washington",
+      "url": "https://en.wikipedia.org/wiki/Chelan,_Washington"
+    },
+    {
+      "text": "The Army abandoned Camp Chelan in October 1880, moving its troops to Fort Spokane.",
+      "source": "Wikipedia: Chelan, Washington",
+      "url": "https://en.wikipedia.org/wiki/Chelan,_Washington"
+    },
+    {
+      "text": "In 1850, roughly 1,185 Chelan people were estimated to be living in villages along the lake, with about 250 more along the Columbia.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/10160"
+    },
+    {
+      "text": "By 1870, disease and displacement had reduced the Chelan tribe's population to fewer than 300 people.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/10160"
+    },
+    {
+      "text": "Congress officially rescinded the Moses Reservation in 1886, and President Grover Cleveland opened the land to non-Native homesteaders.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/10160"
+    },
+    {
+      "text": "Chinese prospectors began mining for gold along the Entiat and Wenatchee rivers as early as 1863.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/7624"
+    },
+    {
+      "text": "In 1875, Native attackers reportedly killed a group of Chinese miners trapped against a cliff along the Methow River.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/7624"
+    },
+    {
+      "text": "Anti-Chinese violence and expulsions swept the Lake Chelan mining camps during the 1880s.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/10160"
+    },
+    {
+      "text": "In 1864, roughly 100 Chinese miners purchased a large gravel bar for placer mining near Rock Island on the Columbia River.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/23001"
+    },
+    {
+      "text": "Jesuit missionary Father Urban Grassi built St. Francis Xavier Mission near present-day Cashmere in 1873.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/8750"
+    },
+    {
+      "text": "Father Respari, an earlier Catholic missionary, preached along the Wenatchee River as early as 1863.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/7624"
+    },
+    {
+      "text": "In 1880, tension flared when a Native leader named Nmosize reportedly burned Father Diomedi's mission house near Chelan.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/7624"
+    },
+    {
+      "text": "Settlers William Sanders and Henry Dumke reached the south end of Lake Chelan in 1886, among the area's first non-Native residents.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/7624"
+    },
+    {
+      "text": "Don Carlos Corbett is credited with founding the town of Wenatchee in 1888.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/7624"
+    },
+    {
+      "text": "Wenatchee was formally platted in September 1888 by developers anticipating the arrival of the railroad.",
+      "source": "Wikipedia: Wenatchee, Washington",
+      "url": "https://en.wikipedia.org/wiki/Wenatchee,_Washington"
+    },
+    {
+      "text": "Traders Samuel C. Miller and the Freer brothers established the Miller-Freer Trading Post in Wenatchee around 1871-1872.",
+      "source": "Wikipedia: Wenatchee, Washington",
+      "url": "https://en.wikipedia.org/wiki/Wenatchee,_Washington"
+    },
+    {
+      "text": "A log structure built in 1872 by Samuel Miller is considered the original building of the Wenatchee Valley settlement.",
+      "source": "Wikipedia: Wenatchee, Washington",
+      "url": "https://en.wikipedia.org/wiki/Wenatchee,_Washington"
+    },
+    {
+      "text": "Samuel Miller served as Wenatchee's first postmaster from May 5, 1884, to December 3, 1890.",
+      "source": "Wikipedia: Wenatchee, Washington",
+      "url": "https://en.wikipedia.org/wiki/Wenatchee,_Washington"
+    },
+    {
+      "text": "The U.S. Post Office Department corrected the spelling of the town's name to 'Wenatchee' on June 14, 1889.",
+      "source": "Wikipedia: Wenatchee, Washington",
+      "url": "https://en.wikipedia.org/wiki/Wenatchee,_Washington"
+    },
+    {
+      "text": "The Great Northern Railway's first train reached Wenatchee on October 17, 1892, transforming the small settlement almost overnight.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/7624"
+    },
+    {
+      "text": "Wenatchee voters approved incorporation on December 23, 1892, by a lopsided 107-to-7 margin.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/9195"
+    },
+    {
+      "text": "Wenatchee officially incorporated as a fourth-class city on January 7, 1893, with Posey Wilson as its first mayor.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/9195"
+    },
+    {
+      "text": "Wenatchee's first city council held its inaugural meeting on January 16, 1893.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/9195"
+    },
+    {
+      "text": "A fire swept through buildings along Wenatchee Avenue on September 2, 1893, in the young city's first major disaster.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/8634"
+    },
+    {
+      "text": "Wenatchee re-incorporated as a third-class city in 1904 as its population climbed toward 3,500 residents.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/8634"
+    },
+    {
+      "text": "What became the first courthouse of Chelan County started life as the Clark Hotel, built in 1893 to serve railroad passengers.",
+      "source": "Chelan County government (ChelanCounty.gov)",
+      "url": "https://ChelanCounty.gov/news/article/a-history-lesson-about-your-first-county-courthouse-and-jail"
+    },
+    {
+      "text": "Seattle judge Thomas Burke sold the former Clark Hotel building to Chelan County for a single dollar in 1899 to serve as its first courthouse.",
+      "source": "Chelan County government (ChelanCounty.gov)",
+      "url": "https://ChelanCounty.gov/news/article/a-history-lesson-about-your-first-county-courthouse-and-jail"
+    },
+    {
+      "text": "A brick county jail was added behind Chelan County's first courthouse around 1908, linked by an enclosed second-story catwalk.",
+      "source": "Chelan County government (ChelanCounty.gov)",
+      "url": "https://ChelanCounty.gov/news/article/a-history-lesson-about-your-first-county-courthouse-and-jail"
+    },
+    {
+      "text": "Chelan County moved into a new courthouse next to Memorial Park in Wenatchee in 1924.",
+      "source": "Chelan County government (ChelanCounty.gov)",
+      "url": "https://ChelanCounty.gov/news/article/a-history-lesson-about-your-first-county-courthouse-and-jail"
+    },
+    {
+      "text": "Farmer Jacob Shotwell built one of the Wenatchee Valley's earliest large irrigation ditches in 1891.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/8634"
+    },
+    {
+      "text": "Engineer William Timothy Clark completed the 16-mile Highline Canal in 1904, reclaiming about 9,000 acres of arid land for orchards.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/8634"
+    },
+    {
+      "text": "A 1908 bridge across the Columbia River at Wenatchee also carried two large pipelines delivering Highline Canal irrigation water to East Wenatchee orchards.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/5172"
+    },
+    {
+      "text": "Wenatchee's first highway bridge, a 1,060-foot steel cantilever span, cost $177,000 to build in 1908.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/5172"
+    },
+    {
+      "text": "Railroad magnate James J. Hill of the Great Northern Railway helped finance Wenatchee's first Columbia River highway bridge in 1908.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/5172"
+    },
+    {
+      "text": "Wenatchee's 1908 highway bridge remained in full vehicle use until a new bridge replaced it in 1950.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/5172"
+    },
+    {
+      "text": "By 2011, Wenatchee's 1908 highway bridge was recognized as the oldest surviving steel cantilever bridge in Washington State.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/5172"
+    },
+    {
+      "text": "Wenatchee's Commercial Club began promoting the region in the early 1900s as the 'Home of the World's Best Apples.'",
+      "source": "Wikipedia: Wenatchee, Washington",
+      "url": "https://en.wikipedia.org/wiki/Wenatchee,_Washington"
+    },
+    {
+      "text": "Wenatchee first claimed the nickname 'Apple Capital of the World' in 1902 as its commercial orchards expanded rapidly.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/8634"
+    },
+    {
+      "text": "Publisher Rufus Woods coined the tagline calling Wenatchee 'the Apple Capital of the World and the Buckle of the Power Belt of the Great Northwest' in the 1920s.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/7624"
+    },
+    {
+      "text": "The Wenatchee Daily World newspaper began publishing on July 3, 1905, as the first daily paper in north central Washington.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/5436"
+    },
+    {
+      "text": "C. A. Briggs and Nat Ament founded the Wenatchee World in 1905 as a Republican-leaning newspaper.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/5436"
+    },
+    {
+      "text": "Rufus Woods became publisher of the Wenatchee World on March 1, 1907, and led the paper for the next 43 years.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/5436"
+    },
+    {
+      "text": "On July 18, 1918, Wenatchee World publisher Rufus Woods printed the first public proposal to dam the Columbia River at Grand Coulee.",
+      "source": "HistoryLink.org",
+      "url": "https://historylink.org/File/7999"
+    },
+    {
+      "text": "The idea for the Grand Coulee Dam originated from conversations in attorney William Clapp's Ephrata law office in the spring of 1917.",
+      "source": "HistoryLink.org",
+      "url": "https://historylink.org/File/7999"
+    },
+    {
+      "text": "Wenatchee residents voted the city 'dry,' banning alcohol sales, in August 1909.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/8634"
+    },
+    {
+      "text": "Wenatchee's Ladies Musical Club was founded in 1910 and became a lasting fixture of the city's cultural life.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/8634"
+    },
+    {
+      "text": "The first Wenatchee Apple Blossom Festival was held in May 1920, launching what became an enduring regional tradition.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/8634"
+    },
+    {
+      "text": "Industrial Workers of the World organizers staged a free-speech fight in Wenatchee in 1910, part of a wave of IWW protests across Washington.",
+      "source": "Wikipedia: Wenatchee, Washington",
+      "url": "https://en.wikipedia.org/wiki/Wenatchee,_Washington"
+    },
+    {
+      "text": "On October 5, 1931, aviator Clyde Pangborn belly-landed near Wenatchee to complete the first nonstop airplane flight across the Pacific Ocean.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/5400"
+    },
+    {
+      "text": "Pangborn's 1931 Pacific crossing, flown with co-pilot Hugh Herndon Jr. in the Bellanca 'Miss Veedol,' covered about 4,500 miles in just over 41 hours.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/5400"
+    },
+    {
+      "text": "During his historic 1931 flight, Pangborn crawled onto the wing at 14,000 feet to manually free the plane's landing gear before dropping it into the ocean.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/5400"
+    },
+    {
+      "text": "Pangborn and Herndon won the Harmon Trophy for their 1931 nonstop trans-Pacific flight that ended near Wenatchee.",
+      "source": "Wikipedia: Wenatchee, Washington",
+      "url": "https://en.wikipedia.org/wiki/Wenatchee,_Washington"
+    },
+    {
+      "text": "The propeller from Pangborn's 'Miss Veedol' aircraft, damaged in the 1931 landing, is preserved at the Wenatchee Valley Museum.",
+      "source": "Wikipedia: Wenatchee Valley Museum & Cultural Center",
+      "url": "https://en.wikipedia.org/wiki/Wenatchee_Valley_Museum_%26_Cultural_Center"
+    },
+    {
+      "text": "In 1942, Wenatchee was awarded a federally financed ferro-silicon plant tied to wartime production needs.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/8634"
+    },
+    {
+      "text": "The Bracero Program began recruiting Mexican agricultural workers for Chelan County orchards in 1943.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/8634"
+    },
+    {
+      "text": "The Wenatchee Valley Clinic was founded in 1940 by three local physicians.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/8634"
+    },
+    {
+      "text": "Aluminum Company of America (Alcoa) opened a plant near Rock Island Dam in Malaga in 1952, drawn by cheap hydroelectric power.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/7624"
+    },
+    {
+      "text": "In 1974, a railroad tank car explosion in South Wenatchee's Appleyard rail complex killed two people.",
+      "source": "Wikipedia: Wenatchee, Washington",
+      "url": "https://en.wikipedia.org/wiki/Wenatchee,_Washington"
+    },
+    {
+      "text": "From 1992 to 1995, Chelan and Douglas county investigators pursued a wave of child sex-abuse cases later dubbed the 'Wenatchee Witch Hunt.'",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/7065"
+    },
+    {
+      "text": "During the Wenatchee child-abuse prosecutions, 43 adults faced a combined 29,726 abuse charges involving 60 children.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/7065"
+    },
+    {
+      "text": "A Douglas County jury acquitted defendants in the Roberson case in December 1995 after just three hours, with the jury foreman calling it 'a witch hunt.'",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/7065"
+    },
+    {
+      "text": "By December 2000, the last of 18 people convicted in the Wenatchee child-abuse cases had been released after convictions were overturned.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/7065"
+    },
+    {
+      "text": "University of Washington law students and faculty formed the Innocence Project Northwest in 1998, partly in response to the Wenatchee prosecutions.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/7065"
+    },
+    {
+      "text": "The Wenatchee Valley Museum and Cultural Center was founded in 1939 by the Columbia River Archaeological Society.",
+      "source": "Wikipedia: Wenatchee Valley Museum & Cultural Center",
+      "url": "https://en.wikipedia.org/wiki/Wenatchee_Valley_Museum_%26_Cultural_Center"
+    },
+    {
+      "text": "The Wenatchee Valley Museum displays a functioning 1919 Wurlitzer pipe organ once used to accompany silent films.",
+      "source": "Wikipedia: Wenatchee Valley Museum & Cultural Center",
+      "url": "https://en.wikipedia.org/wiki/Wenatchee_Valley_Museum_%26_Cultural_Center"
+    },
+    {
+      "text": "The Wenatchee Valley Museum houses an HO-scale model railroad depicting the Great Northern Railway's route across the Cascades since 1892.",
+      "source": "Wikipedia: Wenatchee Valley Museum & Cultural Center",
+      "url": "https://en.wikipedia.org/wiki/Wenatchee_Valley_Museum_%26_Cultural_Center"
+    },
+    {
+      "text": "Wenatchee's Pybus Public Market building was originally the E.T. Pybus Steel Company foundry, founded by a British immigrant blacksmith.",
+      "source": "ProjectWA",
+      "url": "https://projectwa.org/2016/06/22/pybus-market-from-steel-foundry-to-gathering-place/"
+    },
+    {
+      "text": "The Pybus foundry supplied steel for the Grand Coulee Dam, the Hanford site, and World War II naval vessels before it closed.",
+      "source": "ProjectWA",
+      "url": "https://projectwa.org/2016/06/22/pybus-market-from-steel-foundry-to-gathering-place/"
+    },
+    {
+      "text": "After sitting derelict for years, the former Pybus foundry reopened in May 2013 as the year-round Pybus Public Market.",
+      "source": "ProjectWA",
+      "url": "https://projectwa.org/2016/06/22/pybus-market-from-steel-foundry-to-gathering-place/"
+    },
+    {
+      "text": "Wenatchee Confluence State Park was once the site of a P'squosa village that David Thompson estimated at 800 residents in 1811.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/7551"
+    },
+    {
+      "text": "An 1894 agreement sold the P'squosa people's fishing rights and reservation land at the Wenatchee-Columbia confluence for $20,000, negotiated without their direct consent.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/7551"
+    },
+    {
+      "text": "By 1896, only about 180 P'squosa people still lived in the Wenatchee Valley near the river confluence.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/7551"
+    },
+    {
+      "text": "In 1917, the Wenatchee area produced roughly 20 percent of the entire nation's apple crop.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/7551"
+    },
+    {
+      "text": "The Horan family orchard along the Columbia River was purchased in 1990 and later became the Horan Natural Area within Wenatchee Confluence State Park.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/7551"
+    },
+    {
+      "text": "East Wenatchee, across the Columbia River in Douglas County, incorporated in 1935 after a razor-thin 48-to-46 vote.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/9553"
+    },
+    {
+      "text": "Homesteader Harry Patterson staked the first land claim in what became East Wenatchee in 1888.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/9553"
+    },
+    {
+      "text": "In 1987, an East Wenatchee apple orchard yielded a cache of Clovis spear points, among the oldest known human artifacts in North America.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/9553"
+    },
+    {
+      "text": "The 1987 East Wenatchee Clovis cache has been dated to roughly 11,000 to 12,000 years old.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/9553"
+    },
+    {
+      "text": "Fur trader David Thompson encountered tribal horsemen along the Columbia's banks near modern East Wenatchee on July 7, 1811.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/9553"
+    },
+    {
+      "text": "Pangborn Memorial Airport in East Wenatchee, established in 1941, was named for aviator Clyde Pangborn.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/9553"
+    },
+    {
+      "text": "Northwest Airlines began commercial flights out of Pangborn Field in East Wenatchee in 1945.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/9553"
+    },
+    {
+      "text": "East Wenatchee's George Sellar Bridge across the Columbia River was completed in 1951.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/9553"
+    },
+    {
+      "text": "Cashmere began as a small settlement called 'Mission,' named for the nearby St. Francis Xavier Catholic mission.",
+      "source": "Wikipedia: Cashmere, Washington",
+      "url": "https://en.wikipedia.org/wiki/Cashmere,_Washington"
+    },
+    {
+      "text": "Cashmere's town site was originally home to the Sinpuesquensi band of the Wenatchi people, with a village of about 400 people recorded around 1850.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/8750"
+    },
+    {
+      "text": "Alexander Brender established the first non-Native homestead in the Cashmere area in 1881.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/8750"
+    },
+    {
+      "text": "Construction of the Peshastin Ditch irrigation project began near Cashmere in 1889, later transforming the arid valley into orchard land.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/8750"
+    },
+    {
+      "text": "The Great Northern Railway reached the future Cashmere town site in 1892, the same year the town was platted.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/8750"
+    },
+    {
+      "text": "Local judge James H. Chase proposed renaming the town of Mission to Cashmere in 1903, likening the valley to Kashmir in northern India.",
+      "source": "Wikipedia: Cashmere, Washington",
+      "url": "https://en.wikipedia.org/wiki/Cashmere,_Washington"
+    },
+    {
+      "text": "The town's name officially changed from Mission to Cashmere on July 1, 1904.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/8750"
+    },
+    {
+      "text": "Cashmere incorporated as a fourth-class city in November 1904, shortly after adopting its new name.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/8750"
+    },
+    {
+      "text": "Cashmere's Frances Willard High School was built in 1907, the same year its local newspaper, the Cashmere Valley Record, began publishing.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/8750"
+    },
+    {
+      "text": "Cashmere gained electric lighting in 1914 and paved streets by 1919.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/8750"
+    },
+    {
+      "text": "Liberty Orchards began selling its Aplets candy from a Cashmere fruit stand in 1918.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/8750"
+    },
+    {
+      "text": "Aplets & Cotlets confections were first developed and sold commercially in Cashmere starting in 1915.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/8750"
+    },
+    {
+      "text": "Armenian immigrants Armen Tertsagian and Mark Balaban, founders of Liberty Orchards, arrived in Cashmere in 1918.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/7624"
+    },
+    {
+      "text": "In 1997, Cashmere renamed two of its main streets Aplets Way and Cotlets Avenue at the candy company's request.",
+      "source": "Wikipedia: Cashmere, Washington",
+      "url": "https://en.wikipedia.org/wiki/Cashmere,_Washington"
+    },
+    {
+      "text": "An August 1931 powwow and historical pageant in Cashmere drew about 700 Native Americans, including 250 Wenatchi from area reservations.",
+      "source": "Wikipedia: Cashmere, Washington",
+      "url": "https://en.wikipedia.org/wiki/Cashmere,_Washington"
+    },
+    {
+      "text": "Collector Willis Carey spent 65 years assembling one of the largest private collections of Indian and pioneer artifacts in the United States.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/8754"
+    },
+    {
+      "text": "Willis Carey died on August 31, 1955, one day after agreeing to donate his artifact collection to a future museum.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/8754"
+    },
+    {
+      "text": "The Chelan County Historical Society, formed in 1956, opened its Cashmere museum on June 27, 1959.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/8754"
+    },
+    {
+      "text": "The Cashmere Museum and Pioneer Village includes about 20 original historic structures relocated from around the region, including buildings from the ghost town of Blewett.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/8754"
+    },
+    {
+      "text": "A 29-foot waterwheel at the Cashmere museum, moved by helicopter in the 1970s, was added to the National Register of Historic Places in 1973.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/8754"
+    },
+    {
+      "text": "Cashmere's Cottage Avenue residential area was designated a National Historic District in 2002.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/8750"
+    },
+    {
+      "text": "In August 2008, the Ninth U.S. Circuit Court of Appeals restored certain fishing rights to the Wenatchi people, a case rooted in Cashmere-area history.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/8750"
+    },
+    {
+      "text": "The Colville Confederated Tribes acquired 11 acres of ancestral land near Cashmere in 2024.",
+      "source": "Wikipedia: Wenatchi",
+      "url": "https://en.wikipedia.org/wiki/Wenatchi"
+    },
+    {
+      "text": "The West Cashmere Bridge, built in 1929 across the Wenatchee River, is also known locally as the Goodwin Bridge.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/20565"
+    },
+    {
+      "text": "The West Cashmere Bridge replaced an earlier 1904 span called the Tibbets Bridge, which had been raised three feet in 1907 to avoid flooding.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/20565"
+    },
+    {
+      "text": "In 1928, orchards along the Wenatchee River near Cashmere shipped a record 2,441 railcars of apples, the largest crop to that date.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/20565"
+    },
+    {
+      "text": "Leavenworth's first non-Native settlers, John Emig and Nicholas Kinscherf, staked homestead claims near Icicle Creek in 1885.",
+      "source": "Wikipedia: Leavenworth, Washington",
+      "url": "https://en.wikipedia.org/wiki/Leavenworth,_Washington"
+    },
+    {
+      "text": "An early settlement called 'Icicle' grew up along Icicle Creek before the town of Leavenworth was formally platted.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/9475"
+    },
+    {
+      "text": "Leavenworth was platted in 1893 and named for Charles Leavenworth, a Portland investor in the Okanogan Investment Company.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/9475"
+    },
+    {
+      "text": "Leavenworth's population reached about 700 people with more than 40 businesses by February 1893, just after the town was founded.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/9475"
+    },
+    {
+      "text": "The Great Northern Railway's Stevens Pass route, completed in 1893, made Leavenworth a division point with a roundhouse and rail shops.",
+      "source": "Wikipedia: Leavenworth, Washington",
+      "url": "https://en.wikipedia.org/wiki/Leavenworth,_Washington"
+    },
+    {
+      "text": "Leavenworth officially incorporated as a city in September 1906, with a population of about 1,000.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/9475"
+    },
+    {
+      "text": "Lumberman Lafayette Lamb arrived from Iowa in 1903 to build what became the second-largest sawmill in Washington State, at Leavenworth.",
+      "source": "Wikipedia: Leavenworth, Washington",
+      "url": "https://en.wikipedia.org/wiki/Leavenworth,_Washington"
+    },
+    {
+      "text": "By 1906, the Lamb-Davis Lumber Company employed about 200 workers in Leavenworth's mills and logging camps.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/9475"
+    },
+    {
+      "text": "At its early-20th-century peak, Leavenworth's population swelled to about 5,500 during its mining, logging, and railroad boom.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/9475"
+    },
+    {
+      "text": "In 1925, the Great Northern Railway relocated its rail yards from Leavenworth to Wenatchee, badly damaging Leavenworth's economy.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/9475"
+    },
+    {
+      "text": "Leavenworth's sawmill closed in the 1920s, and the town's population declined through the Great Depression and 1950s.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/9475"
+    },
+    {
+      "text": "In 1960, business owners Ted Price and Bob Rodgers opened a struggling roadside cafe in Leavenworth that later inspired the town's Bavarian reinvention.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/9475"
+    },
+    {
+      "text": "In 1962, Leavenworth's Chamber of Commerce launched Project LIFE, partnering with the University of Washington to redesign the town's economic future.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/9475"
+    },
+    {
+      "text": "Designers Earl Petersen and Heinz Ulbricht helped shape the Bavarian architectural theme Leavenworth adopted in the 1960s.",
+      "source": "Wikipedia: Leavenworth, Washington",
+      "url": "https://en.wikipedia.org/wiki/Leavenworth,_Washington"
+    },
+    {
+      "text": "The Edelweiss Hotel, formerly the Chikamin Hotel, became the first Leavenworth building remodeled in Bavarian style around 1965.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/9475"
+    },
+    {
+      "text": "Leavenworth's first Autumn Leaf Festival, part of its tourism relaunch, was held in September 1964.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/9475"
+    },
+    {
+      "text": "Leavenworth established a Design Review Board on July 16, 1970, to ensure new construction followed its Bavarian architectural theme.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/9475"
+    },
+    {
+      "text": "In 1978, Leavenworth's city council formally required Bavarian-style architecture for all new construction in town.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/7624"
+    },
+    {
+      "text": "Leavenworth opened a ski jump in 1929 as one of its earliest attempts to attract winter tourism.",
+      "source": "Wikipedia: Leavenworth, Washington",
+      "url": "https://en.wikipedia.org/wiki/Leavenworth,_Washington"
+    },
+    {
+      "text": "The Leavenworth Nutcracker Museum opened in 1995, eventually housing a collection of more than 7,000 nutcrackers.",
+      "source": "Wikipedia: Leavenworth, Washington",
+      "url": "https://en.wikipedia.org/wiki/Leavenworth,_Washington"
+    },
+    {
+      "text": "Leavenworth's Longview Fibre paper mill, built in 1991, closed permanently in December 2006.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/9475"
+    },
+    {
+      "text": "Leavenworth's Upper Valley Museum opened in 2002 inside the historic Robert Field house.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/9475"
+    },
+    {
+      "text": "By 2024, Leavenworth's Bavarian-themed downtown was drawing an estimated 3.4 million visitors a year.",
+      "source": "Wikipedia: Leavenworth, Washington",
+      "url": "https://en.wikipedia.org/wiki/Leavenworth,_Washington"
+    },
+    {
+      "text": "During Leavenworth's busy December holiday season, its daytime population can swell to roughly 33,000 visitors and residents.",
+      "source": "Wikipedia: Leavenworth, Washington",
+      "url": "https://en.wikipedia.org/wiki/Leavenworth,_Washington"
+    },
+    {
+      "text": "Leavenworth's Ski Hill Historic District was added to the National Register of Historic Places in 2013.",
+      "source": "Wikipedia: National Register of Historic Places listings in Chelan County, Washington",
+      "url": "https://en.wikipedia.org/wiki/National_Register_of_Historic_Places_listings_in_Chelan_County,_Washington"
+    },
+    {
+      "text": "The community once known as Plain, along the upper Wenatchee River, had its own post office from 1913 until 1936.",
+      "source": "Wikipedia: Plain, Washington",
+      "url": "https://en.wikipedia.org/wiki/Plain,_Washington"
+    },
+    {
+      "text": "Plain's Chumstick Highway, once State Route 209, follows an old railroad grade connecting the community to Leavenworth.",
+      "source": "Wikipedia: Plain, Washington",
+      "url": "https://en.wikipedia.org/wiki/Plain,_Washington"
+    },
+    {
+      "text": "The Plain Endurance Runs, a grueling 100-mile ultramarathon starting in Plain, began in 1997 and saw only four finishers in its first eight years.",
+      "source": "Wikipedia: Plain, Washington",
+      "url": "https://en.wikipedia.org/wiki/Plain,_Washington"
+    },
+    {
+      "text": "The city of Chelan's first non-Native settlers, William Sanders and Henry Dumpke, arrived at the lake's outlet in 1886.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/10160"
+    },
+    {
+      "text": "Minneapolis businessman L. H. Woodin arrived at Lake Chelan in 1888 and built a sawmill at the foot of the lake.",
+      "source": "Wikipedia: Chelan, Washington",
+      "url": "https://en.wikipedia.org/wiki/Chelan,_Washington"
+    },
+    {
+      "text": "Judge C. H. Ballard filed the official town plat for Chelan in July 1889, with more than 1,000 lots offered for sale at $5.75 each.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/10160"
+    },
+    {
+      "text": "Chelan's first nondenominational Sunday school opened on August 11, 1889.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/10160"
+    },
+    {
+      "text": "A post office opened in Chelan in 1890, by which time the town already had more than 300 rough-built structures.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/10160"
+    },
+    {
+      "text": "The town's first weekly newspaper, the Chelan Leader, was publishing a business directory by January 1891.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/10160"
+    },
+    {
+      "text": "Chelan's male voters approved incorporation on May 7, 1902, by a lopsided 56-to-7 margin.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/10163"
+    },
+    {
+      "text": "Amos Edmunds became Chelan's first mayor after the town's 1902 incorporation.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/10163"
+    },
+    {
+      "text": "Chelan's 1902 incorporation vote came only after three earlier attempts, between 1893 and 1898, failed over disputed Moses Reservation land titles.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/10163"
+    },
+    {
+      "text": "Because Washington women could not yet vote, only male residents cast ballots in Chelan's 1902 incorporation election, eight years before statewide suffrage.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/10163"
+    },
+    {
+      "text": "Chelan gained electric lights and water service from nearby Donaldson Springs in 1903.",
+      "source": "Wikipedia: Chelan, Washington",
+      "url": "https://en.wikipedia.org/wiki/Chelan,_Washington"
+    },
+    {
+      "text": "Chelan's original 1904 town hall building was destroyed by fire in 1927.",
+      "source": "Wikipedia: Chelan, Washington",
+      "url": "https://en.wikipedia.org/wiki/Chelan,_Washington"
+    },
+    {
+      "text": "Entrepreneur L. H. Woodin attempted the first dam at Lake Chelan's outlet in 1889, but it washed away in a spring flood.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/10160"
+    },
+    {
+      "text": "The Buckner Dam at Lake Chelan's outlet, completed in April 1892, raised the lake's level by several feet.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/10160"
+    },
+    {
+      "text": "Massive spring floods in June 1894 destroyed the Ben Smith Dam at Chelan and raised the lake by 11 feet.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/10160"
+    },
+    {
+      "text": "Construction of the modern Lake Chelan hydroelectric dam began in April 1926 and employed about 1,250 workers at its peak.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/10160"
+    },
+    {
+      "text": "The Lake Chelan dam's first generating unit began operating in September 1927, part of what was then the Northwest's largest electrical project.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/10160"
+    },
+    {
+      "text": "Filling of the reservoir behind the new Lake Chelan dam raised the lake's level by 21 feet during 1927.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/10160"
+    },
+    {
+      "text": "St. Andrews Episcopal Church in Chelan, completed in 1898, was designed by noted architect Kirtland Cutter.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/10160"
+    },
+    {
+      "text": "On November 26, 1945, a school bus accident near Chelan killed 15 students and the driver, the worst school bus tragedy in Washington history.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/10160"
+    },
+    {
+      "text": "The nearby town of Lakeside merged into the city of Chelan in 1956.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/10160"
+    },
+    {
+      "text": "Chelan's first commercial wine-grape vineyard opened in 1998, launching what has become the Lake Chelan wine region.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/10160"
+    },
+    {
+      "text": "By 2006, roughly 140 acres around Chelan were devoted to wine grapes as the local wine industry took hold.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/10160"
+    },
+    {
+      "text": "By 2004, Chelan, Douglas, and Okanogan counties together were home to 23 licensed wineries.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/7624"
+    },
+    {
+      "text": "Steamboat service on Lake Chelan began in 1889 when the Belle of Chelan made the first commercial run to Stehekin.",
+      "source": "Wikipedia: Steamboats of Lake Chelan",
+      "url": "https://en.wikipedia.org/wiki/Steamboats_of_Lake_Chelan"
+    },
+    {
+      "text": "Early steamboat trips on Lake Chelan took about two days to cover the 50.5 miles between Chelan and Stehekin.",
+      "source": "Wikipedia: Steamboats of Lake Chelan",
+      "url": "https://en.wikipedia.org/wiki/Steamboats_of_Lake_Chelan"
+    },
+    {
+      "text": "The steamer Queen, launched in 1892 as the first sternwheeler on Lake Chelan, wrecked after only a year of service.",
+      "source": "Wikipedia: Steamboats of Lake Chelan",
+      "url": "https://en.wikipedia.org/wiki/Steamboats_of_Lake_Chelan"
+    },
+    {
+      "text": "Rebuilt as the Stehekin, the former steamer Queen charged passengers a $4.00 fare in 1897 before being converted into a barge in 1904.",
+      "source": "Wikipedia: Steamboats of Lake Chelan",
+      "url": "https://en.wikipedia.org/wiki/Steamboats_of_Lake_Chelan"
+    },
+    {
+      "text": "The Lake Chelan Boat Company has served as the lake's sole ferry operator since 1929, running the Lady of the Lake today.",
+      "source": "Wikipedia: Steamboats of Lake Chelan",
+      "url": "https://en.wikipedia.org/wiki/Steamboats_of_Lake_Chelan"
+    },
+    {
+      "text": "Lake Chelan, at 1,486 feet deep, is the third-deepest lake in the United States, behind only Crater Lake and Lake Tahoe.",
+      "source": "Wikipedia: Lake Chelan",
+      "url": "https://en.wikipedia.org/wiki/Lake_Chelan"
+    },
+    {
+      "text": "Lake Chelan's deepest point lies about 436 feet below sea level, though its bedrock floor may reach 1,529 feet below sea level.",
+      "source": "Wikipedia: Lake Chelan",
+      "url": "https://en.wikipedia.org/wiki/Lake_Chelan"
+    },
+    {
+      "text": "Lake Chelan's deep glacial trough was carved by the Skagit Lobe of the Cordilleran ice sheet roughly 21,000 years ago, at the peak of the last ice age.",
+      "source": "Wikipedia: Lake Chelan",
+      "url": "https://en.wikipedia.org/wiki/Lake_Chelan"
+    },
+    {
+      "text": "During the last glaciation, the ice sheet that carved Lake Chelan's basin was more than a mile thick.",
+      "source": "Wikipedia: Lake Chelan",
+      "url": "https://en.wikipedia.org/wiki/Lake_Chelan"
+    },
+    {
+      "text": "The name Stehekin, at the head of Lake Chelan, comes from a Salishan word meaning 'the way through,' describing a mountain travel route used for at least 9,000 years.",
+      "source": "Wikipedia: Stehekin, Washington",
+      "url": "https://en.wikipedia.org/wiki/Stehekin,_Washington"
+    },
+    {
+      "text": "White settlement of Stehekin began around 1875, when prospectors arrived searching for gold and other minerals.",
+      "source": "Wikipedia: Stehekin, Washington",
+      "url": "https://en.wikipedia.org/wiki/Stehekin,_Washington"
+    },
+    {
+      "text": "Stehekin's small gold rush peaked between 1880 and 1891 as prospectors found significant ore deposits, though poor access limited development.",
+      "source": "Wikipedia: Stehekin, Washington",
+      "url": "https://en.wikipedia.org/wiki/Stehekin,_Washington"
+    },
+    {
+      "text": "Homesteader William Buzzard staked a 160-acre claim in Stehekin in 1889 and built a log cabin that still stands today.",
+      "source": "Wikipedia: Stehekin, Washington",
+      "url": "https://en.wikipedia.org/wiki/Stehekin,_Washington"
+    },
+    {
+      "text": "The Buckner family purchased Buzzard's Stehekin homestead in 1911 and developed it into a productive orchard operating into the 1940s.",
+      "source": "Wikipedia: Stehekin, Washington",
+      "url": "https://en.wikipedia.org/wiki/Stehekin,_Washington"
+    },
+    {
+      "text": "The National Park Service purchased the 90-acre Buckner Homestead in Stehekin in 1970, later listing it as a National Historic District.",
+      "source": "Lake Chelan Chamber of Commerce",
+      "url": "https://lakechelan.com/area/stehekin/history/"
+    },
+    {
+      "text": "Stehekin's Golden West Visitor Center began life in 1927 as the Golden West Lodge, a resort hotel.",
+      "source": "Lake Chelan Chamber of Commerce",
+      "url": "https://lakechelan.com/area/stehekin/history/"
+    },
+    {
+      "text": "Steamboats supplying early Stehekin required 6 to 12 cords of wood fuel for each round trip on the lake.",
+      "source": "Lake Chelan Chamber of Commerce",
+      "url": "https://lakechelan.com/area/stehekin/history/"
+    },
+    {
+      "text": "Stehekin remains disconnected from the outside road and rail network, reachable only by boat, floatplane, or trail even today.",
+      "source": "Wikipedia: Stehekin, Washington",
+      "url": "https://en.wikipedia.org/wiki/Stehekin,_Washington"
+    },
+    {
+      "text": "Stehekin's Rainbow Falls drops 312 feet, one of the tallest waterfalls in the North Cascades region.",
+      "source": "Wikipedia: Stehekin, Washington",
+      "url": "https://en.wikipedia.org/wiki/Stehekin,_Washington"
+    },
+    {
+      "text": "Stehekin's one-room schoolhouse and the Buckner Cabin were both added to the National Register of Historic Places in 1974.",
+      "source": "Wikipedia: National Register of Historic Places listings in Chelan County, Washington",
+      "url": "https://en.wikipedia.org/wiki/National_Register_of_Historic_Places_listings_in_Chelan_County,_Washington"
+    },
+    {
+      "text": "Stehekin's small year-round population has hovered around 85 to 95 residents in recent years.",
+      "source": "Wikipedia: Stehekin, Washington",
+      "url": "https://en.wikipedia.org/wiki/Stehekin,_Washington"
+    },
+    {
+      "text": "The name Entiat derives from a Moses-Columbian Salish word meaning roughly 'place of grassy water.'",
+      "source": "Wikipedia: Entiat, Washington",
+      "url": "https://en.wikipedia.org/wiki/Entiat,_Washington"
+    },
+    {
+      "text": "Chief Shil-how-Saskt, a Columbia River Chinook leader, sold the future Entiat town site in 1896, three years before his death.",
+      "source": "Wikipedia: Entiat, Washington",
+      "url": "https://en.wikipedia.org/wiki/Entiat,_Washington"
+    },
+    {
+      "text": "Lewis Detwiler became the first known white settler at Entiat, arriving in 1877.",
+      "source": "Wikipedia: Entiat, Washington",
+      "url": "https://en.wikipedia.org/wiki/Entiat,_Washington"
+    },
+    {
+      "text": "A man known as 'Big Antoine' was reported panning gold and growing peach trees along the Entiat River as early as 1868.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/21062"
+    },
+    {
+      "text": "Entiat's first public school opened in 1891, and its post office followed in 1895.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/21062"
+    },
+    {
+      "text": "The Entiat Power Plant began operating in 1908, providing some of the valley's earliest electricity.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/21062"
+    },
+    {
+      "text": "Rail service reached Entiat in July 1914, prompting the community to build an entirely new second town site.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/21062"
+    },
+    {
+      "text": "A devastating 1915 fire in Entiat left only six businesses standing in the town.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/21062"
+    },
+    {
+      "text": "A second major fire in 1921 destroyed the remaining structures of Entiat's original town site.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/21062"
+    },
+    {
+      "text": "Entiat officially incorporated as a fourth-class municipality on April 25, 1944.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/21062"
+    },
+    {
+      "text": "Construction of Rocky Reach Dam beginning in 1956 forced Entiat to relocate its town site a third time, to higher ground.",
+      "source": "Wikipedia: Entiat, Washington",
+      "url": "https://en.wikipedia.org/wiki/Entiat,_Washington"
+    },
+    {
+      "text": "Entiat's third and current town site opened for business in 1961 after Rocky Reach Dam's reservoir filled.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/21062"
+    },
+    {
+      "text": "Since 1920, Entiat High School graduating seniors have painted their class year on Numeral Mountain across the river from town.",
+      "source": "Wikipedia: Entiat, Washington",
+      "url": "https://en.wikipedia.org/wiki/Entiat,_Washington"
+    },
+    {
+      "text": "Rock Island, Washington, takes its name from a Columbia River island long used by Salish-speaking peoples, whose petroglyphs recorded visions and traditional stories.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/23001"
+    },
+    {
+      "text": "Rancher James Eugene Keane filed the first recorded homestead claim at Rock Island in 1886 and built a home locals called 'the White House.'",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/23001"
+    },
+    {
+      "text": "The first steel bridge across the Columbia River was completed at Rock Island on May 2, 1893.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/23001"
+    },
+    {
+      "text": "Rock Island incorporated as a city on December 8, 1930, with a population of 421.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/23001"
+    },
+    {
+      "text": "Construction of Rock Island Dam, the first dam ever built across the Columbia River, began on January 27, 1930.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/21173"
+    },
+    {
+      "text": "Rock Island Dam's builders finished the project six months ahead of schedule, with water flowing through its gates by December 1931.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/21173"
+    },
+    {
+      "text": "Rock Island Dam cost about $13.5 million to build, equivalent to roughly $220 million in 2021 dollars.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/21173"
+    },
+    {
+      "text": "Rock Island Dam's ownership passed from Stone and Webster to Puget Power on February 1, 1933, upon the dam's full completion.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/21173"
+    },
+    {
+      "text": "Chelan County Public Utility District purchased Rock Island Dam from Puget Sound Power & Light in 1956.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/7624"
+    },
+    {
+      "text": "Rock Island Dam's second powerhouse, built on the west bank, was constructed between 1974 and 1979.",
+      "source": "Wikipedia: Rock Island Dam",
+      "url": "https://en.wikipedia.org/wiki/Rock_Island_Dam"
+    },
+    {
+      "text": "Rock Island Dam's combined powerhouses generate roughly 2 billion kilowatt-hours of electricity annually.",
+      "source": "Wikipedia: Rock Island Dam",
+      "url": "https://en.wikipedia.org/wiki/Rock_Island_Dam"
+    },
+    {
+      "text": "Planning for Rocky Reach Dam dates back to 1934, when the U.S. Army Corps of Engineers first assessed the site's hydroelectric potential.",
+      "source": "Wikipedia: Rocky Reach Dam",
+      "url": "https://en.wikipedia.org/wiki/Rocky_Reach_Dam"
+    },
+    {
+      "text": "Rocky Reach Dam's first construction phase, begun in 1956, added seven generating units to the Columbia River.",
+      "source": "Wikipedia: Rocky Reach Dam",
+      "url": "https://en.wikipedia.org/wiki/Rocky_Reach_Dam"
+    },
+    {
+      "text": "A second construction phase at Rocky Reach Dam, started in 1969, added four more generating units.",
+      "source": "Wikipedia: Rocky Reach Dam",
+      "url": "https://en.wikipedia.org/wiki/Rocky_Reach_Dam"
+    },
+    {
+      "text": "Rocky Reach Dam originally cost about $273.1 million, financed through public utility bonds.",
+      "source": "Wikipedia: Rocky Reach Dam",
+      "url": "https://en.wikipedia.org/wiki/Rocky_Reach_Dam"
+    },
+    {
+      "text": "Rocky Reach Dam's power generation today serves more than 7 million people across the Pacific Northwest.",
+      "source": "Wikipedia: Rocky Reach Dam",
+      "url": "https://en.wikipedia.org/wiki/Rocky_Reach_Dam"
+    },
+    {
+      "text": "Rocky Reach Dam's visitor center features a seasonal fish-viewing exhibit nicknamed 'Look a Salmon in the Eye.'",
+      "source": "Wikipedia: Rocky Reach Dam",
+      "url": "https://en.wikipedia.org/wiki/Rocky_Reach_Dam"
+    },
+    {
+      "text": "A juvenile fish bypass system, completed at Rocky Reach Dam in 2003, helps young salmon and steelhead migrate safely downstream.",
+      "source": "Wikipedia: Rocky Reach Dam",
+      "url": "https://en.wikipedia.org/wiki/Rocky_Reach_Dam"
+    },
+    {
+      "text": "Washington voters approved a statewide public utility district initiative in 1930, paving the way for Chelan County's own PUD.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/7624"
+    },
+    {
+      "text": "Chelan County voters approved forming a Public Utility District in 1937, the same year Congress created the Bonneville Power Administration.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/7624"
+    },
+    {
+      "text": "It took Chelan County PUD 11 years, until 1948, to complete its acquisition of Puget Sound Power & Light's local facilities.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/7624"
+    },
+    {
+      "text": "Chelan County PUD acquired Washington Water Power Company's local hydroelectric assets in 1955.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/7624"
+    },
+    {
+      "text": "Great Northern Railway crews built the original 2.63-mile Cascade Tunnel through Stevens Pass between 1897 and 1900.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/10705"
+    },
+    {
+      "text": "Before the original Cascade Tunnel opened, Great Northern trains crossed Stevens Pass on eight dizzying switchbacks built in 1892.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/10705"
+    },
+    {
+      "text": "An avalanche struck two stalled Great Northern trains at Wellington near Stevens Pass just after midnight on March 1, 1910, killing 96 people.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/5127"
+    },
+    {
+      "text": "The Wellington avalanche disaster remains the deadliest avalanche in United States history.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/5127"
+    },
+    {
+      "text": "Rescuers found the wreckage of the Wellington avalanche buried under roughly 40 feet of snow, about 150 feet below the tracks.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/5127"
+    },
+    {
+      "text": "A second deadly avalanche near Corea, seven miles from Wellington, killed eight people on January 22, 1916.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/5127"
+    },
+    {
+      "text": "By 1913, Great Northern Railway had built nine miles of protective snow-sheds over the tracks near Stevens Pass following the Wellington disaster.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/5127"
+    },
+    {
+      "text": "Construction of the new Cascade Tunnel began on December 28, 1925, after President Lewis Hill authorized the project that Thanksgiving.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/10705"
+    },
+    {
+      "text": "Crews broke through the new Cascade Tunnel from both ends on October 20, 1928.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/10705"
+    },
+    {
+      "text": "A rock slide during construction of the new Cascade Tunnel killed four workers on November 8, 1928.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/10705"
+    },
+    {
+      "text": "The new Cascade Tunnel, stretching 7.8 miles through solid granite, was dedicated on January 12, 1929, with President-elect Herbert Hoover speaking by radio.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/10705"
+    },
+    {
+      "text": "Building the new Cascade Tunnel cost about $14 million to excavate, plus another $11.6 million to electrify, and took 1,750 workers 35 months.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/10705"
+    },
+    {
+      "text": "The Cascade Tunnel's Stevens Pass rail corridor was added to the National Register of Historic Places in 1976 as the Stevens Pass Historic District.",
+      "source": "Wikipedia: National Register of Historic Places listings in Chelan County, Washington",
+      "url": "https://en.wikipedia.org/wiki/National_Register_of_Historic_Places_listings_in_Chelan_County,_Washington"
+    },
+    {
+      "text": "The first apple seeds grown in the Pacific Northwest were planted at Fort Vancouver in the 1820s, decades before Chelan County's own orchards.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/21288"
+    },
+    {
+      "text": "The Wenatchee Valley's first genuinely commercial apple orchard, the Patterson orchard, was planted in 1884.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/21288"
+    },
+    {
+      "text": "By 1909, Wenatchee Valley growers were shipping about 2,000 freight cars of apples annually.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/21288"
+    },
+    {
+      "text": "In the 1920s, Washington State surpassed New York to become the nation's leading apple-producing state.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/21288"
+    },
+    {
+      "text": "The Wenatchee-Columbia Fruit Company licensed the Buster Brown comic character for apple advertising in 1912.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/21288"
+    },
+    {
+      "text": "The Skookum brand launched a health-focused apple advertising campaign in 1914 to boost consumer demand.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/21288"
+    },
+    {
+      "text": "During the Great Depression, apple prices collapsed so badly that the Wenatchee Valley was officially declared an 'economically stricken area' in 1935.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/21288"
+    },
+    {
+      "text": "The Washington State Apple Advertising Commission was created by the state legislature in 1937 to promote the industry.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/21288"
+    },
+    {
+      "text": "Wooden apple boxes, a Wenatchee Valley staple for decades, were largely replaced by cardboard packaging starting in 1958.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/21288"
+    },
+    {
+      "text": "In 2019, the Gala apple surpassed the Red Delicious as Washington's leading commercial apple variety.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/21288"
+    },
+    {
+      "text": "The Cosmic Crisp apple, developed by Washington State University, reached the market for the first time in 2019.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/21288"
+    },
+    {
+      "text": "Chelan County farmers shipped 225 carloads of fruit in 1902, an 85 percent jump from the prior year, signaling the coming apple boom.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/7624"
+    },
+    {
+      "text": "North central Washington's gold rush centered on the Blewett Mining District, where the first claims were filed in 1874.",
+      "source": "Wikipedia: Blewett, Washington",
+      "url": "https://en.wikipedia.org/wiki/Blewett,_Washington"
+    },
+    {
+      "text": "A stone crushing arrastra built into bedrock at Blewett in 1863 is one of the oldest surviving ore-processing structures in Washington Territory.",
+      "source": "Wikipedia: Blewett Arrastra",
+      "url": "https://en.wikipedia.org/wiki/Blewett_Arrastra"
+    },
+    {
+      "text": "By 1896, Blewett's mining district was running a 20-stamp ore-crushing mill at the mouth of Culver Gulch.",
+      "source": "Wikipedia: Blewett, Washington",
+      "url": "https://en.wikipedia.org/wiki/Blewett,_Washington"
+    },
+    {
+      "text": "Blewett was named for Seattle mining investor Edward Blewett, whose company controlled many of the district's claims.",
+      "source": "Wikipedia: Blewett, Washington",
+      "url": "https://en.wikipedia.org/wiki/Blewett,_Washington"
+    },
+    {
+      "text": "Blewett's stamp mill shut down in 1905 when the main gold vein ran out, though some mining continued there until 1911.",
+      "source": "Wikipedia: Blewett, Washington",
+      "url": "https://en.wikipedia.org/wiki/Blewett,_Washington"
+    },
+    {
+      "text": "The Blewett Arrastra was added to the National Register of Historic Places on September 17, 1974.",
+      "source": "Wikipedia: Blewett Arrastra",
+      "url": "https://en.wikipedia.org/wiki/Blewett_Arrastra"
+    },
+    {
+      "text": "The Manson area's town site was surveyed and graded in 1911, taking its name from Manson Backus, father of a local land company president.",
+      "source": "Manson Chamber of Commerce",
+      "url": "https://www.mansonchamber.com/history"
+    },
+    {
+      "text": "Orchardists Peter Wapato and Ben Martin had already planted apple orchards near Manson before 1890, decades ahead of the town's founding.",
+      "source": "Manson Chamber of Commerce",
+      "url": "https://www.mansonchamber.com/history"
+    },
+    {
+      "text": "The Chelan Box and Manufacturing Company was a major Manson employer from 1931 until its 1967 closure.",
+      "source": "Manson Chamber of Commerce",
+      "url": "https://www.mansonchamber.com/history"
+    },
+    {
+      "text": "A fire destroyed Manson's associated sawmill in 1969, ending decades of local timber processing.",
+      "source": "Manson Chamber of Commerce",
+      "url": "https://www.mansonchamber.com/history"
+    },
+    {
+      "text": "Squilchuck State Park, established in 1952, sits below Mission Ridge about 8 miles south of Wenatchee.",
+      "source": "Wikipedia: Squilchuck State Park",
+      "url": "https://en.wikipedia.org/wiki/Squilchuck_State_Park"
+    },
+    {
+      "text": "Lake Chelan State Park was created in 1942 and opened to the public in 1943, covering 139 acres on the lake's southwest shore.",
+      "source": "Wikipedia: Lake Chelan State Park",
+      "url": "https://en.wikipedia.org/wiki/Lake_Chelan_State_Park"
+    },
+    {
+      "text": "Daroga State Park takes its name from the Auvil brothers, David, Robert, and Grady, whose orchard land it once was.",
+      "source": "Wikipedia: Daroga State Park",
+      "url": "https://en.wikipedia.org/wiki/Daroga_State_Park"
+    },
+    {
+      "text": "Daroga State Park's land was partly flooded when Rocky Reach Dam's reservoir, Lake Entiat, formed behind the new dam.",
+      "source": "Wikipedia: Daroga State Park",
+      "url": "https://en.wikipedia.org/wiki/Daroga_State_Park"
+    },
+    {
+      "text": "Washington State Parks began operating Daroga State Park in 1990 under a lease with Chelan County PUD, which still owns the land.",
+      "source": "Wikipedia: Daroga State Park",
+      "url": "https://en.wikipedia.org/wiki/Daroga_State_Park"
+    },
+    {
+      "text": "Lincoln Rock State Park, established in 1980, is named for a Columbia River cliff formation resembling Abraham Lincoln's profile.",
+      "source": "Wikipedia: Lincoln Rock State Park",
+      "url": "https://en.wikipedia.org/wiki/Lincoln_Rock_State_Park"
+    },
+    {
+      "text": "Nearby Turtle Rock Island became a separated 150-acre nature preserve when Lake Entiat formed behind Rocky Reach Dam in the 1960s.",
+      "source": "Wikipedia: Lincoln Rock State Park",
+      "url": "https://en.wikipedia.org/wiki/Lincoln_Rock_State_Park"
+    },
+    {
+      "text": "The U.S. Forest Service created the Chelan National Forest on July 1, 1908, covering nearly 2.5 million acres.",
+      "source": "Wikipedia: Chelan National Forest",
+      "url": "https://en.wikipedia.org/wiki/Chelan_National_Forest"
+    },
+    {
+      "text": "The Chelan National Forest merged with the Okanogan National Forest in 1921 and was renamed Okanogan National Forest in 1955.",
+      "source": "Wikipedia: Chelan National Forest",
+      "url": "https://en.wikipedia.org/wiki/Chelan_National_Forest"
+    },
+    {
+      "text": "Wildfires that began August 23, 1970, in Chelan County's Wenatchee National Forest burned 122,000 acres over 15 days.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/5498"
+    },
+    {
+      "text": "The 1970 Wenatchee National Forest fires began as more than 200 lightning-sparked blazes that merged into five major fires.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/5498"
+    },
+    {
+      "text": "Fighting the 1970 Chelan County forest fires required 8,500 firefighters and cost roughly $13 million to suppress.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/5498"
+    },
+    {
+      "text": "Researchers studying the 1970 Chelan County burn area found evidence of earlier major fires dating to around 1830 and 1790.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/5498"
+    },
+    {
+      "text": "The 2015 Sleepy Hollow Fire burned through Wenatchee's east side, destroying dozens of homes and businesses within city limits.",
+      "source": "Wenatchee World",
+      "url": "https://www.wenatcheeworld.com/business/sleepy-hollow-fire-2015/article_28e40a64-b304-11e9-9710-735016b41e27.html"
+    },
+    {
+      "text": "Planning for what became the North Cascades Highway began in the 1890s, before Washington's earliest legislature funded a cross-mountain wagon road in 1893.",
+      "source": "HistoryLink.org",
+      "url": "https://historylink.org/File/11044"
+    },
+    {
+      "text": "An 1896 attempt to build the Cascade Wagon Road toward Stehekin stalled by 1899 due to flooding and steep terrain, leaving only a pack trail.",
+      "source": "HistoryLink.org",
+      "url": "https://historylink.org/File/11044"
+    },
+    {
+      "text": "Local promoters formed the North Cross-State Highway Association in 1953 to push for a modern road across the North Cascades.",
+      "source": "HistoryLink.org",
+      "url": "https://historylink.org/File/11044"
+    },
+    {
+      "text": "On September 29, 1968, nearly 1,000 people attended a ceremony dedicating a rough dirt version of the North Cascades Highway at Rainy Pass.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/11043"
+    },
+    {
+      "text": "Governor Dan Evans and U.S. Senator Warren Magnuson both attended the 1968 North Cascades Highway dedication, with Magnuson arriving by helicopter.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/11043"
+    },
+    {
+      "text": "The completed North Cascades Highway officially opened on September 2, 1972, after nearly 80 years of planning and construction.",
+      "source": "HistoryLink.org",
+      "url": "https://historylink.org/File/11044"
+    },
+    {
+      "text": "Building the final stretch of the North Cascades Highway between 1959 and 1972 cost about $23.9 million.",
+      "source": "HistoryLink.org",
+      "url": "https://historylink.org/File/11044"
+    },
+    {
+      "text": "The Port of Chelan County was created after voters approved it by an 8,086-to-3,520 margin in a November 1958 election.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/9733"
+    },
+    {
+      "text": "The Port of Chelan County was originally chartered to promote Columbia River barge traffic before pivoting toward industrial development.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/9733"
+    },
+    {
+      "text": "By 1959, the Port of Chelan County had begun acquiring former orchard land that became the Olds Station Business Park.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/9733"
+    },
+    {
+      "text": "Wenatchee's downtown historic core was listed as the Downtown Wenatchee Historic District on the National Register in 2008.",
+      "source": "Wikipedia: National Register of Historic Places listings in Chelan County, Washington",
+      "url": "https://en.wikipedia.org/wiki/National_Register_of_Historic_Places_listings_in_Chelan_County,_Washington"
+    },
+    {
+      "text": "The Wenatchee Carnegie Library building was added to the National Register of Historic Places in 1982.",
+      "source": "Wikipedia: National Register of Historic Places listings in Chelan County, Washington",
+      "url": "https://en.wikipedia.org/wiki/National_Register_of_Historic_Places_listings_in_Chelan_County,_Washington"
+    },
+    {
+      "text": "Chelan's historic Ruby Theatre was added to the National Register of Historic Places in 1991.",
+      "source": "Wikipedia: National Register of Historic Places listings in Chelan County, Washington",
+      "url": "https://en.wikipedia.org/wiki/National_Register_of_Historic_Places_listings_in_Chelan_County,_Washington"
+    },
+    {
+      "text": "Chelan's St. Andrews Episcopal Church, designed by architect Kirtland Cutter, joined the National Register of Historic Places in 1992.",
+      "source": "Wikipedia: National Register of Historic Places listings in Chelan County, Washington",
+      "url": "https://en.wikipedia.org/wiki/National_Register_of_Historic_Places_listings_in_Chelan_County,_Washington"
+    },
+    {
+      "text": "The Rock Island Railroad Bridge across the Columbia was added to the National Register of Historic Places in 1975.",
+      "source": "Wikipedia: National Register of Historic Places listings in Chelan County, Washington",
+      "url": "https://en.wikipedia.org/wiki/National_Register_of_Historic_Places_listings_in_Chelan_County,_Washington"
+    },
+    {
+      "text": "Chelan County's Centennial Flour Mill was listed on the National Register in 1976 but was later delisted in 1990.",
+      "source": "Wikipedia: National Register of Historic Places listings in Chelan County, Washington",
+      "url": "https://en.wikipedia.org/wiki/National_Register_of_Historic_Places_listings_in_Chelan_County,_Washington"
+    },
+    {
+      "text": "HistoryLink.org, a key source for Washington history, launched its prototype on May 1, 1998, and formally debuted on January 15, 1999.",
+      "source": "Wikipedia: HistoryLink",
+      "url": "https://en.wikipedia.org/wiki/HistoryLink"
+    },
+    {
+      "text": "HistoryLink.org bills itself as the nation's first online encyclopedia of state and local history created specifically for the internet.",
+      "source": "Wikipedia: HistoryLink",
+      "url": "https://en.wikipedia.org/wiki/HistoryLink"
+    },
+    {
+      "text": "In 1863, the area that would become Chelan County was organized as part of a short-lived jurisdiction called Ferguson County, later renamed Yakima County.",
+      "source": "KPQ North Central Washington Timeline",
+      "url": "https://kpq.com/ixp/1137/p/northcentralwashington-timeline/"
+    },
+    {
+      "text": "Before Chelan County existed, its territory was reassigned among Stevens, Yakima, and Kittitas counties as Washington Territory's boundaries were repeatedly redrawn.",
+      "source": "KPQ North Central Washington Timeline",
+      "url": "https://kpq.com/ixp/1137/p/northcentralwashington-timeline/"
+    },
+    {
+      "text": "Washington achieved statehood on November 11, 1889, a decade before Chelan County itself was created.",
+      "source": "KPQ North Central Washington Timeline",
+      "url": "https://kpq.com/ixp/1137/p/northcentralwashington-timeline/"
+    },
+    {
+      "text": "A trading post was established near modern Rock Island as early as 1867, decades before the town or dam existed.",
+      "source": "KPQ North Central Washington Timeline",
+      "url": "https://kpq.com/ixp/1137/p/northcentralwashington-timeline/"
+    },
+    {
+      "text": "Grant County was carved out of Douglas County in 1909, reshaping the region's county map a decade after Chelan County's own creation.",
+      "source": "KPQ North Central Washington Timeline",
+      "url": "https://kpq.com/ixp/1137/p/northcentralwashington-timeline/"
+    },
+    {
+      "text": "By the 2020 census, Chelan County's population had grown to 79,074 residents, more than 20 times its 1900 count.",
+      "source": "Wikipedia: Chelan County, Washington",
+      "url": "https://en.wikipedia.org/wiki/Chelan_County,_Washington"
+    },
+    {
+      "text": "Chelan County's Hispanic and Latino population share rose from about 19 percent in 2000 to nearly 28 percent by 2020.",
+      "source": "Wikipedia: Chelan County, Washington",
+      "url": "https://en.wikipedia.org/wiki/Chelan_County,_Washington"
+    },
+    {
+      "text": "Wenatchee's population exploded nearly eightfold in a decade, from 452 in 1900 to about 4,050 by 1910, after the railroad's arrival.",
+      "source": "Wikipedia: Wenatchee, Washington",
+      "url": "https://en.wikipedia.org/wiki/Wenatchee,_Washington"
+    },
+    {
+      "text": "Congressman Tom Foley and Miss Washington Highways Jeannine Marie Gill both took part in the 1968 North Cascades Highway dedication ceremony.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/11043"
+    },
+    {
+      "text": "Rocky Reach Dam has upgraded its turbines since 1995 with fish-friendly Kaplan designs meant to reduce harm to migrating salmon.",
+      "source": "Wikipedia: Rocky Reach Dam",
+      "url": "https://en.wikipedia.org/wiki/Rocky_Reach_Dam"
+    },
+    {
+      "text": "Rock Island Dam's original 1928 federal license application named it as the first hydroelectric project ever proposed to span the Columbia River.",
+      "source": "Wikipedia: Rock Island Dam",
+      "url": "https://en.wikipedia.org/wiki/Rock_Island_Dam"
+    },
+    {
+      "text": "Cashmere's early one-room schoolhouse, built in Brender Canyon, opened its doors in 1889.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/8750"
+    },
+    {
+      "text": "Cashmere's Minerva Club, a women's civic organization, began meeting in 1905 and formally organized on January 17, 1906.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/8750"
+    },
+    {
+      "text": "Frederick Schmitten opened a wooden fruit-box factory in Cashmere's Brender Canyon in 1902, supplying the growing apple trade.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/8750"
+    },
+    {
+      "text": "The Chelan County Fair was established in Cashmere in 1953.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/8750"
+    },
+    {
+      "text": "Cashmere's beloved 'Tiny's' fruit stand opened in 1953, burned in 1972, reopened in 1974, and finally closed in 1981.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/8750"
+    },
+    {
+      "text": "East Wenatchee's Eastmont High School opened its doors in 1955.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/9553"
+    },
+    {
+      "text": "East Wenatchee's Eastmont Shopping Center was redeveloped into the Wenatchee Valley Mall in 1978.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/9553"
+    },
+    {
+      "text": "An explosion during construction killed Major John T. Fancher in April 1928; the East Wenatchee airfield was later named Fancher Field in his memory.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/9553"
+    },
+    {
+      "text": "Douglas County commissioners attempted to force a disincorporation vote on East Wenatchee in 1987, though the city remained incorporated.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/9553"
+    },
+    {
+      "text": "The first sizable irrigation ditch in the Wenatchee area, the Lockwood Ditch, was already being used by settlers as early as 1872.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/7624"
+    },
+    {
+      "text": "Wenatchee received its first electric lights in 1903, powered by L. V. Wells's small generator on the Squilchuck River.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/7624"
+    },
+    {
+      "text": "Wenatchee's Commercial Club, formed in 1903 under president John Arthur Gellatly, spearheaded early efforts to market the valley's apples nationally.",
+      "source": "Wikipedia: Wenatchee, Washington",
+      "url": "https://en.wikipedia.org/wiki/Wenatchee,_Washington"
+    },
+    {
+      "text": "Wenatchee installed a rudimentary sewer system and began oiling and electrifying its streets in 1909.",
+      "source": "Wikipedia: Wenatchee, Washington",
+      "url": "https://en.wikipedia.org/wiki/Wenatchee,_Washington"
+    },
+    {
+      "text": "The Wenatchee Golf and Country Club was established in 1924.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/9553"
+    },
+    {
+      "text": "An airfield northeast of East Wenatchee, established in 1926, later became the site of Pangborn Memorial Airport.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/File/9553"
+    },
+    {
+      "text": "Entiat's Quaker Church was established in 1906, the same year the Entiat Telephone and Telegraph Company was incorporated.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/21062"
+    },
+    {
+      "text": "Entiat's first newspaper, the Entiat Times, began publishing in 1913 under editor Edward P. Murphy.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/21062"
+    },
+    {
+      "text": "A Columbia River sternwheeler called the Pringle sank near Entiat in 1907.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/21062"
+    },
+    {
+      "text": "Major Hiram Chittenden began clearing hazardous rapids on the Entiat River in 1907 to improve river navigation.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/21062"
+    },
+    {
+      "text": "The Entiat Townsite Company's ownership of the town's land was upheld by the Washington State Supreme Court on November 22, 1917.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/21062"
+    },
+    {
+      "text": "By 2020, Entiat's population had grown to 1,290, more than triple its 1960 population of 357.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/21062"
+    },
+    {
+      "text": "Rufus Woods purchased the Wenatchee Daily World newspaper in 1907, going on to champion the Grand Coulee Dam idea for decades.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/7624"
+    },
+    {
+      "text": "The Wenatchee area's Chinese mining camps in the 1860s left behind gold-processing sites still studied by historians today.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/7624"
+    },
+    {
+      "text": "Chelan's Chelan Water Power Company, an early hydroelectric venture, was purchased by Morrison McMillan Kingman in early 1899.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/10160"
+    },
+    {
+      "text": "The Chelan Electric Company bought out the town's earlier water power company in 1906, consolidating local hydroelectric control.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/10160"
+    },
+    {
+      "text": "Washington Water Power Company acquired Chelan's hydroelectric interests in 1925 and received a 50-year federal power license in early 1926.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/10160"
+    },
+    {
+      "text": "A promotional 'Board of Trade' brochure touting the new town of Chelan was distributed to prospective settlers in 1891.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/10160"
+    },
+    {
+      "text": "Chelan's first Catholic parish was organized in 1904, the same year the Chelan Leader newspaper reported record numbers of tourists visiting the lake.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/10160"
+    },
+    {
+      "text": "A planned electric railway around Lake Chelan, proposed by the Chelan Railroad & Navigation Company in 1903, was never actually built.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/10160"
+    },
+    {
+      "text": "The Wapato Irrigation Company delivered its first water to Chelan-area farmland in 1911.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/10160"
+    },
+    {
+      "text": "Rail service was extended to a new Chelan Station on the lake's north shore in 1914.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/10160"
+    },
+    {
+      "text": "Chelan's population reached 896 by 1920 and grew to 1,403 residents by 1930.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/10160"
+    },
+    {
+      "text": "By 2010, the city of Chelan's population had grown to 3,890, nearly double its count in 1980.",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/10160"
+    },
+    {
+      "text": "In 2012, Chelan's Historic Downtown Association and the city itself were jointly recognized as an 'Outstanding Partnership.'",
+      "source": "HistoryLink.org",
+      "url": "https://www.historylink.org/file/10160"
+    }
+  ]
+}

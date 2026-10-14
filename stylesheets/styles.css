@@ -1,0 +1,1169 @@
+/* ============================================================================
+   Chelan County — Homepage Accessible Mockup
+   Stylesheet: css/styles.css
+
+   Loaded by: index.html
+   Framework: Bootstrap 5.3.3 (CDN) — this file layers brand colors and
+              page-specific components on top of Bootstrap rather than
+              overriding it with !important where avoidable.
+
+   This file was forked from the Assessor department page build, so the
+   brand tokens, header/nav/alert/footer, and shared table styles are
+   identical across pages in this design system. Sections 8–13 below are
+   the homepage-specific components (the Assessor page instead has
+   breadcrumb/dept-header/quicklinks/sidebar/main-content in their place).
+
+   HOW THIS FILE IS ORGANIZED
+   Sections below are ordered to match the component structure in
+   /partials, top to bottom, in the same order they appear on the page:
+
+     1. Design tokens (brand colors, mapped onto Bootstrap's variables)
+     2. Global typography & links
+     3. Accessibility: focus states
+     4. Icons (Font Awesome)
+     5. partials/header.html    — utility bar + logo/search
+     6. partials/nav.html       — primary nav + mega menus
+     7. partials/alert.html     — notice banner
+     8. partials/hero.html      — homepage hero banner + search + chips
+     9. partials/news-main.html — news card grid + press-release table
+    10. partials/home-sidebar.html — popular services / officials / social
+    11. Shared table styles (used inside news-main.html)
+    12. partials/calendar.html
+    13. partials/footer.html
+    14. Motion preferences
+
+   If you add a new component, add its styles as a new numbered section
+   in this same order, so this file stays a readable table of contents
+   for the page rather than a grab-bag.
+   ============================================================================ */
+
+
+/* ============================================================================
+   1. DESIGN TOKENS
+   Brand colors, mapped onto Bootstrap's own CSS custom properties so
+   Bootstrap's built-in components (buttons, dropdowns, tables, forms,
+   focus rings) inherit the brand automatically instead of needing
+   per-component overrides.
+   ============================================================================ */
+:root{
+  --brand-900:#0F2C46;   /* darkest navy  — header/footer/hero backgrounds */
+  --brand-800:#173F63;   /* primary navy  — nav bar, buttons */
+  --brand-700:#215379;   /* hover state for navy elements */
+  --link-700:#155A8A;    /* link color (7.3:1 contrast on white) */
+  --link-600:#1D6BA0;    /* lighter link variant */
+  --gold-800:#8C6A1E;    /* accent text/icon color — 5:1 on pure white ONLY.
+                             Do not use for text on cream-100 or #FCEFD8;
+                             use --gold-900 there (see those components). */
+  --gold-900:#7A5C18;    /* darker accent text — 5.5:1+ on cream-100/#FCEFD8
+                             tinted panels, where --gold-800 falls just under
+                             4.5:1 for small text and fails AA. */
+  --gold-600:#C89B3C;    /* accent trim/border color (decorative use only —
+                             not safe as small-text-on-background per AA) */
+  --cream-50:#FFFFFF;    /* page background */
+  --cream-100:#F0F1F2;   /* secondary panel background (table headers, etc.) */
+  --ink-900:#2B2E31;     /* body text */
+  --line:#D6D9DC;        /* borders/dividers */
+
+  /* --- Bootstrap theme overrides --- */
+  --bs-body-font-family: "Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  --bs-body-color: var(--ink-900);
+  --bs-body-bg: var(--cream-50);
+  --bs-border-color: var(--line);
+
+  --bs-primary: var(--brand-800);
+  --bs-primary-rgb: 23,63,99;
+  --bs-secondary: var(--link-700);
+  --bs-secondary-rgb: 21,90,138;
+
+  --bs-link-color: var(--link-700);
+  --bs-link-hover-color: var(--gold-800);
+  --bs-link-decoration: underline;
+
+  --bs-focus-ring-color: rgba(21,90,138,.5);
+}
+
+
+/* ============================================================================
+   2. GLOBAL TYPOGRAPHY & LINKS
+   ============================================================================ */
+/* Headlines use a serif (matching the live site's headline typeface) while
+   body copy and UI chrome stay on Public Sans for readability at small
+   sizes. If you can confirm the exact live-site font via browser devtools,
+   swap the family name below and in index.html's Google Fonts <link>. */
+h1,h2,h3,h4{
+  font-family:"Alegreya", Georgia, "Times New Roman", serif;
+  font-weight:800; color:var(--brand-900);
+}
+.navbar-brand{ font-weight:800; color:var(--brand-900); }
+
+h2.section-title{
+  display:inline-block;
+  border-bottom:3px solid var(--gold-600);
+  padding-bottom:.35rem;
+   font: size 1.5em;rem;
+}
+
+.news-card a strong{ font-weight:700; }
+
+a{ text-underline-offset:.15em; text-decoration-thickness:.08em; }
+a:visited{ color:#C14444; } /* AA-checked: 5:1 on white — the lightest red that still clears 4.5:1 */
+
+
+/* ============================================================================
+   3. ACCESSIBILITY: FOCUS STATES
+   A stronger, consistent focus ring on top of Bootstrap's default, plus
+   the visible/positioned state for the "Skip to main content" link.
+
+   Double-ring technique (white ring + navy ring): this page uses the same
+   focus style on both light backgrounds (white content areas) and dark
+   ones (the navy nav bar, hero, footer). A single-color ring can't hit
+   the 3:1 non-text contrast minimum (WCAG 1.4.11) against both — a navy
+   ring nearly disappears against the navy navbar. Pairing an inner white
+   ring with an outer navy ring guarantees at least one ring has 3:1+
+   contrast against whatever sits behind the focused element.
+   ============================================================================ */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+.dropdown-item:focus-visible,
+.nav-link:focus-visible,
+[tabindex]:focus-visible{
+  outline:3px solid #fff !important;
+  outline-offset:3px;
+  box-shadow:0 0 0 6px var(--link-700) !important;
+}
+
+.visually-hidden-focusable:focus,
+.visually-hidden-focusable:active{
+  background:#fff; color:var(--brand-900); font-weight:700;
+  box-shadow:0 0 0 3px var(--link-700); z-index:2000;
+}
+
+
+/* ============================================================================
+   4. ICONS (Font Awesome)
+   Font Awesome icons size via font-size (not width/height, which is an
+   SVG-only concern), so these rules just handle vertical alignment and
+   the two size variants used across the page.
+   ============================================================================ */
+.icon{
+  display:inline-block; vertical-align:-0.125em; line-height:1;
+}
+.icon-inline{ font-size:.85em; vertical-align:-0.05em; }  /* topic-card arrows */
+.icon-lg{ font-size:1.4em; vertical-align:-0.3em; }        /* alert banner icon */
+
+/* Real red/white/blue American flag (hotlinked SVG, same pattern as the
+   county logo/photos elsewhere in this build) in place of a monochrome
+   Font Awesome glyph — flag-usa/globe icons only ever render in the
+   current text color, so they can't show the flag's actual colors.
+   Sits inside a flex row (.utility-bar a), so it's centered against the
+   "English" label without needing its own vertical-align tweak. */
+.flag-icon{ display:inline-block; border-radius:2px; box-shadow:0 0 0 1px rgba(255,255,255,.25); }
+
+
+/* ============================================================================
+   5. partials/header.html — Utility bar + logo/search
+   ============================================================================ */
+/* Header/nav chrome (utility bar, primary nav links, mega-menu titles and
+   group labels) uses Barlow, a distinct condensed-leaning sans, so the
+   site's navigation reads as its own voice apart from Public Sans body
+   copy and the Alegreya serif used for page headings. */
+.utility-bar, .site-header, .navbar-gov .nav-link, .mega-menu-title, .mega-menu-heading{
+  font-family:"Barlow", "Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+}
+.utility-bar{
+  background:var(--brand-900); font-size:.875rem;
+  /* All-caps via CSS rather than typed capital letters, so a screen
+     reader still announces "Careers at the County" instead of spelling
+     it out letter by letter. */
+  text-transform:uppercase; letter-spacing:.04em;
+}
+/* WCAG 1.4.10 (Reflow): at narrow widths, Careers/Facebook/YouTube on
+   the left plus the English dropdown on the right don't fit on one row.
+   Without this, the container's justify-content-between held everything
+   to a single non-wrapping row and pushed "English" off the right edge
+   of the viewport entirely — visible, but unreachable without a
+   horizontal scroll the page doesn't otherwise have. Letting the
+   container wrap drops the language dropdown to its own row instead,
+   so both groups stay fully visible and reachable at any width. */
+.utility-bar .container{ flex-wrap:wrap; row-gap:.35rem; }
+.utility-bar a{ color:#fff; text-decoration:none; }
+/* Icon + label as a flex row rather than relying on the icon's own
+   vertical-align tweak — flex's align-items:center keeps the two
+   optically centered on each other regardless of font metrics, which
+   plain inline vertical-align can't guarantee as reliably. */
+.utility-bar a, .utility-bar-btn{ display:inline-flex; align-items:center; gap:.4rem; }
+/* Same tie-specificity (0,1,1) as the sitewide a:visited rule — this one
+   currently wins only because it's declared later in the file. Pinning
+   :visited explicitly (0,2,0) makes that safe even if the rules are ever
+   reordered. */
+.utility-bar a:visited{ color:#fff; }
+/* No underline on hover/focus (kept text-decoration:none in both states)
+   — the sitewide a:focus-visible double-ring rule still gives keyboard
+   users a visible focus indicator, so removing the hover/focus underline
+   here doesn't leave focus without any affordance. */
+.utility-bar a:hover, .utility-bar a:focus-visible{ text-decoration:none; opacity:.85; }
+/* Translate is styled to match the other utility-bar links exactly
+   (same color/hover behavior), independent of whether the markup
+   uses <a> or <button> for it. */
+.utility-bar-btn{
+  background:none; border:0; padding:0; margin:0; color:#fff; font:inherit;
+}
+.utility-bar-btn:hover, .utility-bar-btn:focus-visible{ text-decoration:none; opacity:.85; }
+
+/* Translate listbox: English/Spanish/French pinned at the top (see
+   header.html), a divider, then the full A-Z list. Scrolls internally
+   rather than pushing the page down, since 140+ items would otherwise
+   run off the bottom of the viewport. overflow-x is pinned shut for the
+   same reason as the old mega-menu/modal scroll areas: overflow-y:auto
+   alone makes overflow-x compute to auto per spec, and that's enough to
+   draw a spurious horizontal scrollbar. text-transform/letter-spacing
+   are reset to normal here since both are inherited from .utility-bar
+   above and would otherwise force every language name into English-style
+   all-caps. */
+.translate-listbox{
+  max-height:22rem; overflow-y:auto; overflow-x:hidden;
+  min-width:260px; text-transform:none; letter-spacing:normal;
+}
+/* Without this, the sitewide .utility-bar a{color:#fff} rule (needed for
+   the white Careers/Facebook/YouTube/Translate links above) inherits
+   into this white dropdown menu too, rendering every language as white
+   text on a white background. #translate-listbox's ID beats that class
+   selector regardless of source order, so the language links get their
+   own real (dark) link color back, same as ordinary body links. */
+#translate-listbox .dropdown-item,
+#translate-listbox .dropdown-item:visited{
+  color:var(--link-700); font-size:.85rem; padding-top:.3rem; padding-bottom:.3rem;
+}
+#translate-listbox .dropdown-item:hover,
+#translate-listbox .dropdown-item:focus-visible{
+  background:var(--brand-800); color:#fff; text-decoration:none;
+}
+
+/* Header/logo bar shares the nav bar's navy (brand-800) rather than the
+   earlier white bar, so the hotlinked county logo — a white/light PNG
+   meant for a dark background — renders correctly; the darker brand-900
+   utility bar above it becomes a thin accent strip, echoing how
+   ChelanCounty.gov runs utility bar + logo + nav as one navy band. */
+.site-header{ background:var(--brand-800); }
+.navbar-brand{ display:flex; align-items:center; }
+.brand-logo{ height:82px; width:auto; }
+/* The search input keeps its default white fill regardless of the bar's
+   background, so its boundary and placeholder text stay just as legible
+   as before — only the surrounding bar color changed. */
+
+/* Same one-piece rounded-pill treatment as .hero-search below (section 8):
+   the input/button get the container's own pill radius on their outer
+   corner only (square on the seam between them) instead of overflow:hidden
+   cropping them to it — overflow:hidden would also crop the focus ring
+   (the double white/navy ring, section 3) whenever the input or button is
+   focused, since it clips everything painted past the container's edge,
+   outlines included (WCAG 2.4.11, Focus Not Obscured / focus visibility). */
+.site-search{ border:2px solid var(--gold-600); }
+.site-search .form-control{ border-radius:50rem 0 0 50rem !important; }
+.site-search .btn-brand{ border-radius:0 50rem 50rem 0 !important; }
+
+.btn-brand{ background:var(--brand-800); border-color:var(--brand-800); color:#fff; font-weight:700; }
+.btn-brand:hover, .btn-brand:focus-visible{ background:var(--gold-800); border-color:var(--gold-800); color:#fff; }
+
+
+/* ============================================================================
+   6. partials/nav.html — Primary nav + mega menus
+   ============================================================================ */
+.navbar-gov{ background:#343434 !important; position:relative; z-index:1 !important; }
+/* Positioning anchor for the mega-menus below: with each dropdown's <li>
+   set to position-static and Popper disabled (data-bs-display="static"
+   in nav.html), the browser positions .dropdown-menu relative to the
+   nearest positioned ancestor — this container. That makes every mega-menu
+   line up with the SAME left/right edges as the rest of the page's
+   content (header logo, hero text, etc.), instead of each one being
+   anchored to its own toggle button's x-position. */
+.navbar-gov .container{ position:relative; z-index:1 !important; }
+.navbar-gov .navbar-collapse{ position:relative; z-index:1 !important; }
+
+/* Explicit light hamburger icon: Bootstrap's default toggler icon is dark
+   and would be invisible against this dark navy navbar (WCAG 1.4.11). */
+.navbar-gov .navbar-toggler-icon{
+  background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255,255,255,1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.navbar-gov .nav-link{ color:#fff !important; font-size:1rem; font-weight:600; position:relative; }
+.navbar-gov .nav-link:hover,
+.navbar-gov .nav-link:focus-visible{ background:var(--brand-700); border-radius:.25rem; }
+/* Current-page indicator (set via aria-current="page" in nav.html — see
+   Home there for the pattern). The gold underline is a shape cue, not a
+   color-only one, so this isn't just "look, it's a slightly different
+   white" (WCAG 1.4.1). font-weight bump gives a second, non-color cue. */
+.navbar-gov .nav-link[aria-current="page"]{ font-weight:800; }
+.navbar-gov .nav-link[aria-current="page"]::after{
+  content:""; position:absolute; left:1rem; right:1rem; bottom:.4rem;
+  height:3px; background:var(--gold-600); border-radius:1px;
+}
+.navbar-gov .dropdown-menu{
+  border:0; border-bottom:4px solid var(--gold-600);
+  box-shadow:0 12px 24px rgba(0,0,0,.18);
+  z-index:99999 !important;
+}
+
+/* Boxed to the page's own container, not fluid to the viewport and not
+   anchored to whichever toggle button opened it: left:0/right:0 here
+   resolve against .navbar-gov .container (position:relative, above),
+   the exact same box the header logo, hero heading and every other
+   section on the page align to. So the mega-menu's width tracks the
+   page's normal responsive container width (Bootstrap's own breakpoint
+   max-widths) — never full browser width, and never per-button. */
+.mega-menu{
+  position:absolute;
+  top:100%;
+  left:0;
+  right:0;
+  width:auto;
+  padding:1.25rem 0 1.5rem;
+  background:#fff !important;
+  z-index:99999 !important;
+}
+
+/* Ensure navbar elevates stacking context whenever a mega-menu or dropdown is open */
+.navbar-gov:hover,
+.navbar-gov:focus-within,
+.navbar-gov:has(.dropdown-menu.show),
+.navbar-gov:has(.mega-menu.show){
+  z-index:99999 !important;
+}
+
+@media (max-width: 991.98px) {
+  .navbar-gov .mega-menu {
+    max-height: 80vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+/* No inner scrollbar: rather than capping panel height and scrolling
+   inside it, every panel is sized to fit without scrolling — more,
+   narrower columns (col-md-2 for the 11 How Do I groups instead of
+   col-md-3/4) plus the tighter type and spacing below keep each panel's
+   total height well within a normal viewport. overflow stays at the
+   browser default (visible) on both axes, which also rules out the
+   implicit-overflow-x-scrollbar quirk a forced overflow-y previously hit. */
+/* A visible divider between the department columns and the Community
+   Outreach group below them, since that group isn't part of the same
+   4-column row (it has its own item count). */
+.mega-menu-divider{ border:0; border-top:1px solid var(--line); margin:1.25rem 0 1rem; }
+/* Community Outreach's heading sits directly under the divider rather
+   than inside its own column, so it gets a bit more weight than the
+   column-level .mega-menu-heading labels above it. */
+.mega-menu-heading-lg{ font-size:1rem; border-bottom:0; padding-bottom:0; margin-bottom:.6rem; }
+/* Horizontal padding comes from the nested .container in nav.html (the
+   same left/right padding every other section's .container uses), not
+   from this rule — that's what keeps "Departments" etc. lined up under
+   the hero heading and header logo rather than getting double-indented. */
+.mega-menu .row{ --bs-gutter-x: 1.75rem; row-gap:0; }
+/* Panel title — repeats the toggle button's own label ("Your Government",
+   "How Do I", "Online Services") inside the open panel, since all three
+   panels now render in the exact same boxed position (see .mega-menu
+   above): without a label inside the panel itself there'd be nothing in
+   the open menu confirming which of the three you're looking at. A plain
+   <p>, not a heading, for the same reason as .mega-menu-heading below —
+   it would land before the page's own <h1> in the DOM and break heading
+   order (WCAG 1.3.1 / 2.4.6). */
+.mega-menu-title{
+  /* font-family: Barlow, set with the rest of the header/nav chrome above */
+  font-size:1rem; font-weight:800; color:var(--brand-900);
+  margin-bottom:.75rem; padding-bottom:.5rem;
+  border-bottom:2px solid var(--gold-600);
+}
+/* Group labels ("Departments", "Apply For", etc.) are styled like small
+   headings but are plain <p> elements, not real headings — the page's
+   own <h1> lives further down in main.html-tail, and these group labels
+   sit earlier in the DOM (inside header/nav). A <h3> here would put a
+   level-3 heading before the page's only <h1>, breaking heading order
+   for screen-reader users navigating by heading (WCAG 1.3.1 / 2.4.6). */
+.mega-menu-heading{ font-size:1rem; font-weight:700; margin-bottom:.35rem; color:var(--gold-800); border-bottom:1px solid var(--line); padding-bottom:.3rem; }
+.mega-menu .dropdown-item{ white-space:normal; padding:.15rem 0; font-size:1rem; line-height:2; color:var(--ink-900); }
+.mega-menu .dropdown-item:hover, .mega-menu .dropdown-item:focus-visible{ background:transparent; color:var(--link-700); text-decoration:underline; }
+.mega-menu .dropdown-item[aria-current="page"]{ font-weight:700; border-left:3px solid var(--gold-600); padding-left:.5rem; }
+
+
+/* ============================================================================
+   7. partials/alert.html — "Notice of Data Event" banner
+   ============================================================================ */
+.alert-brand{
+  background:#FCEFD8; border:1px solid var(--gold-800); border-width:1px 0 3px 0;
+  color:var(--ink-900); border-radius:0;
+}
+.alert-brand .icon{ color:var(--gold-900); } /* gold-800 measures ~4.4:1 on this
+  banner's #FCEFD8 background — just under the 4.5:1 AA floor for small text;
+  gold-900 clears it (~5.1:1) */
+
+
+/* ============================================================================
+   8. partials/hero.html — Homepage hero banner
+   ============================================================================ */
+/* The YouTube player is mounted on the outer section so the content overlay
+    can remain independent of the player lifecycle and fallback image. */
+.g-bg-img-hero{ background-size:cover; background-repeat:no-repeat; pointer-events:none; }
+.g-pos-rel{ position:relative; }
+.g-z-index-1{ z-index:9999 !important; }
+.g-mt-front{ margin-top:-7.71429rem !important; }
+.home-section{
+   position:relative !important;
+   overflow:hidden;
+   background-color:#172b2b;
+}
+.home-section > .mbYTP_wrapper,
+.home-section > #video-player{
+   z-index:0;
+}
+.home-section > .hero-brand{
+   position:relative;
+   z-index:2;
+}
+/* Background photo is the first photo on the live ChelanCounty.gov
+   homepage (files/public-works/images/beaverhillweb.png), hotlinked the
+   same way the news thumbnails are elsewhere in this build. The earlier
+   navy-tinted scrim is gone so the photo reads in its own true color;
+   in its place a neutral black gradient (darkest at top/left, where the
+   heading and search label sit) keeps the photo untinted while still
+   guaranteeing white text 4.5:1 contrast against it (WCAG 1.4.3) — an
+   arbitrary photo can't be trusted for that contrast on its own. (The
+   h1/heading and "Did you know?" fact briefly lived in the white
+   main-content flow below the wave divider instead; they're back here
+   in the photo hero now, so this overlay again has to cover them too —
+   it was originally calculated against text in this same position, so
+   the math below still holds without re-deriving it.)
+   Text itself also gets a solid drop shadow (see label below) so it
+   visibly lifts off the photo rather than relying on the scrim alone.
+   Opacity here is set as light as the math allows, not a round guess:
+   sampled the actual photo (overlay removed) against a calibrated
+   grayscale reference at the widest crop this hero reaches (background-
+   size:cover on a wide viewport crops in the brightest visible patch —
+   the tan rock slope), which reads as roughly sRGB gray 205. Solving
+   (1-alpha)*205 for the sRGB value
+   that yields relative luminance <= 0.183 (the threshold for 4.5:1
+   against white text) gives alpha >= ~0.42; these stops sit at
+   0.45/0.48/0.55 — a small buffer above that minimum for the imprecision
+   in eyeballing the sample color and for crops at other viewport widths,
+   while still meaningfully lighter than the original 0.94/0.9/0.8 (and
+   the interim 0.75/0.62/0.4 -- whose 0.4 stop was in fact already
+   sitting right at this same bright patch and under the safe minimum). */
+.hero-brand{
+   position:relative;
+  background-image:
+      linear-gradient(115deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.5) 45%, rgba(0,0,0,.48) 100%);
+  background-size:cover;
+  background-position:center;
+  color:#fff;
+  /* Padding lives here instead of a py-5 utility class in hero.html —
+     Bootstrap's spacing utilities ship !important, which would have won
+     over any padding set here. min-height keeps the banner tall even
+     when the two columns' natural content height is short. */
+   padding-top:5.5rem; padding-bottom:calc(5.5rem + 100px);
+}
+/* Wave transition between the hero photo and the white content section
+   below — same effect ChelanCounty.gov gets from its own hotlinked
+   images/svg/svg-bg5.png, but built as our own local SVG
+   (images/wave-divider.svg) instead of hotlinking theirs: the PNG was
+   transparent above a white wave shape, and hotlinked cross-origin it
+   rendered inconsistently here, where a same-origin SVG we control does
+   not. background-size:100% 100% (not "cover") deliberately stretches
+   the SVG to fill this exact box — preserveAspectRatio="none" on the
+   <svg> itself means that stretch just widens/narrows the wave rather
+   than cropping it. A negative margin pulls the whole thing up so its
+   transparent top portion overlaps the bottom of .hero-brand — the hero
+   photo shows through there — and only the solid white wave shape
+   covers the seam, in place of a hard horizontal edge. aria-hidden (set
+   in hero.html) since it's purely decorative. */
+.hero-wave-divider{
+  background-image:url("/images/wave-divider.svg");
+  background-size:100% 100%; background-position:top center; background-repeat:no-repeat;
+  height:160px; margin-top:-130px; position:relative; z-index:10;
+  pointer-events:none;
+}
+/* Second wave layer, set behind the front one and further back
+   (z-index -2), same orientation as the front wave (left-to-right
+   flip removed per request), at low opacity so it reads as a faint
+   echo layer rather than a second equally-prominent wave.
+   pointer-events:none on both this and the parent (decorative,
+   aria-hidden anyway) because a positioned element with z-index
+   stacks above its un-positioned .hero-brand sibling's own content
+   even when this pseudo-element itself uses a negative z-index --
+   that negative value only ranks it within its own parent's
+   stacking context, not against .hero-brand, so without this it was
+   sitting on top of and intercepting clicks on the hero's search box
+   and quick-link pills. It's also painted above the parent's OWN
+   background (that's the deepest layer in this stacking context, so
+   even a negative z-index child paints over it) -- shifted down here
+   so it sits below the front wave's drop-shadow band instead of
+   washing it out. */
+.hero-wave-divider::before{
+  content:"";
+  position:absolute;
+  left:0; right:0; top:10px;
+  height:100%;
+  background-image:url("/images/wave-divider.svg");
+  background-size:100% 100%; background-position:top center; background-repeat:no-repeat;
+  transform:scaleX(1);
+  opacity:.2;
+  pointer-events:none;
+  z-index:-2;
+}
+/* Visible search prompt, styled like the header/nav chrome (Barlow) so it
+   reads as a short call-to-action label rather than body copy. */
+.hero-search-label{
+  font-family:"Barlow", "Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  font-size:1.1rem; font-weight:700; color:#fff;
+  text-shadow:0 1px 2px rgba(0,0,0,.9), 0 2px 8px rgba(0,0,0,.6);
+   padding-top:100px;
+}
+main > .container.py-5{ padding-top:3rem !important; }
+.news-heading-column{ margin-top:5px; }
+/* Bigger emphasis: a visible drop shadow lifts the search box off the
+   photo, and the thicker gold-accented border gives it a clear edge
+   against light and dark parts of the background photo alike. One
+   seamless pill via matching corner radii on the input/button (left
+   corner on the input, right corner on the button, square where they
+   meet) rather than overflow:hidden — overflow:hidden would crop the
+   focus ring (double white/navy ring, section 3) on either control
+   whenever it's focused, since it clips everything painted past the
+   container's edge, outlines included (WCAG 2.4.11, focus visibility). */
+.hero-search{
+  box-shadow:0 10px 30px rgba(0,0,0,.35) !important;
+  border:2px solid var(--gold-600);
+}
+.hero-search .form-control{ font-size:1.05rem; border-radius:50rem 0 0 50rem !important; padding-left:1.5rem; }
+.hero-search .btn-brand{
+  padding-left:1.5rem; padding-right:1.5rem;
+  border-radius:0 50rem 50rem 0 !important;
+}
+.hero-brand .form-control::placeholder{ color:#6b7075; }
+.hero-brand .form-control:focus-visible,
+.hero-brand .form-control:focus{ outline:3px solid var(--gold-600); outline-offset:3px; box-shadow:none; }
+
+/* Heading + "Did you know?" fact, back in the photo hero (moved out of
+   the white main-content flow and back here per request) -- same solid
+   drop-shadow treatment as the rest of the hero's white text (search
+   label, etc.), so it reads clearly over an arbitrary photo without
+   depending on the scrim overlay alone. */
+.hero-brand h1{ color:#fff; text-shadow:0 1px 2px rgba(0,0,0,.9), 0 2px 10px rgba(0,0,0,.7); line-height:1.15; }
+.hero-video-audio-note{
+   position:absolute; top:1rem; right:1.5rem; z-index:3;
+   display:flex; flex-direction:column; align-items:flex-start; gap:.25rem;
+   margin:0; padding:.35rem .65rem; border-radius:.25rem;
+   background:rgba(0,0,0,.55); color:#fff; font-size:.7rem; font-weight:400;
+   text-shadow:0 1px 2px rgba(0,0,0,.9), 0 2px 8px rgba(0,0,0,.6);
+}
+.hero-video-audio-note .icon{ color:var(--gold-600); }
+.hero-reduced-motion .hero-video-audio-note > span:first-child{ display:none; }
+.hero-motion-option{ display:inline-flex; align-items:center; gap:.35rem; margin:0; cursor:pointer; }
+.hero-motion-option input{ accent-color:var(--gold-600); }
+.hero-fallback-active{ background-size:cover; background-position:center; }
+.hero-fallback-active .playerBox{ display:none; }
+/* "Did you know?" label above the rotating fact -- kept the same white/
+   shadow treatment as the rest of this hero's text rather than the gold
+   used for on-white "eyebrow" labels elsewhere (e.g. .mega-menu-heading):
+   gold-800 is tuned for 5:1 contrast on WHITE backgrounds specifically,
+   and swapping it in here would need this section's whole overlay-opacity
+   calculation redone against gold's lower luminance instead of white's.
+   Distinguished from the h1 by size/weight/spacing and the icon instead
+   of by color. */
+.hero-fact-label{
+  color:#fff; font-weight:700; font-size:.85rem;
+  text-transform:uppercase; letter-spacing:.04em; max-width:none;
+  text-shadow:0 1px 2px rgba(0,0,0,.9), 0 2px 8px rgba(0,0,0,.6);
+}
+.hero-fact-label .icon{ color:var(--gold-600); text-shadow:0 1px 2px rgba(0,0,0,.9); }
+/* The fact sentence itself -- same pale color + shadow as the hero's
+   other body copy previously used here. */
+#hero-thought{
+  color:#DCE7E2; max-width:60ch; line-height:1.3;
+  text-shadow:0 1px 2px rgba(0,0,0,.9), 0 2px 8px rgba(0,0,0,.6);
+}
+/* Keep the fact sentence on one line rather than wrapping across
+   three, on screens wide enough to fit it. Measured the original
+   sentence at fs-5 (20px): it needs ~1414px to lay out on one line,
+   wider than any Bootstrap container's content-box (max ~1272px even
+   at the 1320px xxl container). So this only engages at the xl
+   breakpoint (1200px, ~1092px content-box) and drops the font-size to
+   0.95rem (~15.4px), whose one-line width (~1414 * 15.4/20 =~ 1089px)
+   fits inside that content-box with a hair of room to spare -- this
+   still holds now that the fact is back in the photo hero, since
+   hero.html gives it its own full-width col-12 rather than splitting
+   it into a narrower column alongside something else. Below 1200px
+   there isn't a font-size that both fits and still reads as intro
+   copy, so it falls back to the default fs-5 wrapping behavior --
+   which also keeps this from ever forcing horizontal scroll (WCAG
+   1.4.10 Reflow).
+   This text is filled at runtime from a pool of 357 real historical
+   facts (js/hero-thought.js / data/chelan-thoughts.json) of varying
+   length, not just the one sentence this was measured against -- so a
+   longer pick that doesn't fit gets a clean text-overflow:ellipsis
+   truncation here instead of overflowing past the container edge. */
+@media (min-width:1200px){
+  /* !important needed here: Bootstrap's .fs-5 utility (still on this
+     <p> in hero.html) sets font-size with !important, which would
+     otherwise beat this override regardless of source order. */
+  #hero-thought{
+    white-space:nowrap; max-width:none; font-size:.95rem !important;
+    overflow:hidden; text-overflow:ellipsis;
+  }
+}
+
+.hero-chip{
+  display:inline-block; background:rgba(255,255,255,.12); color:#fff; text-decoration:none;
+  border:1px solid rgba(255,255,255,.5); border-radius:2rem; padding:.35rem .9rem; font-size:.85rem; font-weight:600;
+}
+/* Without this, the sitewide a:visited{color:#C14444} rule (specificity
+   0,1,1) beats .hero-chip's own color:#fff (specificity 0,1,0) once a
+   chip's href="#" is flagged visited by the browser — that red was only
+   ever contrast-checked against white, and measures ~2.17:1 here against
+   the navy hero, an AA failure. :visited is added directly to bump this
+   rule to 0,2,0, so it wins on specificity regardless of source order. */
+.hero-chip:visited{ color:#fff; }
+.hero-chip:hover, .hero-chip:focus-visible{ background:#fff; color:var(--brand-900); }
+.hero-chip:visited:hover, .hero-chip:visited:focus-visible{ color:var(--brand-900); }
+
+
+/* ============================================================================
+   9. partials/news-main.html — News card grid + press-release table
+   ============================================================================ */
+.news-card{ padding-bottom:.75rem; border-bottom:1px solid var(--line); }
+.news-card a{ color:#C14444; text-decoration:none; }
+.news-card a strong{ color:#C14444; display:block; margin-bottom:.25rem; }
+.news-card a:hover strong, .news-card a:focus-visible strong{ color:var(--link-700); }
+.news-card p{ color:var(--ink-900); margin-bottom:0; }
+/* A small arrow marks the headline as a link by shape, not color alone
+   (WCAG 1.4.1, Use of Color) — the headline's color/underline only
+   change on hover/focus, which a low-vision mouse-less user may not see. */
+.news-card a strong .icon-inline{ color:var(--gold-900); margin-left:.3rem; }
+
+/* Article thumbnails, hotlinked from the source site (see news-main.html) */
+.news-card-img{
+  display:block; width:100%; aspect-ratio:16/10; object-fit:cover;
+  border:1px solid var(--line); border-radius:var(--radius,.25rem); margin-bottom:.6rem; background:var(--cream-100);
+}
+
+/* Video thumbnail (YouTube) + play-button affordance.
+   A solid dark disc sits behind the icon rather than relying on a
+   text-shadow alone — contrast of an icon directly over an arbitrary
+   photo can't be guaranteed to hit 3:1 (WCAG 1.4.11), but white-on-navy
+   inside a known, solid disc can be, and is checked below. */
+.news-card-video{ position:relative; display:block; }
+.news-card-video .news-card-img{ margin-bottom:.6rem; }
+.news-card-play{
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  width:2.75rem; height:2.75rem; border-radius:50%;
+  background:var(--brand-900); color:#fff;
+  display:flex; align-items:center; justify-content:center; font-size:1.3rem;
+  box-shadow:0 1px 6px rgba(0,0,0,.4);
+}
+.news-card-video:hover .news-card-play,
+.news-card-video:focus-visible .news-card-play{ background:var(--gold-800); }
+
+
+/* ============================================================================
+   10. partials/home-sidebar.html — Popular services / officials / social
+   ============================================================================ */
+.home-panel{
+  background:var(--cream-100); border:1px solid var(--line); border-radius:var(--radius,.25rem);
+  padding:1.25rem 1.4rem;
+}
+.home-panel h2{
+  font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; color:var(--gold-900);
+  /* gold-800 measures ~4.4:1 on this panel's cream-100 background — just
+     under the 4.5:1 AA floor for text this size; gold-900 clears it (~5.5:1) */
+  border:0; padding:0; margin-bottom:.75rem; display:block;
+}
+.home-panel ul li{ margin-bottom:.5rem; }
+.home-panel ul li:last-child{ margin-bottom:0; }
+.home-panel a{ color:var(--link-700); }
+.home-panel .icon-inline{ color:var(--gold-900); width:1.1em; text-align:center; } /* gold-900, not gold-800 — see note on .home-panel h2 above */
+.home-panel .fs-4 a{ color:var(--brand-800); }
+.home-panel .fs-4 a:hover, .home-panel .fs-4 a:focus-visible{ color:var(--gold-800); }
+
+
+/* ============================================================================
+   11. SHARED TABLE STYLES
+   Used by the Sheriff's press-release table in news-main.html.
+   Kept as its own section since a table could appear in more than one
+   component.
+   ============================================================================ */
+caption{ caption-side:top; text-align:left; font-weight:700; color:var(--brand-900); }
+.table thead th{ background:var(--cream-100); }
+
+
+/* ============================================================================
+   12. partials/calendar.html — Upcoming events list
+   ============================================================================ */
+.card-brand{ border-color:var(--line); }
+.card-brand .card-title a{ color:var(--brand-900); text-decoration:none; }
+.card-brand .card-title a:hover, .card-brand .card-title a:focus-visible{ text-decoration:underline; }
+
+.event-date-box{
+  background:var(--brand-800); color:#fff; border-radius:.25rem;
+  text-align:center; padding:.5rem .25rem; min-width:64px;
+}
+.event-date-box .day{ font-size:1.4rem; font-weight:800; display:block; line-height:1; }
+.event-date-box .mon{ font-size:.75rem; text-transform:uppercase; letter-spacing:.04em; }
+
+
+/* ============================================================================
+   13. partials/footer.html
+   ============================================================================ */
+footer.site-footer{ background:var(--brand-900); color:#DCE7E2; }
+footer.site-footer h2{ color:#fff; font-size:1.05rem; border-bottom:3px solid var(--gold-600); display:inline-block; padding-bottom:.3rem; }
+footer.site-footer a{ color:#CFE3DB; }
+/* Same tie-specificity (0,1,1) as the sitewide a:visited rule as above —
+   pinned explicitly so footer links stay legible on the navy background
+   regardless of rule order. */
+footer.site-footer a:visited{ color:#CFE3DB; }
+footer.site-footer a:hover, footer.site-footer a:focus-visible{ color:#fff; }
+.google-map{ display:block; width:100%; height:180px; border:0; }
+.footer-bottom{ border-top:1px solid var(--brand-700); }
+
+
+/* ============================================================================
+   13a. partials/translate-main.html + translate-modal.html — language picker
+   ============================================================================ */
+.translate-banner{
+  background:#EFF1F2; border:1px solid var(--line); border-radius:.4rem;
+  padding:.85rem 1.1rem;
+}
+.translate-banner p{ font-size:.85rem; line-height:1.35; }
+.translate-powered-by{
+  font-family:"Barlow", "Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  font-weight:700; color:var(--ink-900); display:flex; align-items:center; gap:.35rem;
+  text-transform:uppercase; font-size:.72rem; letter-spacing:.03em; margin-bottom:.5rem !important;
+}
+.translate-google-logo{ height:14px; width:auto; }
+
+/* Language links styled as the same rounded-pill "chip" used for the
+   hero's quick links (.hero-chip) — same shape/weight/sizing, adapted
+   from white-on-navy to navy-on-white since this list sits on the
+   modal's white background rather than the hero photo. A plain flex-wrap
+   list (like the hero chips) rather than a row/col grid, so each chip is
+   only as wide as its own language name instead of every cell being
+   forced to the same column width. */
+.translate-chip{
+  display:inline-block; background:#EFF3F6; color:var(--brand-900); text-decoration:none;
+  border:1px solid var(--line); border-radius:2rem; padding:.3rem .85rem; font-size:.8rem; font-weight:600;
+}
+/* Same fix as .hero-chip: the sitewide a:visited{color:#C14444} rule
+   (specificity 0,1,1) would otherwise beat this rule (0,1,0) once a
+   chip has been opened, since every one of these links is a real,
+   followable URL. Pinned at 0,2,0 so it always wins. */
+.translate-chip:visited{ color:var(--brand-900); }
+.translate-chip:hover, .translate-chip:focus-visible{ background:var(--brand-800); color:#fff; border-color:var(--brand-800); }
+.translate-chip:visited:hover, .translate-chip:visited:focus-visible{ color:#fff; }
+
+/* The modal's own chrome, kept compact and scoped to #translateModal so
+   the standalone translate.html page (kept on disk, unlinked, same
+   pattern as home-sidebar.html) is unaffected. */
+#translateModal .modal-header{ padding:.85rem 1.1rem; }
+#translateModal .modal-title{ font-size:1rem; }
+#translateModal .modal-body{
+  padding:1rem 1.1rem;
+  /* Setting only overflow-y (via modal-dialog-scrollable) makes overflow-x
+     compute to auto per spec, and Bootstrap's row negative gutter margins
+     are just enough to trigger a spurious horizontal scrollbar here —
+     same bug as the mega-menu's earlier scroll container. Pin it shut
+     rather than let the axis default open. */
+  overflow-x:hidden;
+}
+#translateModal .translate-banner{ margin-bottom:.75rem !important; }
+
+
+/* ============================================================================
+   14. SPOTLIGHT PROMO CARDS (views/Main/index.cfm)
+   Accessible hover & keyboard focus borders per WCAG 2.2 AA / ADA.
+   High contrast border (var(--brand-800) = 9.8:1 on white, exceeding 3:1 minimum)
+   with zero layout shift, subtle base boundary, and smooth elevation.
+   ============================================================================ */
+.spotlight-card{
+  display:block;
+  position:relative;
+  border-radius:.5rem;
+  border:3px solid var(--line);
+  background:#fff;
+  overflow:hidden;
+  transition:border-color .2s ease-in-out, box-shadow .2s ease-in-out, transform .2s ease-in-out;
+  text-decoration:none;
+}
+.spotlight-card img{
+  display:block;
+  width:100%;
+  height:auto;
+  transition:transform .2s ease-in-out;
+}
+.spotlight-card:hover{
+  border-color:var(--brand-800);
+  box-shadow:0 8px 24px rgba(23,63,99,.25);
+  transform:translateY(-4px);
+}
+.spotlight-card:hover img{
+  transform:scale(1.02);
+}
+.spotlight-card:focus-visible{
+  border-color:var(--brand-800) !important;
+  outline:3px solid #fff !important;
+  outline-offset:2px !important;
+  box-shadow:0 0 0 6px var(--link-700) !important;
+  transform:translateY(-4px);
+}
+
+
+/* ============================================================================
+   15. DEPARTMENT PAGES & ASSESSOR COMPONENTS
+   Accessible department page shell, header, vertical nav, and service cards
+   ============================================================================ */
+.dept-hero{
+  background: linear-gradient(135deg, #ff7500 0%, #602b16 100%);
+  color: #fff;
+  padding-top: 2.25rem;
+  padding-bottom: 5.5rem;
+  position: relative;
+  overflow: hidden;
+}
+.dept-hero .breadcrumb-gov{
+  font-size: .95rem;
+  margin-bottom: .75rem;
+}
+.dept-hero .breadcrumb-gov a{
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.dept-hero .breadcrumb-gov a:hover,
+.dept-hero .breadcrumb-gov a:focus-visible{
+  color: var(--gold-600);
+}
+.dept-hero .breadcrumb-gov a:visited{
+  color: #f1d599;
+}
+.dept-hero .breadcrumb-gov .breadcrumb-item.active{
+  color: rgba(255, 255, 255, .9);
+  font-weight: 600;
+}
+.dept-hero .breadcrumb-gov .breadcrumb-item + .breadcrumb-item::before{
+  color: rgba(255, 255, 255, .6);
+}
+.dept-hero .dept-title{
+  font-family: 'Alegreya', Georgia, serif;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -.02em;
+}
+.dept-hero .dept-tagline{
+  color: rgba(255, 255, 255, .88);
+  font-size: 1.15rem;
+  max-width: 820px;
+}
+.dept-wave-divider{
+  background-image: url("/images/wave-divider.svg");
+  background-size: 100% 100%;
+  background-position: top center;
+  background-repeat: no-repeat;
+  height: 120px;
+  margin-top: -100px;
+  position: relative;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* Official Profile Card */
+.official-card{
+  border: 1px solid var(--line);
+  border-radius: .5rem;
+  background: #fff;
+  padding: 1.5rem 1.25rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,.04);
+}
+.official-photo{
+  width: 250px;
+  height: 250px;
+  object-fit: cover;
+  border: 4px solid #fff;
+  box-shadow: 0 4px 14px rgba(15,44,70,.2);
+  margin-bottom: 1rem;
+}
+.official-name{
+  font-family: 'Alegreya', Georgia, serif;
+  font-weight: 700;
+  font-size: 1.35rem;
+  color: var(--brand-900);
+  margin-bottom: .25rem;
+}
+.official-badge{
+  display: inline-block;
+  background: #e8f0f8;
+  color: var(--brand-800);
+  font-size: .85rem;
+  font-weight: 700;
+  padding: .25rem .75rem;
+  border-radius: 50rem;
+  margin-bottom: 1rem;
+}
+
+/* Contact Info Card */
+.dept-contact-card{
+  border: 1px solid var(--line);
+  border-radius: .5rem;
+  background: #fff;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,.04);
+}
+.dept-contact-card h3{
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--brand-900);
+  border-bottom: 1px solid var(--line);
+  padding-bottom: .6rem;
+  margin-bottom: .85rem;
+}
+.dept-contact-card p{
+  font-size: .92rem;
+  margin-bottom: .75rem;
+  color: var(--ink-900);
+}
+.dept-contact-card p:last-child{
+  margin-bottom: 0;
+}
+
+/* Department Navigation Sidebar */
+.dept-nav-card{
+  border: 1px solid var(--line);
+  border-radius: .5rem;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,.04);
+  background: #fff;
+}
+.dept-nav-header{
+  background: var(--brand-800);
+  color: #fff;
+  font-size: 1.05rem;
+  font-weight: 700;
+  padding: .85rem 1.25rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.dept-nav-list{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.dept-nav-item{
+  border-bottom: 1px solid var(--line);
+}
+.dept-nav-item:last-child{
+  border-bottom: none;
+}
+.dept-nav-link{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .75rem 1.25rem;
+  color: var(--ink-900);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: .95rem;
+  transition: background-color .15s ease, color .15s ease;
+}
+.dept-nav-link:visited{
+  color: var(--ink-900);
+}
+.dept-nav-link:hover,
+.dept-nav-link:focus-visible{
+  background-color: var(--cream-100);
+  color: var(--brand-800);
+  text-decoration: underline;
+}
+.dept-nav-link.active,
+.dept-nav-link.current{
+  background-color: #f0f4f8;
+  color: var(--brand-900);
+  font-weight: 700;
+  border-left: 4px solid var(--brand-800);
+}
+.dept-nav-toggle{
+  cursor: pointer;
+  width: 100%;
+  border: none;
+  background: none;
+  text-align: left;
+}
+.dept-nav-toggle .chevron-icon{
+  transition: transform .2s ease-in-out;
+  color: var(--brand-800);
+  font-size: .85rem;
+}
+.dept-nav-toggle[aria-expanded="true"] .chevron-icon{
+  transform: rotate(180deg);
+}
+.dept-subnav{
+  background-color: #fbfcfd;
+  list-style: none;
+  padding: .4rem 0 .4rem .75rem;
+  margin: 0;
+  border-top: 1px solid var(--line);
+}
+.dept-subnav-link{
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .35rem 1rem;
+  color: var(--ink-900);
+  text-decoration: none;
+  font-size: .9rem;
+}
+.dept-subnav-link:visited{
+  color: var(--ink-900);
+}
+.dept-subnav-link:hover,
+.dept-subnav-link:focus-visible{
+  color: var(--brand-800);
+  text-decoration: underline;
+}
+
+/* Assessor Action Cards */
+.action-card{
+  border: 1px solid var(--line);
+  border-radius: .5rem;
+  background: #fff;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-shadow: 0 2px 8px rgba(0,0,0,.04);
+  transition: border-color .2s ease-in-out, box-shadow .2s ease-in-out, transform .2s ease-in-out;
+  text-decoration: none;
+  color: inherit;
+}
+.action-card:visited{
+  color: inherit;
+}
+.action-card:hover{
+  border-color: var(--brand-800);
+  box-shadow: 0 8px 24px rgba(23,63,99,.2);
+  transform: translateY(-4px);
+  color: inherit;
+  text-decoration: none;
+}
+.action-card:focus-visible{
+  border-color: var(--brand-800) !important;
+  outline: 3px solid #fff !important;
+  outline-offset: 2px !important;
+  box-shadow: 0 0 0 6px var(--link-700) !important;
+  transform: translateY(-4px);
+}
+.action-card-img-wrapper{
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/10;
+  overflow: hidden;
+  background: var(--brand-900);
+}
+.action-card-img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .25s ease-in-out;
+}
+.action-card:hover .action-card-img{
+  transform: scale(1.04);
+}
+.action-card-body{
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+.action-card-title{
+  font-family: 'Alegreya', Georgia, serif;
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: var(--brand-900);
+  margin-bottom: .4rem;
+}
+.action-card-text{
+  font-size: .92rem;
+  color: var(--ink-900);
+  margin-bottom: 1rem;
+  flex-grow: 1;
+}
+.action-card-btn{
+  align-self: flex-start;
+  font-weight: 700;
+  font-size: .9rem;
+  color: var(--brand-800);
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+}
+.action-card:hover .action-card-btn{
+  color: var(--gold-800);
+  text-decoration: underline;
+}
+
+/* Overview and Information Cards */
+.overview-card{
+  background: #fff;
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--brand-800);
+  border-radius: .5rem;
+  padding: 1.75rem 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,.04);
+}
+.overview-card p{
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: var(--ink-900);
+}
+.overview-card p:last-child{
+  margin-bottom: 0;
+}
+.info-feature-card{
+  background: var(--cream-100);
+  border: 1px solid var(--line);
+  border-radius: .5rem;
+  padding: 1.25rem;
+  height: 100%;
+  box-shadow: 0 2px 6px rgba(0,0,0,.03);
+}
+.info-feature-card h3{
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--brand-900);
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  margin-bottom: .5rem;
+}
+.info-feature-card p{
+  font-size: .92rem;
+  color: var(--ink-900);
+  margin-bottom: 0;
+  line-height: 1.5;
+}
+
+.notice-bar{
+  background: #eef5fb;
+  border: 1px solid #bfd9ee;
+  border-left: 4px solid var(--brand-800);
+  border-radius: .5rem;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 2rem;
+}
+
+
+/* ============================================================================
+   16. MOTION PREFERENCES
+   ============================================================================ */
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration:.01ms !important; transition-duration:.01ms !important; }
+}
