@@ -1,14 +1,26 @@
 component extends="Controller" {
 
 	function index() {
-		content = model("Page").findOne(where="SiteID = 'assessors' AND Permalink = 'home'");
-		nav = getNavigation("assessors");
+		ensureCtaCardsSchema();
+		site = getWorkspace("assessor");
+		content = model("Page").findOne(where="SiteID IN ('assessor', 'assessors') AND Permalink = 'home'");
+		nav = getNavigation("assessor");
+		sidebars = getAttachedSidebars(content);
+		ctaCards = getAttachedCtaCards(content);
+		hasSidebar = isQuery(sidebars) && sidebars.recordCount > 0;
+		layoutType = hasSidebar ? "right-sidebar" : "full";
 	}
 
 	function page() {
-		local.slug = StructKeyExists(params, "slug") ? params.slug : (StructKeyExists(params, "key") ? params.key : "home");
-		content = model("Page").findOne(where="SiteID = 'assessors' AND Permalink = '#local.slug#'");
-		nav = getNavigation("assessors");
+		ensureCtaCardsSchema();
+		local.slug = StructKeyExists(params, "slug") ? Trim(params.slug) : (StructKeyExists(params, "key") ? Trim(params.key) : "home");
+		site = getWorkspace("assessor");
+		content = model("Page").findOne(where="SiteID IN ('assessor', 'assessors') AND Permalink = '#local.slug#'");
+		nav = getNavigation("assessor");
+		sidebars = getAttachedSidebars(content);
+		ctaCards = getAttachedCtaCards(content);
+		hasSidebar = isQuery(sidebars) && sidebars.recordCount > 0;
+		layoutType = hasSidebar ? "right-sidebar" : "full";
 	}
 
 }

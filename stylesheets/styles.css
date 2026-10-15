@@ -270,7 +270,7 @@ input:focus-visible,
 /* ============================================================================
    6. partials/nav.html — Primary nav + mega menus
    ============================================================================ */
-.navbar-gov{ background:#343434 !important; position:relative; z-index:1 !important; }
+.navbar-gov{ background:#500000 !important; position:relative; z-index:1 !important; }
 /* Positioning anchor for the mega-menus below: with each dropdown's <li>
    set to position-static and Popper disabled (data-bs-display="static"
    in nav.html), the browser positions .dropdown-menu relative to the
@@ -816,7 +816,7 @@ footer.site-footer a:hover, footer.site-footer a:focus-visible{ color:#fff; }
    Accessible department page shell, header, vertical nav, and service cards
    ============================================================================ */
 .dept-hero{
-  background: linear-gradient(135deg, #ff7500 0%, #602b16 100%);
+  background: linear-gradient(135deg, var(--dept-hero-start, #ff7500) 0%, var(--dept-hero-end, #602b16) 100%);
   color: #fff;
   padding-top: 2.25rem;
   padding-bottom: 5.5rem;

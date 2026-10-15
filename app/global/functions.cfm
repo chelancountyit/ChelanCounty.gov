@@ -1,20 +1,103 @@
 <cfscript>
 // Place functions here that should be available globally in your application.
 
+/**
+ * Resolves all candidate SiteID values for a workspace identifier using cms_workspaces
+ * (code, alias, virtual_directory) plus singular/plural and 'site-' prefix variations.
+ */
+public array function resolveCandidateSiteIds(required string siteid) {
+	local.candidates = [];
+	local.raw = LCase(Trim(arguments.siteid));
+	if (!Len(local.raw)) {
+		return local.candidates;
+	}
+	ArrayAppend(local.candidates, local.raw);
+
+	if (Right(local.raw, 1) == "s" && Len(local.raw) > 1) {
+		local.singular = Left(local.raw, Len(local.raw) - 1);
+		if (!ArrayFindNoCase(local.candidates, local.singular)) ArrayAppend(local.candidates, local.singular);
+	} else {
+		local.plural = local.raw & "s";
+		if (!ArrayFindNoCase(local.candidates, local.plural)) ArrayAppend(local.candidates, local.plural);
+	}
+
+	try {
+		local.wsRows = queryExecute("
+			SELECT LOWER(LTRIM(RTRIM(code))) AS code,
+			       LOWER(LTRIM(RTRIM(ISNULL(alias, '')))) AS alias,
+			       LOWER(LTRIM(RTRIM(ISNULL(virtual_directory, '')))) AS vdir
+			FROM cms_workspaces
+			WHERE deletedat IS NULL AND is_active = 1
+		", {}, { datasource: "ChelanCountyWebsite" });
+
+		for (local.w in local.wsRows) {
+			if (
+				ArrayFindNoCase(local.candidates, local.w.code)
+				|| (Len(local.w.alias) && ArrayFindNoCase(local.candidates, local.w.alias))
+				|| (Len(local.w.vdir) && ArrayFindNoCase(local.candidates, local.w.vdir))
+			) {
+				if (Len(local.w.code) && !ArrayFindNoCase(local.candidates, local.w.code)) ArrayAppend(local.candidates, local.w.code);
+				if (Len(local.w.alias) && !ArrayFindNoCase(local.candidates, local.w.alias)) ArrayAppend(local.candidates, local.w.alias);
+				if (Len(local.w.vdir) && !ArrayFindNoCase(local.candidates, local.w.vdir)) ArrayAppend(local.candidates, local.w.vdir);
+			}
+		}
+	} catch (any e) {}
+
+	for (local.c in Duplicate(local.candidates)) {
+		if (Left(local.c, 5) == "site-") {
+			local.noSite = Mid(local.c, 6, Len(local.c));
+			if (Len(local.noSite) && !ArrayFindNoCase(local.candidates, local.noSite)) ArrayAppend(local.candidates, local.noSite);
+		} else {
+			local.withSite = "site-" & local.c;
+			if (!ArrayFindNoCase(local.candidates, local.withSite)) ArrayAppend(local.candidates, local.withSite);
+		}
+	}
+
+	return local.candidates;
+}
+
 public array function getNavigation(required string siteid, string menuKey = "side") {
 	local.nav = [];
-	local.menu = model("NavigationMenu").findOne(
-		where="siteid = '#arguments.siteid#' AND menu_key = '#arguments.menuKey#' AND is_active = 1"
-	);
-
-	if (!IsObject(local.menu)) {
+	local.candidates = resolveCandidateSiteIds(arguments.siteid);
+	if (!ArrayLen(local.candidates)) {
 		return local.nav;
 	}
 
-	local.rows = model("NavigationMenuItem").findAll(
-		where="navigation_menu_id = #Val(local.menu.id)# AND is_active = 1",
-		order="sort_order ASC, id ASC"
-	);
+	local.params = {
+		menuKey: { value: Trim(arguments.menuKey), cfsqltype: "cf_sql_nvarchar", maxlength: 100 }
+	};
+	local.placeholders = [];
+	for (local.i = 1; local.i <= ArrayLen(local.candidates); local.i++) {
+		local.pName = "site" & local.i;
+		ArrayAppend(local.placeholders, ":" & local.pName);
+		local.params[local.pName] = { value: local.candidates[local.i], cfsqltype: "cf_sql_nvarchar", maxlength: 100 };
+	}
+
+	local.menus = queryExecute("
+		SELECT TOP 1 id, siteid, name
+		FROM navigation_menus
+		WHERE siteid IN (" & ArrayToList(local.placeholders, ", ") & ")
+		  AND menu_key = :menuKey
+		  AND deletedat IS NULL
+		  AND (is_active = 1 OR is_active IS NULL)
+		ORDER BY id ASC
+	", local.params, { datasource: "ChelanCountyWebsite" });
+
+	if (!local.menus.recordCount) {
+		return local.nav;
+	}
+
+	local.rows = queryExecute("
+		SELECT id, parent_item_id, label, destination_type, destination,
+		       sort_order, is_active, open_in_new_tab, icon
+		FROM navigation_menu_items
+		WHERE navigation_menu_id = :menuId
+		  AND deletedat IS NULL
+		  AND is_active = 1
+		ORDER BY sort_order ASC, id ASC
+	", {
+		menuId: { value: Val(local.menus.id), cfsqltype: "cf_sql_integer" }
+	}, { datasource: "ChelanCountyWebsite" });
 
 	if (!local.rows.recordCount) {
 		return local.nav;
@@ -66,5 +149,296 @@ public array function getNavigation(required string siteid, string menuKey = "si
 
 	return local.nav;
 }
-</cfscript>
 
+public query function getAttachedSidebars(any page = "") {
+	local.empty = queryNew("ID,ContentID,SiteID,Title,Body,Position");
+	if (!isObject(arguments.page)) {
+		return local.empty;
+	}
+
+	local.sidebarIds = [];
+	if (StructKeyExists(arguments.page, "SidebarIDs") && Len(Trim(arguments.page.SidebarIDs))) {
+		local.rawList = [];
+		try {
+			if (IsJSON(Trim(arguments.page.SidebarIDs))) {
+				local.parsed = DeserializeJSON(Trim(arguments.page.SidebarIDs));
+				if (IsArray(local.parsed)) {
+					local.rawList = local.parsed;
+				}
+			} else {
+				local.rawList = ListToArray(Trim(arguments.page.SidebarIDs));
+			}
+		} catch (any e) {
+			local.rawList = [];
+		}
+
+		for (local.item in local.rawList) {
+			local.cleanId = ReReplaceNoCase(Trim(ToString(local.item)), "^subpage-", "");
+			if (IsNumeric(local.cleanId) && Val(local.cleanId) > 0 && !ArrayFind(local.sidebarIds, Val(local.cleanId))) {
+				ArrayAppend(local.sidebarIds, Val(local.cleanId));
+			}
+		}
+	}
+
+	if (ArrayLen(local.sidebarIds)) {
+		return model("SubPage").findAll(
+			where="ID IN (#ArrayToList(local.sidebarIds)#)",
+			order="Position ASC, ID ASC"
+		);
+	}
+
+	if (StructKeyExists(arguments.page, "ContentID") && IsNumeric(arguments.page.ContentID) && Val(arguments.page.ContentID) > 0) {
+		return model("SubPage").findAll(
+			where="ContentID = #Val(arguments.page.ContentID)#",
+			order="Position ASC, ID ASC"
+		);
+	}
+
+	return local.empty;
+}
+
+public void function ensureCtaCardsSchema() {
+	if (StructKeyExists(application, "ctaCardsSchemaReady") && application.ctaCardsSchemaReady == true) {
+		return;
+	}
+	try {
+		queryExecute("
+			IF COL_LENGTH(N'dbo.pages', N'hasCtaCards') IS NULL
+			BEGIN
+				ALTER TABLE dbo.pages ADD hasCtaCards BIT NOT NULL CONSTRAINT DF_pages_hasCtaCards DEFAULT (0);
+			END;
+			IF COL_LENGTH(N'dbo.pages', N'ctaSectionTitle') IS NULL
+			BEGIN
+				ALTER TABLE dbo.pages ADD ctaSectionTitle NVARCHAR(255) NULL CONSTRAINT DF_pages_ctaSectionTitle DEFAULT (N'Quick Services & Online Tools');
+			END;
+			IF OBJECT_ID(N'dbo.page_CtaCard', N'U') IS NULL
+			BEGIN
+				CREATE TABLE dbo.page_CtaCard (
+					ID               INT IDENTITY(1,1) NOT NULL,
+					ContentID        INT            NOT NULL,
+					SiteID           NVARCHAR(100)  NOT NULL CONSTRAINT DF_page_CtaCard_SiteID DEFAULT (N'global'),
+					Title            NVARCHAR(255)  NOT NULL,
+					ShortDescription NVARCHAR(500)  NULL,
+					DestinationUrl   NVARCHAR(500)  NOT NULL,
+					ImagePath        NVARCHAR(500)  NULL,
+					ImageAlt         NVARCHAR(255)  NULL,
+					ButtonText       NVARCHAR(100)  NULL CONSTRAINT DF_page_CtaCard_ButtonText DEFAULT (N'Learn More'),
+					ButtonIcon       NVARCHAR(100)  NULL CONSTRAINT DF_page_CtaCard_ButtonIcon DEFAULT (N'fa-arrow-right'),
+					OpenInNewTab     BIT            NOT NULL CONSTRAINT DF_page_CtaCard_OpenInNewTab DEFAULT (0),
+					SortOrder        INT            NOT NULL CONSTRAINT DF_page_CtaCard_SortOrder DEFAULT (0),
+					IsActive         BIT            NOT NULL CONSTRAINT DF_page_CtaCard_IsActive DEFAULT (1),
+					CreatedAt        DATETIME2(0)   NOT NULL CONSTRAINT DF_page_CtaCard_CreatedAt DEFAULT (SYSDATETIME()),
+					CreatedBy        NVARCHAR(255)  NULL,
+					ModifiedAt       DATETIME2(0)   NULL,
+					ModifiedBy       NVARCHAR(255)  NULL,
+					CONSTRAINT PK_page_CtaCard PRIMARY KEY CLUSTERED (ID)
+				);
+				CREATE NONCLUSTERED INDEX IX_page_CtaCard_ContentID
+					ON dbo.page_CtaCard (SiteID, ContentID, SortOrder);
+			END;
+			IF COL_LENGTH(N'dbo.page_CtaCard', N'CreatedAt') IS NULL
+			BEGIN
+				ALTER TABLE dbo.page_CtaCard ADD CreatedAt DATETIME2(0) NOT NULL CONSTRAINT DF_page_CtaCard_CreatedAt DEFAULT (SYSDATETIME());
+			END;
+			IF COL_LENGTH(N'dbo.page_CtaCard', N'CreatedBy') IS NULL
+			BEGIN
+				ALTER TABLE dbo.page_CtaCard ADD CreatedBy NVARCHAR(255) NULL;
+			END;
+			IF COL_LENGTH(N'dbo.page_CtaCard', N'ModifiedAt') IS NULL
+			BEGIN
+				ALTER TABLE dbo.page_CtaCard ADD ModifiedAt DATETIME2(0) NULL;
+			END;
+			IF COL_LENGTH(N'dbo.page_CtaCard', N'ModifiedBy') IS NULL
+			BEGIN
+				ALTER TABLE dbo.page_CtaCard ADD ModifiedBy NVARCHAR(255) NULL;
+			END;
+		", {}, { datasource: "ChelanCountyWebsite" });
+
+		queryExecute("
+			DECLARE @AssessorHomeContentID INT;
+			DECLARE @AssessorSiteID NVARCHAR(100);
+			SELECT TOP 1
+				@AssessorHomeContentID = ContentID,
+				@AssessorSiteID = SiteID
+			FROM dbo.pages
+			WHERE LOWER(LTRIM(RTRIM(SiteID))) IN (N'assessor', N'assessors', N'site-assessor', N'site-assessors')
+			  AND LOWER(LTRIM(RTRIM(Permalink))) = N'home'
+			  AND DeletedAt IS NULL
+			ORDER BY ContentID ASC;
+
+			IF @AssessorHomeContentID IS NOT NULL
+			BEGIN
+				IF NOT EXISTS (SELECT 1 FROM dbo.page_CtaCard WHERE ContentID = @AssessorHomeContentID)
+				BEGIN
+					UPDATE dbo.pages
+					SET hasCtaCards = 1,
+					    ctaSectionTitle = ISNULL(NULLIF(LTRIM(RTRIM(ctaSectionTitle)), N''), N'Quick Services & Online Tools')
+					WHERE ContentID = @AssessorHomeContentID;
+
+					INSERT INTO dbo.page_CtaCard (
+						ContentID, SiteID, Title, ShortDescription, DestinationUrl, ImagePath, ImageAlt, ButtonText, ButtonIcon, OpenInNewTab, SortOrder, IsActive, CreatedBy
+					)
+					VALUES
+					(@AssessorHomeContentID, @AssessorSiteID, N'Parcel & Sale Search', N'Look up property details, assessed valuations, tax history, and verified market sales.', N'/assessor/page/parcel-and-sale-search', N'/images/picjumbo/parcel16x9.jpg', N'', N'Search Parcels', N'fa-arrow-right', 0, 1, 1, N'System'),
+					(@AssessorHomeContentID, @AssessorSiteID, N'Interactive GIS Map', N'Explore county parcel boundaries, aerial photography, tax code areas, and zoning layers.', N'https://maps.chelancounty.gov/GIS/', N'/images/picjumbo/mapping.jpg', N'', N'Open Map', N'fa-arrow-up-right-from-square', 1, 2, 1, N'System'),
+					(@AssessorHomeContentID, @AssessorSiteID, N'Property Owner''s Guide', N'Comprehensive reference covering assessments, market valuation cycles, and rights.', N'/files/assessor/documents/propertyownerguide.pdf', N'/images/picjumbo/propownguideimage.jpg', N'', N'Download PDF', N'fa-file-pdf text-danger', 1, 3, 1, N'System'),
+					(@AssessorHomeContentID, @AssessorSiteID, N'Destroyed Property', N'File for property valuation adjustment and tax relief due to disaster, calamity, or fire damage.', N'/assessor/page/destroyed-property-exemptions', N'/images/picjumbo/fire-house.jpg', N'', N'View Relief Forms', N'fa-arrow-right', 0, 4, 1, N'System'),
+					(@AssessorHomeContentID, @AssessorSiteID, N'Assessment Appeals', N'Learn how to file a petition with the Chelan County Board of Equalization if you dispute your valuation.', N'/assessor/page/appeals', N'/images/picjumbo/property-claim.jpg', N'', N'Appeal Instructions', N'fa-arrow-right', 0, 5, 1, N'System'),
+					(@AssessorHomeContentID, @AssessorSiteID, N'Document Search', N'Access official recorded deeds, land surveys, plats, and legal public records via AcclaimWeb.', N'https://acclaim.co.chelan.wa.us/acclaimweb', N'/images/picjumbo/liberty16x9.jpg', N'', N'Search Records', N'fa-arrow-up-right-from-square', 1, 6, 1, N'System');
+				END
+			END;
+		", {}, { datasource: "ChelanCountyWebsite" });
+
+		application.ctaCardsSchemaReady = true;
+	} catch (any e) {
+		application.ctaCardsLastError = e.message & " | " & (e.detail ?: "");
+	}
+}
+
+public query function getAttachedCtaCards(any page = "") {
+	ensureCtaCardsSchema();
+	local.empty = queryNew("ID,ContentID,SiteID,Title,ShortDescription,DestinationUrl,ImagePath,ImageAlt,ButtonText,ButtonIcon,OpenInNewTab,SortOrder,IsActive");
+	if (!isObject(arguments.page)) {
+		return local.empty;
+	}
+	if (StructKeyExists(arguments.page, "hasCtaCards") && (arguments.page.hasCtaCards == false || Val(arguments.page.hasCtaCards) == 0)) {
+		return local.empty;
+	}
+	if (StructKeyExists(arguments.page, "ContentID") && IsNumeric(arguments.page.ContentID) && Val(arguments.page.ContentID) > 0) {
+		try {
+			return queryExecute("
+				SELECT c.ID, c.ContentID, c.SiteID, c.Title, c.ShortDescription, c.DestinationUrl,
+				       c.ImagePath, c.ImageAlt, c.ButtonText, c.ButtonIcon, c.OpenInNewTab, c.SortOrder, c.IsActive
+				FROM dbo.page_CtaCard c
+				INNER JOIN dbo.pages p ON p.ContentID = c.ContentID
+				WHERE c.ContentID = :contentId
+				  AND p.hasCtaCards = 1
+				  AND (c.IsActive = 1 OR c.IsActive IS NULL)
+				ORDER BY c.SortOrder ASC, c.ID ASC
+			", {
+				contentId: { value: Val(arguments.page.ContentID), cfsqltype: "cf_sql_integer" }
+			}, { datasource: "ChelanCountyWebsite" });
+		} catch (any e) {
+			return local.empty;
+		}
+	}
+	return local.empty;
+}
+
+/**
+ * Darkens a hex color (#RRGGBB or #RGB) by a multiplier (default 0.38)
+ * to produce the deep companion stop for the department hero gradient banner.
+ */
+public string function darkenHexColor(required string hexColor, numeric factor = 0.38) {
+	local.clean = ReReplaceNoCase(Trim(arguments.hexColor), "^##", "");
+	if (Len(local.clean) == 3 && REFindNoCase("^[0-9a-f]{3}$", local.clean)) {
+		local.clean = Mid(local.clean, 1, 1) & Mid(local.clean, 1, 1)
+			& Mid(local.clean, 2, 1) & Mid(local.clean, 2, 1)
+			& Mid(local.clean, 3, 1) & Mid(local.clean, 3, 1);
+	}
+	if (Len(local.clean) != 6 || !REFindNoCase("^[0-9a-f]{6}$", local.clean)) {
+		return "##0f2c46";
+	}
+	local.r = Max(0, Min(255, Round(InputBaseN(Mid(local.clean, 1, 2), 16) * arguments.factor)));
+	local.g = Max(0, Min(255, Round(InputBaseN(Mid(local.clean, 3, 2), 16) * arguments.factor)));
+	local.b = Max(0, Min(255, Round(InputBaseN(Mid(local.clean, 5, 2), 16) * arguments.factor)));
+
+	return "##" & LCase(
+		Right("0" & FormatBaseN(local.r, 16), 2)
+		& Right("0" & FormatBaseN(local.g, 16), 2)
+		& Right("0" & FormatBaseN(local.b, 16), 2)
+	);
+}
+
+/**
+ * Retrieves workspace configuration and theme/brand color from cms_workspaces
+ * for a given siteid/workspace code.
+ */
+public struct function getWorkspace(required string siteid) {
+	local.defaultColor = "##004879";
+	local.defaultDark = darkenHexColor(local.defaultColor);
+	local.ws = {
+		code: LCase(Trim(arguments.siteid)),
+		name: "",
+		type: "dept",
+		color: local.defaultColor,
+		colorDark: local.defaultDark,
+		heroGradient: "linear-gradient(135deg, " & local.defaultColor & " 0%, " & local.defaultDark & " 100%)",
+		description: "",
+		department: "",
+		department_category: ""
+	};
+
+	local.candidates = resolveCandidateSiteIds(arguments.siteid);
+	if (!ArrayLen(local.candidates)) {
+		return local.ws;
+	}
+
+	local.params = {};
+	local.placeholders = [];
+	for (local.i = 1; local.i <= ArrayLen(local.candidates); local.i++) {
+		local.pName = "wsSite" & local.i;
+		ArrayAppend(local.placeholders, ":" & local.pName);
+		local.params[local.pName] = { value: LCase(local.candidates[local.i]), cfsqltype: "cf_sql_nvarchar", maxlength: 100 };
+	}
+	local.inList = ArrayToList(local.placeholders, ", ");
+
+	try {
+		local.qWs = queryExecute("
+			SELECT TOP 1 id, code, name, alias, type, badge, badge_class, icon, description,
+			       folder_path, virtual_directory, redirect_url, department, department_category,
+			       contact_first_name, contact_last_name, contact_email, contact_phone, contact_fax,
+			       address, address2, city, state, zip, office_hours, color
+			FROM cms_workspaces
+			WHERE deletedat IS NULL
+			  AND is_active = 1
+			  AND (
+			      LOWER(LTRIM(RTRIM(code))) IN (" & local.inList & ")
+			      OR LOWER(LTRIM(RTRIM(ISNULL(alias, '')))) IN (" & local.inList & ")
+			      OR LOWER(LTRIM(RTRIM(ISNULL(virtual_directory, '')))) IN (" & local.inList & ")
+			  )
+			ORDER BY sort_order ASC, id ASC
+		", local.params, { datasource: "ChelanCountyWebsite" });
+
+		if (local.qWs.recordCount > 0) {
+			local.rawColor = StructKeyExists(local.qWs, "color") && Len(Trim(local.qWs.color))
+				? Trim(local.qWs.color)
+				: (local.qWs.type == "site" ? "##10b981" : "##7e22ce");
+			if (Left(local.rawColor, 1) != "##") {
+				local.rawColor = "##" & local.rawColor;
+			}
+			if (!REFindNoCase("^##[0-9a-fA-F]{3,6}$", local.rawColor)) {
+				local.rawColor = local.defaultColor;
+			}
+			local.darkColor = darkenHexColor(local.rawColor);
+
+			local.ws.id = local.qWs.id;
+			local.ws.code = Trim(local.qWs.code);
+			local.ws.name = Trim(local.qWs.name);
+			local.ws.type = Trim(local.qWs.type);
+			local.ws.color = LCase(local.rawColor);
+			local.ws.colorDark = local.darkColor;
+			local.ws.heroGradient = "linear-gradient(135deg, " & local.ws.color & " 0%, " & local.ws.colorDark & " 100%)";
+			local.ws.description = Trim(local.qWs.description ?: "");
+			local.ws.department = Trim(local.qWs.department ?: "");
+			local.ws.department_category = Trim(local.qWs.department_category ?: "");
+			local.ws.phone = Trim(local.qWs.contact_phone ?: "");
+			local.ws.fax = Trim(local.qWs.contact_fax ?: "");
+			local.ws.email = Trim(local.qWs.contact_email ?: "");
+			local.ws.address = Trim(local.qWs.address ?: "");
+			local.ws.address2 = Trim(local.qWs.address2 ?: "");
+			local.ws.city = Trim(local.qWs.city ?: "");
+			local.ws.state = Trim(local.qWs.state ?: "");
+			local.ws.zip = Trim(local.qWs.zip ?: "");
+			local.ws.office_hours = Trim(local.qWs.office_hours ?: "");
+
+			if (Len(Trim(local.qWs.contact_first_name ?: "")) && Len(Trim(local.qWs.contact_last_name ?: ""))) {
+				local.ws.contactfirstname = Trim(local.qWs.contact_first_name);
+				local.ws.contactlastname = Trim(local.qWs.contact_last_name);
+			}
+		}
+	} catch (any e) {}
+
+	return local.ws;
+}
+</cfscript>
