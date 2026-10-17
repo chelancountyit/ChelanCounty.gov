@@ -26,6 +26,8 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
+<link href="/stylesheets/jbd-templates.css?v=1.0" media="all" rel="stylesheet" type="text/css">
+
 <!-- YTPlayer CSS -->
 <link href="/assets/vendor/jquery.mb.YTPlayer-3.2.10/dist/css/jquery.mb.YTPlayer.min.css" media="all" rel="stylesheet" type="text/css">
 

@@ -108,9 +108,98 @@ public array function getNavigation(required string siteid, string menuKey = "si
 		local.itemIds["k_" & local.row.id] = true;
 	}
 
+	local.wsSlug = ReReplaceNoCase(LCase(Trim(arguments.siteid)), "^site-", "");
+	if (local.wsSlug == "assessors") {
+		local.wsSlug = "assessor";
+	}
+	local.wsBasePath = "/" & local.wsSlug;
+
+	// Track known and published+active page slugs in this workspace so Draft/Inactive pages are excluded from navigation
+	local.knownPageSlugs = {};
+	local.publishedActiveSlugs = {};
+	try {
+		local.pagePlaceholders = [];
+		local.pageParams = {};
+		for (local.i = 1; local.i <= ArrayLen(local.candidates); local.i++) {
+			local.ppName = "navPageSite" & local.i;
+			ArrayAppend(local.pagePlaceholders, ":" & local.ppName);
+			local.pageParams[local.ppName] = { value: local.candidates[local.i], cfsqltype: "cf_sql_nvarchar", maxlength: 100 };
+		}
+		local.qWorkspacePages = queryExecute("
+			SELECT LOWER(LTRIM(RTRIM(Permalink))) AS slug,
+			       StatusCode,
+			       isPublished,
+			       Visibility,
+			       DeletedAt
+			FROM dbo.pages
+			WHERE SiteID IN (" & ArrayToList(local.pagePlaceholders, ", ") & ")
+		", local.pageParams, { datasource: "ChelanCountyWebsite" });
+
+		for (local.pRow in local.qWorkspacePages) {
+			if (Len(local.pRow.slug)) {
+				local.knownPageSlugs[local.pRow.slug] = true;
+				if (
+					!Len(Trim(ToString(local.pRow.DeletedAt ?: "")))
+					&& CompareNoCase(Trim(local.pRow.StatusCode ?: ""), "Active") == 0
+					&& (local.pRow.isPublished == 1 || local.pRow.isPublished == true)
+					&& CompareNoCase(Trim(local.pRow.Visibility ?: ""), "Published") == 0
+				) {
+					local.publishedActiveSlugs[local.pRow.slug] = true;
+				}
+			}
+		}
+	} catch (any eNavPages) {}
+
 	local.nodesById = {};
 	local.children = {};
 	for (local.row in local.rows) {
+		local.destUrl = Trim(local.row.destination ?: "");
+		if (Len(local.destUrl) && !REFindNoCase("^https?://", local.destUrl)) {
+			if (Left(local.destUrl, 1) != "/" && Left(local.destUrl, 1) != "##") {
+				local.destUrl = "/" & local.destUrl;
+			}
+			local.destUrl = REReplaceNoCase(local.destUrl, "\.cfm$", "", "one");
+			if (Len(local.wsSlug) && local.row.destination_type != "url") {
+				if (
+					CompareNoCase(local.destUrl, local.wsBasePath) == 0
+					|| CompareNoCase(local.destUrl, local.wsBasePath & "/home") == 0
+					|| CompareNoCase(local.destUrl, local.wsBasePath & "/index") == 0
+					|| CompareNoCase(local.destUrl, local.wsBasePath & "/page/home") == 0
+					|| CompareNoCase(local.destUrl, local.wsBasePath & "/page/index") == 0
+				) {
+					local.destUrl = local.wsBasePath;
+				} else if (REFindNoCase("^" & local.wsBasePath & "/(?!page/)[^/]+/?$", local.destUrl)) {
+					local.slugPart = ReReplaceNoCase(local.destUrl, "^" & local.wsBasePath & "/+", "", "one");
+					local.slugPart = ReReplace(local.slugPart, "/+$", "", "one");
+					local.destUrl = local.wsBasePath & "/page/" & local.slugPart;
+				}
+				if (local.destUrl != Trim(local.row.destination ?: "")) {
+					try {
+						queryExecute("
+							UPDATE navigation_menu_items
+							SET destination = :dest, updatedat = SYSUTCDATETIME()
+							WHERE id = :id
+						", {
+							dest: { value: local.destUrl, cfsqltype: "cf_sql_nvarchar", maxlength: 1000 },
+							id: { value: Val(local.row.id), cfsqltype: "cf_sql_integer" }
+						}, { datasource: "ChelanCountyWebsite" });
+					} catch (any errHeal) {}
+				}
+			}
+		}
+
+		// Skip internal workspace pages that exist in dbo.pages but are not both Active and Published
+		if (Len(local.destUrl) && local.row.destination_type != "url" && REFindNoCase("^" & local.wsBasePath & "/page/([^/?##]+)", local.destUrl)) {
+			local.targetPageSlug = LCase(ReReplaceNoCase(local.destUrl, "^" & local.wsBasePath & "/page/([^/?##]+).*$", "\1", "one"));
+			if (
+				StructKeyExists(local.knownPageSlugs, local.targetPageSlug)
+				&& !StructKeyExists(local.publishedActiveSlugs, local.targetPageSlug)
+			) {
+				StructDelete(local.itemIds, "k_" & local.row.id);
+				continue;
+			}
+		}
+
 		local.pVal = (IsNumeric(local.row.parent_item_id) && Val(local.row.parent_item_id) > 0) ? Val(local.row.parent_item_id) : 0;
 		if (local.pVal > 0 && !StructKeyExists(local.itemIds, "k_" & local.pVal)) {
 			local.pVal = 0;
@@ -123,8 +212,8 @@ public array function getNavigation(required string siteid, string menuKey = "si
 			id: local.row.id,
 			title: local.row.label,
 			label: local.row.label,
-			url: local.row.destination,
-			destination: local.row.destination,
+			url: local.destUrl,
+			destination: local.destUrl,
 			destinationType: local.row.destination_type == "url" ? "custom" : "page",
 			parentId: local.pVal > 0 ? local.pVal : "",
 			sortOrder: local.row.sort_order,
@@ -150,9 +239,28 @@ public array function getNavigation(required string siteid, string menuKey = "si
 	return local.nav;
 }
 
+public boolean function isPagePublishedAndActive(any page = "") {
+	if (!isObject(arguments.page)) {
+		return false;
+	}
+	if (StructKeyExists(arguments.page, "DeletedAt") && Len(Trim(ToString(arguments.page.DeletedAt)))) {
+		return false;
+	}
+	if (StructKeyExists(arguments.page, "StatusCode") && CompareNoCase(Trim(arguments.page.StatusCode), "Active") != 0) {
+		return false;
+	}
+	if (StructKeyExists(arguments.page, "isPublished") && !(arguments.page.isPublished == 1 || arguments.page.isPublished == true)) {
+		return false;
+	}
+	if (StructKeyExists(arguments.page, "Visibility") && CompareNoCase(Trim(arguments.page.Visibility), "Published") != 0) {
+		return false;
+	}
+	return true;
+}
+
 public query function getAttachedSidebars(any page = "") {
 	local.empty = queryNew("ID,ContentID,SiteID,Title,Body,Position");
-	if (!isObject(arguments.page)) {
+	if (!isPagePublishedAndActive(arguments.page)) {
 		return local.empty;
 	}
 
@@ -298,7 +406,7 @@ public void function ensureCtaCardsSchema() {
 public query function getAttachedCtaCards(any page = "") {
 	ensureCtaCardsSchema();
 	local.empty = queryNew("ID,ContentID,SiteID,Title,ShortDescription,DestinationUrl,ImagePath,ImageAlt,ButtonText,ButtonIcon,OpenInNewTab,SortOrder,IsActive");
-	if (!isObject(arguments.page)) {
+	if (!isPagePublishedAndActive(arguments.page)) {
 		return local.empty;
 	}
 	if (StructKeyExists(arguments.page, "hasCtaCards") && (arguments.page.hasCtaCards == false || Val(arguments.page.hasCtaCards) == 0)) {
@@ -312,6 +420,10 @@ public query function getAttachedCtaCards(any page = "") {
 				FROM dbo.page_CtaCard c
 				INNER JOIN dbo.pages p ON p.ContentID = c.ContentID
 				WHERE c.ContentID = :contentId
+				  AND p.DeletedAt IS NULL
+				  AND p.StatusCode = 'Active'
+				  AND p.isPublished = 1
+				  AND p.Visibility = 'Published'
 				  AND p.hasCtaCards = 1
 				  AND (c.IsActive = 1 OR c.IsActive IS NULL)
 				ORDER BY c.SortOrder ASC, c.ID ASC
@@ -323,6 +435,307 @@ public query function getAttachedCtaCards(any page = "") {
 		}
 	}
 	return local.empty;
+}
+
+public void function ensureFolderExplorerSchema() {
+	if (StructKeyExists(application, "folderExplorerSchemaReady") && application.folderExplorerSchemaReady == true) {
+		return;
+	}
+	try {
+		queryExecute("
+			IF COL_LENGTH(N'dbo.pages', N'hasArchive') IS NULL
+			BEGIN
+				ALTER TABLE dbo.pages ADD hasArchive BIT NOT NULL CONSTRAINT DF_pages_hasArchive DEFAULT (0);
+			END;
+			IF OBJECT_ID(N'dbo.page_FolderExplorer', N'U') IS NULL
+			BEGIN
+				CREATE TABLE dbo.page_FolderExplorer (
+					ID           INT IDENTITY(1,1) NOT NULL,
+					ContentID    INT           NULL,
+					SiteID       NVARCHAR(100) NOT NULL CONSTRAINT DF_page_FolderExplorer_SiteID DEFAULT (N'global'),
+					Title        NVARCHAR(255) NOT NULL,
+					RelativePath NVARCHAR(500) NULL,
+					AbsolutePath NVARCHAR(500) NULL,
+					Absolute     BIT           NOT NULL CONSTRAINT DF_page_FolderExplorer_Absolute  DEFAULT (0),
+					Weight       INT           NOT NULL CONSTRAINT DF_page_FolderExplorer_Weight    DEFAULT (0),
+					Layout       NVARCHAR(50)  NOT NULL CONSTRAINT DF_page_FolderExplorer_Layout    DEFAULT (N'Full'),
+					Placement    NVARCHAR(20)  NOT NULL CONSTRAINT DF_page_FolderExplorer_Placement DEFAULT (N'After'),
+					CONSTRAINT PK_page_FolderExplorer PRIMARY KEY CLUSTERED (ID)
+				);
+				CREATE NONCLUSTERED INDEX IX_page_FolderExplorer_ContentID
+					ON dbo.page_FolderExplorer (SiteID, ContentID);
+			END;
+		", {}, { datasource: "ChelanCountyWebsite" });
+		application.folderExplorerSchemaReady = true;
+	} catch (any e) {
+		application.folderExplorerLastError = e.message & " | " & (e.detail ?: "");
+	}
+}
+
+public query function getAttachedFolderExplorers(any page = "") {
+	ensureFolderExplorerSchema();
+	local.empty = queryNew("ID,ContentID,SiteID,Title,RelativePath,AbsolutePath,Absolute,Weight,Layout,Placement");
+	if (!isPagePublishedAndActive(arguments.page)) {
+		return local.empty;
+	}
+	if (StructKeyExists(arguments.page, "hasArchive") && (arguments.page.hasArchive == false || Val(arguments.page.hasArchive) == 0)) {
+		return local.empty;
+	}
+	if (StructKeyExists(arguments.page, "ContentID") && IsNumeric(arguments.page.ContentID) && Val(arguments.page.ContentID) > 0) {
+		try {
+			return queryExecute("
+				SELECT f.ID, f.ContentID, f.SiteID, f.Title, f.RelativePath, f.AbsolutePath,
+				       f.Absolute, f.Weight, f.Layout, f.Placement
+				FROM dbo.page_FolderExplorer f
+				INNER JOIN dbo.pages p ON p.ContentID = f.ContentID
+				WHERE f.ContentID = :contentId
+				  AND p.DeletedAt IS NULL
+				  AND p.StatusCode = 'Active'
+				  AND p.isPublished = 1
+				  AND p.Visibility = 'Published'
+				  AND p.hasArchive = 1
+				ORDER BY f.Weight ASC, f.ID ASC
+			", {
+				contentId: { value: Val(arguments.page.ContentID), cfsqltype: "cf_sql_integer" }
+			}, { datasource: "ChelanCountyWebsite" });
+		} catch (any e) {
+			return local.empty;
+		}
+	}
+	return local.empty;
+}
+
+public struct function resolveFolderExplorerRoot(
+	string absolutePath = "",
+	string relativePath = "",
+	string siteId = "assessor"
+) {
+	local.rawAbs = Trim(arguments.absolutePath);
+	local.rawRel = Trim(arguments.relativePath);
+	local.cleanRel = ReReplace(Replace(local.rawRel, "\", "/", "all"), "^/+|/+$", "", "all");
+	if (!Len(local.cleanRel)) {
+		local.cleanRel = "files/assessors";
+	}
+
+	local.candidates = [];
+	if (Len(local.rawAbs)) {
+		ArrayAppend(local.candidates, local.rawAbs);
+	}
+	if (Len(local.cleanRel)) {
+		local.winRel = Replace(local.cleanRel, "/", "\", "all");
+		try {
+			ArrayAppend(local.candidates, ExpandPath("/" & local.cleanRel));
+		} catch (any e) {}
+		ArrayAppend(local.candidates, "C:\inetpub\CMSAdmin2.0\" & local.winRel);
+		ArrayAppend(local.candidates, "C:\inetpub\wwwroot\" & local.winRel);
+		ArrayAppend(local.candidates, "C:\inetpub\ChelanCounty.gov\" & local.winRel);
+	}
+
+	local.resolvedDisk = "";
+	for (local.cand in local.candidates) {
+		local.normCand = ReReplace(Trim(local.cand), "[\\/]+$", "", "one");
+		if (Len(local.normCand) && DirectoryExists(local.normCand)) {
+			local.resolvedDisk = local.normCand;
+			break;
+		}
+	}
+
+	// Fallback to workspace files directory in CMSAdmin2.0 if a custom slug was used for RelativePath
+	if (!Len(local.resolvedDisk)) {
+		local.wsClean = LCase(ReReplaceNoCase(Trim(arguments.siteId), "^site-", ""));
+		local.wsFallbacks = [
+			"C:\inetpub\CMSAdmin2.0\files\" & local.wsClean,
+			"C:\inetpub\CMSAdmin2.0\files\assessors",
+			"C:\inetpub\CMSAdmin2.0\files\assessor",
+			"C:\inetpub\wwwroot\files\assessor"
+		];
+		for (local.fb in local.wsFallbacks) {
+			if (DirectoryExists(local.fb)) {
+				local.resolvedDisk = local.fb;
+				break;
+			}
+		}
+	}
+
+	return {
+		diskPath: local.resolvedDisk,
+		relativePath: local.cleanRel,
+		webDisplayUrl: "chelancounty.gov/" & local.cleanRel
+	};
+}
+
+public string function formatExplorerFileSize(required numeric bytes) {
+	if (arguments.bytes < 1024) {
+		return arguments.bytes & " B";
+	} else if (arguments.bytes < 1048576) {
+		return NumberFormat(arguments.bytes / 1024, "0.0") & " KB";
+	} else if (arguments.bytes < 1073741824) {
+		return NumberFormat(arguments.bytes / 1048576, "0.0") & " MB";
+	}
+	return NumberFormat(arguments.bytes / 1073741824, "0.00") & " GB";
+}
+
+public struct function getExplorerFileBadge(required string ext) {
+	local.e = LCase(Trim(arguments.ext));
+	switch (local.e) {
+		case "pdf":
+			return { label: "PDF", badgeClass: "fe-badge-pdf", icon: "fa-solid fa-file-pdf", openInNewTab: true };
+		case "xls": case "xlsx": case "csv":
+			return { label: "XLS", badgeClass: "fe-badge-xls", icon: "fa-solid fa-file-excel", openInNewTab: false };
+		case "doc": case "docx": case "rtf":
+			return { label: "DOC", badgeClass: "fe-badge-doc", icon: "fa-solid fa-file-word", openInNewTab: false };
+		case "ppt": case "pptx":
+			return { label: "PPT", badgeClass: "fe-badge-ppt", icon: "fa-solid fa-file-powerpoint", openInNewTab: false };
+		case "jpg": case "jpeg": case "png": case "gif": case "webp": case "svg":
+			return { label: UCase(local.e), badgeClass: "fe-badge-img", icon: "fa-solid fa-file-image", openInNewTab: true };
+		case "zip": case "7z": case "tar": case "gz":
+			return { label: "ZIP", badgeClass: "fe-badge-zip", icon: "fa-solid fa-file-zipper", openInNewTab: false };
+		default:
+			return { label: Len(local.e) ? Left(UCase(local.e), 4) : "FILE", badgeClass: "fe-badge-file", icon: "fa-solid fa-file-lines", openInNewTab: true };
+	}
+}
+
+public numeric function scanFolderExplorerDir(
+	required struct treeResult,
+	required numeric explorerId,
+	required string currentDiskPath,
+	required string relSubPath,
+	required string folderKey,
+	required string folderLabel,
+	required numeric depth
+) {
+	if (arguments.depth > 3 || !DirectoryExists(arguments.currentDiskPath)) {
+		return 0;
+	}
+	local.skipFiles = "README.txt,.gitkeep,thumbs.db,.DS_Store,desktop.ini";
+	local.skipDirs = "_thumbs,.git,.svn,__MACOSX";
+	local.qList = DirectoryList(arguments.currentDiskPath, false, "query", "", "name ASC");
+	local.subDirs = [];
+	local.directFiles = 0;
+
+	for (local.row in local.qList) {
+		if (FindNoCase("H", local.row.attributes ?: "")) {
+			continue;
+		}
+		if (CompareNoCase(local.row.type, "Dir") == 0) {
+			if (!ListFindNoCase(local.skipDirs, local.row.name) && Left(local.row.name, 1) != ".") {
+				ArrayAppend(local.subDirs, local.row);
+			}
+		} else if (CompareNoCase(local.row.type, "File") == 0) {
+			if (ListFindNoCase(local.skipFiles, local.row.name) || Left(local.row.name, 1) == ".") {
+				continue;
+			}
+			local.ext = ListLen(local.row.name, ".") > 1 ? LCase(ListLast(local.row.name, ".")) : "";
+			local.badgeInfo = getExplorerFileBadge(local.ext);
+			local.relFile = Len(arguments.relSubPath) ? (arguments.relSubPath & "/" & local.row.name) : local.row.name;
+			local.viewUrl = "/assessor/file?fe=" & Val(arguments.explorerId) & "&file=" & UrlEncodedFormat(local.relFile);
+			local.downloadUrl = local.viewUrl & "&download=1";
+
+			local.cleanName = local.row.name;
+			ArrayAppend(arguments.treeResult.files, {
+				name: local.row.name,
+				displayName: local.cleanName,
+				extension: local.ext,
+				badgeLabel: local.badgeInfo.label,
+				badgeClass: local.badgeInfo.badgeClass,
+				iconClass: local.badgeInfo.icon,
+				openInNewTab: local.badgeInfo.openInNewTab,
+				sizeBytes: Val(local.row.size),
+				sizeFormatted: formatExplorerFileSize(Val(local.row.size)),
+				dateModified: local.row.dateLastModified,
+				dateFormatted: IsDate(local.row.dateLastModified) ? DateFormat(local.row.dateLastModified, "mmm d, yyyy") : "",
+				folderKey: arguments.folderKey,
+				folderLabel: arguments.folderLabel,
+				relativeSubPath: arguments.relSubPath,
+				relativeFilePath: local.relFile,
+				viewUrl: local.viewUrl,
+				downloadUrl: local.downloadUrl
+			});
+			local.directFiles++;
+			if (arguments.folderKey == "root") {
+				arguments.treeResult.rootFileCount++;
+			}
+			arguments.treeResult.totalFileCount++;
+		}
+	}
+
+	local.totalInBranch = local.directFiles;
+	for (local.dRow in local.subDirs) {
+		local.childRel = Len(arguments.relSubPath) ? (arguments.relSubPath & "/" & local.dRow.name) : local.dRow.name;
+		local.childKey = ReReplace(LCase(local.childRel), "[^a-z0-9/_-]", "-", "all");
+		local.childDisplayLabel = Replace(local.dRow.name, "_", " ", "all");
+		local.childFullLabel = (arguments.folderKey == "root") ? local.childDisplayLabel : (arguments.folderLabel & " / " & local.childDisplayLabel);
+		local.folderIdx = ArrayLen(arguments.treeResult.folders) + 1;
+		ArrayAppend(arguments.treeResult.folders, {
+			key: local.childKey,
+			name: local.dRow.name,
+			label: local.childDisplayLabel,
+			fullLabel: local.childFullLabel,
+			relativePath: local.childRel,
+			parentKey: arguments.folderKey,
+			depth: arguments.depth,
+			fileCount: 0,
+			totalFileCount: 0
+		});
+		local.childTotal = scanFolderExplorerDir(
+			treeResult = arguments.treeResult,
+			explorerId = arguments.explorerId,
+			currentDiskPath = arguments.currentDiskPath & "\" & local.dRow.name,
+			relSubPath = local.childRel,
+			folderKey = local.childKey,
+			folderLabel = local.childFullLabel,
+			depth = arguments.depth + 1
+		);
+		local.childDirect = 0;
+		for (local.fItem in arguments.treeResult.files) {
+			if (local.fItem.folderKey == local.childKey) {
+				local.childDirect++;
+			}
+		}
+		arguments.treeResult.folders[local.folderIdx].fileCount = local.childDirect;
+		arguments.treeResult.folders[local.folderIdx].totalFileCount = local.childTotal;
+		local.totalInBranch += local.childTotal;
+	}
+	return local.totalInBranch;
+}
+
+public struct function loadFolderExplorerTree(
+	required numeric explorerId,
+	string absolutePath = "",
+	string relativePath = "",
+	string siteId = "assessor"
+) {
+	local.resolved = resolveFolderExplorerRoot(
+		absolutePath = arguments.absolutePath,
+		relativePath = arguments.relativePath,
+		siteId = arguments.siteId
+	);
+	local.result = {
+		diskPath: local.resolved.diskPath,
+		relativePath: local.resolved.relativePath,
+		webDisplayUrl: local.resolved.webDisplayUrl,
+		exists: Len(local.resolved.diskPath) > 0 && DirectoryExists(local.resolved.diskPath),
+		folders: [],
+		files: [],
+		rootFileCount: 0,
+		totalFileCount: 0
+	};
+
+	if (!local.result.exists) {
+		return local.result;
+	}
+
+	scanFolderExplorerDir(
+		treeResult = local.result,
+		explorerId = Val(arguments.explorerId),
+		currentDiskPath = local.resolved.diskPath,
+		relSubPath = "",
+		folderKey = "root",
+		folderLabel = "Root Directory",
+		depth = 1
+	);
+
+	return local.result;
 }
 
 /**

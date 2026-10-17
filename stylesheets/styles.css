@@ -1160,6 +1160,197 @@ footer.site-footer a:hover, footer.site-footer a:focus-visible{ color:#fff; }
   margin-bottom: 2rem;
 }
 
+/* ============================================================================
+   15a. DEPARTMENT FOLDER EXPLORER (partials/_dept-folder-explorer.cfm)
+   Accessible 3/9 Grid & Full-Width document repository driven by CMSAdmin 2.0
+   ============================================================================ */
+.fe-card{
+  border: 1px solid var(--line);
+  border-radius: .5rem;
+  background: #fff;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,.04);
+}
+.fe-card-header{
+  background: var(--cream-100);
+  border-bottom: 1px solid var(--line);
+  padding: .75rem 1rem;
+}
+.fe-card-heading{
+  font-family: "Barlow", "Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  font-size: .85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--brand-900);
+}
+.fe-search-wrap{
+  min-width: 210px;
+}
+.fe-tree-list{
+  display: flex;
+  flex-direction: column;
+  padding: .35rem 0;
+}
+.fe-tree-item{
+  width: 100%;
+  border: 0;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .5rem;
+  padding: .6rem .95rem;
+  text-align: left;
+  font-size: .9rem;
+  font-weight: 600;
+  color: var(--ink-900);
+  border-left: 3px solid transparent;
+  transition: background-color .15s ease, color .15s ease;
+  cursor: pointer;
+}
+.fe-tree-item:hover,
+.fe-tree-item:focus-visible{
+  background: var(--cream-100);
+  color: var(--brand-800);
+}
+.fe-tree-item.active{
+  background: #eef4fa;
+  color: var(--brand-900);
+  font-weight: 700;
+  border-left-color: var(--brand-800);
+}
+.fe-tree-item-label{
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  min-width: 0;
+}
+.fe-tree-item-label span{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.fe-folder-icon{
+  color: var(--brand-800);
+  flex-shrink: 0;
+}
+.fe-tree-item.active .fe-folder-icon{
+  color: var(--gold-800);
+}
+.fe-tree-count{
+  font-size: .75rem;
+  font-weight: 700;
+  background: var(--cream-100);
+  color: var(--ink-900);
+  border: 1px solid var(--line);
+  border-radius: 50rem;
+  padding: .1rem .5rem;
+  flex-shrink: 0;
+}
+.fe-tree-item.active .fe-tree-count{
+  background: var(--brand-800);
+  color: #fff;
+  border-color: var(--brand-800);
+}
+.fe-file-table thead th{
+  font-size: .78rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--ink-900);
+  background: #f8f9fa;
+  border-bottom: 1px solid var(--line);
+  padding: .65rem 1rem;
+}
+.fe-file-table tbody td{
+  padding: .75rem 1rem;
+  vertical-align: middle;
+}
+.fe-file-link{
+  color: var(--link-700);
+  text-decoration: none;
+  word-break: break-word;
+}
+.fe-file-link:visited{
+  color: var(--link-700);
+}
+.fe-file-link:hover,
+.fe-file-link:focus-visible{
+  color: var(--brand-900);
+  text-decoration: underline;
+}
+.fe-ext-badge{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.5rem;
+  padding: .2rem .4rem;
+  border-radius: .25rem;
+  font-size: .7rem;
+  font-weight: 800;
+  letter-spacing: .03em;
+  flex-shrink: 0;
+}
+.fe-badge-pdf{
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+.fe-badge-xls{
+  background: #dcfce7;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+.fe-badge-doc{
+  background: #dbeafe;
+  color: #1e40af;
+  border: 1px solid #bfdbfe;
+}
+.fe-badge-ppt{
+  background: #ffedd5;
+  color: #9a3412;
+  border: 1px solid #fed7aa;
+}
+.fe-badge-img{
+  background: #ccfbf1;
+  color: #115e59;
+  border: 1px solid #99f6e4;
+}
+.fe-badge-zip,
+.fe-badge-file{
+  background: #f1f5f9;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+}
+.fe-folder-group-row td{
+  background: #f8fafc;
+}
+.fe-folder-toggle-btn{
+  width: 100%;
+  border: 0;
+  background: #f4f7fa;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .65rem 1rem;
+  text-align: left;
+  color: var(--brand-900);
+  cursor: pointer;
+  transition: background-color .15s ease;
+}
+.fe-folder-toggle-btn:hover,
+.fe-folder-toggle-btn:focus-visible{
+  background: #e8eff6;
+}
+.fe-toggle-chevron{
+  transition: transform .2s ease;
+  color: var(--brand-800);
+  font-size: .85rem;
+}
+.fe-folder-toggle-btn[aria-expanded="false"] .fe-toggle-chevron{
+  transform: rotate(-90deg);
+}
+
 
 /* ============================================================================
    16. MOTION PREFERENCES

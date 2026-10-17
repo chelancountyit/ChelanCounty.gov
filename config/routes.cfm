@@ -8,6 +8,7 @@
 		// CLI-Appends-Here
 		.get(name="assessor", pattern="/assessor", to="assessor##index")
 		.get(name="assessorPage", pattern="/assessor/page/[slug]", to="assessor##page")
+		.get(name="assessorFile", pattern="/assessor/file", to="assessor##file")
 
 		// Liveness / warm-up endpoint. `wheels deploy`'s proxy healthcheck probes
 		// `/up` before traffic cutover; a 200 here also compiles the request path
