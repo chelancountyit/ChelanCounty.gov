@@ -21,13 +21,13 @@
         <ul class="list-unstyled">
           <li class="mb-2"><a href="/auditor">Auditor's Office</a></li>
           <li class="mb-2"><a href="/assessor">Assessor's Office</a></li>       
-          <li class="mb-2"><a href="/board-of-commissioners">Board of Commissioners</a></li>
+          <li class="mb-2"><a href="/board-of-commissioners">Board of County Commissioners</a></li>
           <li class="mb-2"><a href="/clerk">Clerk's Office</a></li>
           <li class="mb-2"><a href="/coroner">Coroner's Office</a></li>
-          <li class="mb-2"><a href="/district-court">District Court</a></li>
+          <li class="mb-2"><a href="/district-court">District Court Judges</a></li>
           <li class="mb-2"><a href="/prosecutor">Prosecuting Attorney</a></li>
           <li class="mb-2"><a href="/sheriff">Sheriff's Office</a></li>
-          <li class="mb-2"><a href="/superior-court">Superior Court</a></li>
+          <li class="mb-2"><a href="/superior-court">Superior Court Judges</a></li>
           <li class="mb-2"><a href="/treasurer">Treasurer's Office</a></li>
           
          
