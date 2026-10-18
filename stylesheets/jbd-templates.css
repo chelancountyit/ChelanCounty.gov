@@ -13,15 +13,6 @@
   --jbd-tmpl-focus-shadow: rgba(37, 99, 235, 0.25);
 }
 
-blockquote {
-  margin: 1em 0;
-  padding: 0.6em 1.2em;
-  border-left: 4px solid var(--jbd-tmpl-border, #2563eb);
-  background-color: var(--jbd-tmpl-surface-alt, #f8fafc);
-  color: #05367a;
-  font-style: italic;
-}
-
 /* Base Template Wrapper */
 .jbd-template {
   margin: 18px 0;
@@ -33,6 +24,21 @@ blockquote {
 .jbd-template *::before,
 .jbd-template *::after {
   box-sizing: border-box;
+}
+
+/* Typography Utilities & Headings Alternative (.h4)
+   Allows block templates (Panels, FAQs, Grids, etc.) to use styled <p class="h4">
+   or <span class="h4"> without creating outline hierarchy violations in ADA audits. */
+.jbd-template .h4,
+.jbd-template p.h4,
+.jbd-template span.h4,
+p.jbd-faq-question {
+  margin: 0 0 0.4rem 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: inherit;
+  display: block;
 }
 
 /* Tables created by JBDEditor */
@@ -174,9 +180,12 @@ table.jbd-table th {
   border: 1px dashed #cbd5e1;
 }
 
-.jbd-grid-2col > .jbd-grid-col h3 {
+.jbd-grid-2col > .jbd-grid-col h3,
+.jbd-grid-2col > .jbd-grid-col .h4 {
   margin-top: 0;
   font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
 }
 
 .jbd-grid-3col {
@@ -196,9 +205,11 @@ table.jbd-table th {
   box-sizing: border-box;
 }
 
-.jbd-grid-3col > .jbd-card h4 {
+.jbd-grid-3col > .jbd-card h4,
+.jbd-grid-3col > .jbd-card .h4 {
   margin-top: 0;
   font-size: 15px;
+  font-weight: 700;
   color: #1e293b;
 }
 
@@ -458,12 +469,24 @@ table.jbd-table th {
   stroke: currentColor;
 }
 
-.jbd-panel-title {
-  margin: 0;
+.jbd-panel-title,
+.jbd-panel-header p.jbd-panel-title,
+.jbd-panel-header .jbd-panel-title,
+.jbd-panel-header .h4,
+.jbd-panel-header p.h4 {
+  margin: 0 !important;
+  padding: 0;
   font-size: 14.5px;
   font-weight: 700;
   letter-spacing: -0.01em;
   flex: 1;
+  line-height: 1.25;
+  align-self: center;
+  position: static;
+  top: auto;
+  transform: none;
+  -webkit-transform: none;
+  -ms-transform: none;
 }
 
 .jbd-panel-badge {
@@ -1138,6 +1161,378 @@ table.jbd-table th {
   line-height: 1.4;
 }
 
+/* 12. Call to Action (CTA) Cards, Grids & Banners */
+.jbd-cta-card {
+  margin: 18px 0;
+  padding: 22px 24px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.jbd-cta-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.jbd-cta-card.has-image {
+  padding: 0;
+}
+
+.jbd-cta-card-img-wrap {
+  width: 100%;
+  height: 190px;
+  overflow: hidden;
+  background-color: #f1f5f9;
+  position: relative;
+}
+
+.jbd-cta-card-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.jbd-cta-card:hover .jbd-cta-card-img-wrap img {
+  transform: scale(1.03);
+}
+
+.jbd-cta-card-content {
+  padding: 20px 22px 22px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.jbd-cta-card-header {
+  margin-bottom: 8px;
+}
+
+.jbd-cta-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  background-color: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+}
+
+.jbd-cta-badge-teal {
+  background-color: #f0fdfa;
+  color: #0f766e;
+  border-color: #99f6e4;
+}
+
+.jbd-cta-badge-blue {
+  background-color: #eff6ff;
+  color: #1d4ed8;
+  border-color: #bfdbfe;
+}
+
+.jbd-cta-badge-amber {
+  background-color: #fffbeb;
+  color: #b45309;
+  border-color: #fde68a;
+}
+
+.jbd-cta-title {
+  margin: 0 0 6px 0;
+  font-size: 18.5px;
+  font-weight: 700;
+  color: #0b2545;
+  line-height: 1.35;
+}
+
+.jbd-cta-desc {
+  font-size: 14.5px;
+  color: #475569;
+  line-height: 1.55;
+  margin: 0 0 16px 0;
+  flex-grow: 1;
+}
+
+.jbd-cta-card-footer {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Reference Inline Action Link Style (e.g. "Search Parcels ->") */
+.jbd-cta-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #0b2545;
+  font-weight: 700;
+  font-size: 15px;
+  text-decoration: none;
+  transition: color 0.15s ease, gap 0.15s ease;
+  line-height: 1.4;
+}
+
+.jbd-cta-link:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+  gap: 8px;
+}
+
+.jbd-cta-link:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.jbd-cta-link svg {
+  width: 15px;
+  height: 15px;
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+  stroke: currentColor;
+  fill: none;
+  transition: transform 0.15s ease;
+}
+
+.jbd-cta-link:hover svg {
+  transform: translateX(3px);
+}
+
+.jbd-cta-link.has-external-icon:hover svg {
+  transform: translate(2px, -2px);
+}
+
+.jbd-cta-pdf-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fca5a5;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 1px 4px;
+  line-height: 1.2;
+  margin-left: 4px;
+}
+
+.jbd-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 20px;
+  font-size: 14.5px;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 6px;
+  background-color: #0b2545;
+  color: #ffffff !important;
+  border: 1px solid #0b2545;
+  transition: all 0.15s ease-in-out;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.jbd-cta-btn:hover {
+  background-color: #134074;
+  border-color: #134074;
+  color: #ffffff !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(11, 37, 69, 0.2);
+}
+
+.jbd-cta-btn:focus-visible {
+  outline: 3px solid #2563eb !important;
+  outline-offset: 3px !important;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.25) !important;
+}
+
+.jbd-cta-btn svg {
+  flex-shrink: 0;
+  transition: transform 0.15s ease;
+}
+
+.jbd-cta-btn:hover svg {
+  transform: translateX(3px);
+}
+
+/* Multi-Card Grid */
+.jbd-cta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin: 22px 0;
+}
+
+/* 4-Column Layout (4 Col Desktop, 2 Tablet, 1 Mobile) */
+.jbd-cta-grid.cta-grid-4,
+.jbd-cta-grid.cta-layout-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* 3-Column Layout (3x1 Reference Style, 2 Tablet, 1 Mobile) */
+.jbd-cta-grid.cta-grid-3,
+.jbd-cta-grid.cta-layout-3,
+.jbd-cta-grid.cta-layout-3x1 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* 2-Column / 50-50 / 2x2 Layout (2 Col Desktop 50/50, 1 Mobile) */
+.jbd-cta-grid.cta-grid-2,
+.jbd-cta-grid.cta-grid-50-50,
+.jbd-cta-grid.cta-layout-2,
+.jbd-cta-grid.cta-layout-2x2,
+.jbd-cta-grid.cta-layout-50-50 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (max-width: 1100px) {
+  .jbd-cta-grid.cta-grid-4,
+  .jbd-cta-grid.cta-layout-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 991px) {
+  .jbd-cta-grid.cta-grid-3,
+  .jbd-cta-grid.cta-layout-3,
+  .jbd-cta-grid.cta-layout-3x1 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .jbd-cta-grid.cta-grid-4,
+  .jbd-cta-grid.cta-layout-4,
+  .jbd-cta-grid.cta-grid-3,
+  .jbd-cta-grid.cta-layout-3,
+  .jbd-cta-grid.cta-layout-3x1,
+  .jbd-cta-grid.cta-grid-2,
+  .jbd-cta-grid.cta-grid-50-50,
+  .jbd-cta-grid.cta-layout-2,
+  .jbd-cta-grid.cta-layout-2x2,
+  .jbd-cta-grid.cta-layout-50-50,
+  .jbd-cta-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.jbd-cta-grid .jbd-cta-card {
+  margin: 0;
+}
+
+/* Full-Width High-Impact Action Banner */
+.jbd-cta-banner {
+  margin: 22px 0;
+  padding: 24px 28px;
+  background: linear-gradient(135deg, #0b2545 0%, #134074 100%);
+  color: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #0b2545;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  box-shadow: 0 4px 12px rgba(11, 37, 69, 0.12);
+}
+
+.jbd-cta-banner-content {
+  flex: 1 1 320px;
+}
+
+.jbd-cta-banner-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.jbd-cta-banner-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 6px 0;
+  line-height: 1.35;
+}
+
+.jbd-cta-banner-lead {
+  font-size: 14.5px;
+  color: #e2e8f0;
+  margin: 0;
+  line-height: 1.55;
+}
+
+.jbd-cta-banner-action {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.jbd-cta-banner-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 11px 22px;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 6px;
+  background-color: #ffffff;
+  color: #0b2545 !important;
+  border: 1px solid #ffffff;
+  transition: all 0.15s ease-in-out;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+.jbd-cta-banner-btn:hover {
+  background-color: #f8fafc;
+  color: #041426 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.jbd-cta-banner-btn:focus-visible {
+  outline: 3px solid #ffffff !important;
+  outline-offset: 3px !important;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.35) !important;
+}
+
+.jbd-cta-banner-btn svg {
+  flex-shrink: 0;
+  transition: transform 0.15s ease;
+}
+
+.jbd-cta-banner-btn:hover svg {
+  transform: translateX(3px);
+}
+
 /* Forced Colors / High Contrast Mode for Templates */
 @media (forced-colors: active) {
   .jbd-callout,
@@ -1149,6 +1544,8 @@ table.jbd-table th {
   .jbd-contact-card,
   .jbd-subpage-menu,
   .jbd-related-pages,
+  .jbd-cta-card,
+  .jbd-cta-banner,
   .jbd-grid-2col > .jbd-grid-col,
   .jbd-grid-3col > .jbd-card,
   .jbd-hero,
@@ -1163,7 +1560,9 @@ table.jbd-table th {
     border-bottom: 1px solid ButtonText !important;
   }
   .jbd-accordion summary:focus-visible,
-  .jbd-hero a:focus-visible {
+  .jbd-hero a:focus-visible,
+  .jbd-cta-btn:focus-visible,
+  .jbd-cta-banner-btn:focus-visible {
     outline: 3px solid Highlight !important;
   }
 }

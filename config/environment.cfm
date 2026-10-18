@@ -11,7 +11,7 @@
 // rather than running with development-style error output.
 local.wheelsEnvironment = Trim(env("WHEELS_ENV", ""));
 if (!Len(local.wheelsEnvironment)) {
-	local.wheelsEnvironment = "development";
+	local.wheelsEnvironment = "production";
 }
 if (!ListFindNoCase("development,testing,maintenance,production", local.wheelsEnvironment)) {
 	Throw(

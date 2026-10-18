@@ -22,7 +22,7 @@
       <cfif StructKeyExists(content, "imageAttachment") and Len(Trim(content.imageAttachment))>
         <div class="row g-4">
           <div class="col-md-8">
-            #content.Body#
+            #renderCmsContent(content.Body)#
           </div>
           <div class="col-md-4">
             <img src="#EncodeForHTMLAttribute(content.imageAttachment)#"
@@ -35,13 +35,67 @@
         </div>
       <cfelseif StructKeyExists(content, "Body") and Len(Trim(content.Body))>
         <div class="cms-page-body">
-          #content.Body#
+          #renderCmsContent(content.Body)#
         </div>
       <cfelseif not ((isDefined("folderExplorers") and isQuery(folderExplorers) and folderExplorers.recordCount GT 0) or (isDefined("ctaCards") and isQuery(ctaCards) and ctaCards.recordCount GT 0))>
-        <p class="text-muted mb-0">No content has been published for this page yet.</p>
+        <cfset local.wsCode = (isStruct(site) and StructKeyExists(site, "code") and Len(Trim(site.code))) ? LCase(Trim(site.code)) : "assessor">
+        <cfset local.wsSlug = ReReplaceNoCase(local.wsCode, "^site-", "")>
+        <cfif local.wsSlug EQ "assessors"><cfset local.wsSlug = "assessor"></cfif>
+        <cfset local.shortName = ReReplaceNoCase(local.rawName, "^Chelan\s+County\s+", "")>
+        <cfset local.wsColor = (isStruct(site) and StructKeyExists(site, "color") and Len(Trim(site.color))) ? Trim(site.color) : "##173F63">
+        <cfset local.wsColorDark = (isStruct(site) and StructKeyExists(site, "colorDark") and Len(Trim(site.colorDark))) ? Trim(site.colorDark) : local.wsColor>
+        <cfset local.wsGradient = (isStruct(site) and StructKeyExists(site, "heroGradient") and Len(Trim(site.heroGradient))) ? Trim(site.heroGradient) : ("linear-gradient(135deg, " & local.wsColor & " 0%, " & local.wsColorDark & " 100%)")>
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden my-2" style="background: linear-gradient(180deg, ##ffffff 0%, ##f8fafc 100%); border: 1px solid ##e2e8f0 !important;">
+          <div style="height: 4px; background: #EncodeForHTMLAttribute(local.wsGradient)#;"></div>
+          <div class="card-body p-4 p-md-5 text-center">
+            <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3" style="width: 64px; height: 64px; background: color-mix(in srgb, #EncodeForHTMLAttribute(local.wsColor)# 12%, ##ffffff); color: #EncodeForHTMLAttribute(local.wsColor)#;">
+              <i class="fa-regular fa-file-lines fa-2x" aria-hidden="true"></i>
+            </div>
+            <h2 class="h4 fw-bold mb-2" style="color: #EncodeForHTMLAttribute(local.wsColorDark)#;">Content Coming Soon</h2>
+            <p class="text-muted mx-auto mb-4" style="max-width: 480px;">
+              No content has been published for this page yet. Please check back soon or return to the #EncodeForHTML(local.shortName)# homepage.
+            </p>
+            <a href="/#EncodeForHTMLAttribute(local.wsSlug)#" class="btn btn-primary rounded-pill px-4 py-2 fw-semibold text-decoration-none" style="background: #EncodeForHTMLAttribute(local.wsGradient)#; background-color: #EncodeForHTMLAttribute(local.wsColor)#; border-color: #EncodeForHTMLAttribute(local.wsColor)#; color: ##ffffff !important;">
+              <i class="fa-solid fa-arrow-left me-2" aria-hidden="true"></i>Back to #EncodeForHTML(local.shortName)#
+            </a>
+          </div>
+        </div>
       </cfif>
     <cfelse>
-      <p class="text-muted mb-0">The requested page could not be found.</p>
+      <cfset local.wsCode = (isStruct(site) and StructKeyExists(site, "code") and Len(Trim(site.code))) ? LCase(Trim(site.code)) : "assessor">
+      <cfset local.wsSlug = ReReplaceNoCase(local.wsCode, "^site-", "")>
+      <cfif local.wsSlug EQ "assessors"><cfset local.wsSlug = "assessor"></cfif>
+      <cfset local.shortName = ReReplaceNoCase(local.rawName, "^Chelan\s+County\s+", "")>
+      <cfset local.wsColor = (isStruct(site) and StructKeyExists(site, "color") and Len(Trim(site.color))) ? Trim(site.color) : "##173F63">
+      <cfset local.wsColorDark = (isStruct(site) and StructKeyExists(site, "colorDark") and Len(Trim(site.colorDark))) ? Trim(site.colorDark) : local.wsColor>
+      <cfset local.wsGradient = (isStruct(site) and StructKeyExists(site, "heroGradient") and Len(Trim(site.heroGradient))) ? Trim(site.heroGradient) : ("linear-gradient(135deg, " & local.wsColor & " 0%, " & local.wsColorDark & " 100%)")>
+      <div class="card border-0 shadow-sm rounded-4 overflow-hidden my-2" style="background: linear-gradient(180deg, ##ffffff 0%, ##f8fafc 100%); border: 1px solid ##e2e8f0 !important;" role="status" aria-live="polite">
+        <div style="height: 5px; background: #EncodeForHTMLAttribute(local.wsGradient)#;"></div>
+        <div class="card-body p-4 p-md-5 text-center">
+          <div class="position-relative d-inline-flex align-items-center justify-content-center rounded-circle mb-3" style="width: 76px; height: 76px; background: color-mix(in srgb, #EncodeForHTMLAttribute(local.wsColor)# 12%, ##ffffff); color: #EncodeForHTMLAttribute(local.wsColor)#; border: 1px solid color-mix(in srgb, #EncodeForHTMLAttribute(local.wsColor)# 30%, ##ffffff);">
+            <i class="fa-solid fa-file-circle-question fa-2x" aria-hidden="true"></i>
+          </div>
+          <div class="mb-2">
+            <span class="badge rounded-pill text-uppercase px-3 py-1" style="background: color-mix(in srgb, #EncodeForHTMLAttribute(local.wsColor)# 12%, ##ffffff); color: #EncodeForHTMLAttribute(local.wsColorDark)#; font-size: 0.72rem; letter-spacing: 0.06em; font-weight: 700;">
+              404 &bull; Page Not Found
+            </span>
+          </div>
+          <h1 class="h3 fw-bold mb-2" style="color: #EncodeForHTMLAttribute(local.wsColorDark)#;">
+            The requested page could not be found.
+          </h1>
+          <p class="text-muted mx-auto mb-4" style="max-width: 520px; font-size: 0.98rem; line-height: 1.6;">
+            The page you are looking for may have been moved, renamed, or is not yet published in the <strong>#EncodeForHTML(local.fullTitle)#</strong> portal. Use the department menu on the left or choose an option below.
+          </p>
+          <div class="d-flex flex-wrap justify-content-center gap-2 pt-1">
+            <a href="/#EncodeForHTMLAttribute(local.wsSlug)#" class="btn btn-primary rounded-pill px-4 py-2 fw-semibold text-decoration-none shadow-sm" style="background: #EncodeForHTMLAttribute(local.wsGradient)#; background-color: #EncodeForHTMLAttribute(local.wsColor)#; border-color: #EncodeForHTMLAttribute(local.wsColor)#; color: ##ffffff !important;">
+              <i class="fa-solid fa-arrow-left me-2" aria-hidden="true"></i>#EncodeForHTML(local.shortName)# Home
+            </a>
+            <a href="/" class="btn btn-outline-secondary rounded-pill px-4 py-2 fw-semibold text-decoration-none" style="background-color: ##ffffff; border-color: ##cbd5e1; color: #EncodeForHTMLAttribute(local.wsColorDark)# !important;">
+              <i class="fa-solid fa-house me-2" aria-hidden="true"></i>County Homepage
+            </a>
+          </div>
+        </div>
+      </div>
     </cfif>
   <cfelse>
     <cfif isObject(content) and StructKeyExists(content, "Summary") and Len(Trim(content.Summary))>
@@ -51,7 +105,7 @@
     <cfif isObject(content) and StructKeyExists(content, "imageAttachment") and Len(Trim(content.imageAttachment))>
       <div class="row g-4">
         <div class="col-md-8">
-          #content.Body#
+          #renderCmsContent(content.Body)#
         </div>
         <div class="col-md-4">
           <img src="#EncodeForHTMLAttribute(content.imageAttachment)#"
@@ -63,11 +117,11 @@
         </div>
       </div>
     <cfelseif isObject(content) and StructKeyExists(content, "Body") and Len(Trim(ReReplace(content.Body, "<[^>]*>", "", "all"))) and CompareNoCase(Trim(ReReplace(content.Body, "<[^>]*>", "", "all")), "Home") NEQ 0>
-      #content.Body#
+      #renderCmsContent(content.Body)#
     <cfelse>
       <cfif isObject(content) and StructKeyExists(content, "Body") and Len(Trim(content.Body))>
         <div class="cms-page-body mb-3">
-          #content.Body#
+          #renderCmsContent(content.Body)#
         </div>
       </cfif>
       <h2 id="heading-what-we-do" class="section-title mb-4">What We Do</h2>

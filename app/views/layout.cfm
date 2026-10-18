@@ -40,7 +40,7 @@
 <!-- YTPlayer JS -->
 <script type="text/javascript" src="/assets/vendor/jquery.mb.YTPlayer-3.2.10/dist/jquery.mb.YTPlayer.min.js"></script>
 </head>
-<body>
+<body<cfif isDefined("site") and isStruct(site) and structKeyExists(site, "color") and len(trim(site.color))><cfset local.bodyPrimary = trim(site.color)><cfset local.bodyDark = structKeyExists(site, "colorDark") and len(trim(site.colorDark)) ? trim(site.colorDark) : local.bodyPrimary><cfset local.bodyGrad = structKeyExists(site, "heroGradient") and len(trim(site.heroGradient)) ? trim(site.heroGradient) : local.bodyPrimary> style="--dept-color: #EncodeForHTMLAttribute(local.bodyPrimary)#; --dept-color-dark: #EncodeForHTMLAttribute(local.bodyDark)#; --dept-gradient: #EncodeForHTMLAttribute(local.bodyGrad)#; --dept-theme-color: #EncodeForHTMLAttribute(local.bodyPrimary)#; --dept-theme-dark: #EncodeForHTMLAttribute(local.bodyDark)#; --dept-theme-gradient: #EncodeForHTMLAttribute(local.bodyGrad)#; --bs-primary: #EncodeForHTMLAttribute(local.bodyPrimary)#; --bs-secondary: #EncodeForHTMLAttribute(local.bodyDark)#; --bs-link-color: #EncodeForHTMLAttribute(local.bodyPrimary)#; --bs-link-hover-color: #EncodeForHTMLAttribute(local.bodyDark)#; --brand-800: #EncodeForHTMLAttribute(local.bodyPrimary)#; --brand-900: #EncodeForHTMLAttribute(local.bodyDark)#; --brand-700: #EncodeForHTMLAttribute(local.bodyPrimary)#; --link-700: #EncodeForHTMLAttribute(local.bodyPrimary)#; --link-600: #EncodeForHTMLAttribute(local.bodyPrimary)#;"</cfif>>
 
 <!-- WCAG 2.4.1 Skip Link -->
 <a class="visually-hidden-focusable position-absolute top-0 start-0 p-3" href="##main-content">Skip to main content</a>

@@ -15,10 +15,36 @@
 <cfset local.rawName = (isStruct(site) and StructKeyExists(site, "name") and Len(Trim(site.name))) ? Trim(site.name) : "Assessor">
 <cfset local.shortName = ReReplaceNoCase(local.rawName, "^Chelan\s+County\s+", "")>
 
+<cfset local.wsColor = (isStruct(site) and StructKeyExists(site, "color") and Len(Trim(site.color))) ? Trim(site.color) : "##173F63">
+<cfset local.wsColorDark = (isStruct(site) and StructKeyExists(site, "colorDark") and Len(Trim(site.colorDark))) ? Trim(site.colorDark) : local.wsColor>
+<cfset local.wsGradient = (isStruct(site) and StructKeyExists(site, "heroGradient") and Len(Trim(site.heroGradient))) ? Trim(site.heroGradient) : ("linear-gradient(135deg, " & local.wsColor & " 0%, " & local.wsColorDark & " 100%)")>
+
 <cfoutput>
+<style>
+  .dept-nav-card[data-ws-themed="true"] .dept-nav-header {
+    background: var(--dept-gradient, #local.wsGradient#);
+    background-color: var(--dept-color, #local.wsColor#);
+  }
+  .dept-nav-card[data-ws-themed="true"] .dept-nav-link:hover,
+  .dept-nav-card[data-ws-themed="true"] .dept-nav-link:focus-visible,
+  .dept-nav-card[data-ws-themed="true"] .dept-subnav-link:hover,
+  .dept-nav-card[data-ws-themed="true"] .dept-subnav-link:focus-visible {
+    color: var(--dept-color, #local.wsColor#);
+  }
+  .dept-nav-card[data-ws-themed="true"] .dept-nav-link.active,
+  .dept-nav-card[data-ws-themed="true"] .dept-nav-link.current {
+    color: var(--dept-color-dark, #local.wsColorDark#);
+    border-left: 4px solid var(--dept-color, #local.wsColor#);
+    background-color: color-mix(in srgb, var(--dept-color, #local.wsColor#) 8%, ##ffffff);
+  }
+  .dept-nav-card[data-ws-themed="true"] .text-brand,
+  .dept-nav-card[data-ws-themed="true"] .dept-nav-toggle .chevron-icon {
+    color: var(--dept-color, #local.wsColor#) !important;
+  }
+</style>
 <!-- Department Navigation (Driven by `nav` table) -->
-<nav class="dept-nav-card" aria-label="#EncodeForHTMLAttribute(local.shortName)# Department Navigation">
-  <p class="dept-nav-header">
+<nav class="dept-nav-card" data-ws-themed="true" aria-label="#EncodeForHTMLAttribute(local.shortName)# Department Navigation" style="--dept-color: #EncodeForHTMLAttribute(local.wsColor)#; --dept-color-dark: #EncodeForHTMLAttribute(local.wsColorDark)#; --dept-gradient: #EncodeForHTMLAttribute(local.wsGradient)#;">
+  <p class="dept-nav-header" style="background: #EncodeForHTMLAttribute(local.wsGradient)#; background-color: #EncodeForHTMLAttribute(local.wsColor)#;">
     <i class="fa-solid fa-folder me-1" aria-hidden="true"></i> #EncodeForHTML(local.shortName)# Menu
   </p>
   <ul class="dept-nav-list">

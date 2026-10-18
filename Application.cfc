@@ -613,7 +613,7 @@ component output="false" {
 		// attributeCollection — Adobe CF 2023/2025 reject the `arguments`
 		// scope on built-in tags (CLAUDE.md cross-engine invariant ##10).
 		try {
-			local.statusArgs = {statusCode: 500, statusText: "Internal Server Error"};
+			local.statusArgs = {statusCode: 500};
 			cfheader(attributeCollection=local.statusArgs);
 		} catch (any headerErr) {
 			// Header may already have been written; the body still renders.

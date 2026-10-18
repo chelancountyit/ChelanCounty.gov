@@ -40,8 +40,10 @@
          Main Column (col-lg-6 with right sidebar, or default col-lg-9 full layout)
          ====================================================================== -->
     <div class="<cfif local.showSidebar>col-lg-6 col-md-8<cfelse>col-lg-9 col-md-8</cfif>">
-      <h1 class="section-title mb-3">#EncodeForHTML(local.pageTitle)#</h1>
-      <hr>
+      <cfif isObject(content)>
+        <h1 class="section-title mb-3">#EncodeForHTML(local.pageTitle)#</h1>
+        <hr>
+      </cfif>
 
       <!-- Quick Services / CTA Cards (when enabled on subpage) -->
       #includePartial(partial="/shared/_dept-cta-cards.cfm", isSubpage=true)#

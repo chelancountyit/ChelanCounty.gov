@@ -25,7 +25,7 @@ component extends="Controller" {
 			where="SiteID IN ('assessor', 'assessors', 'site-assessor', 'site-assessors') AND Permalink = '#local.safeSlug#' AND StatusCode = 'Active' AND isPublished = 1 AND Visibility = 'Published'"
 		);
 		if (!isObject(content)) {
-			cfheader(statusCode=404, statusText="Not Found");
+			cfheader(statusCode=404);
 		}
 		nav = getNavigation("assessor");
 		sidebars = getAttachedSidebars(content);
