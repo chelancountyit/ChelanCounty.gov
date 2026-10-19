@@ -98,9 +98,9 @@
       </div>
     </cfif>
   <cfelse>
-    <cfif isObject(content) and StructKeyExists(content, "Summary") and Len(Trim(content.Summary))>
+   <!---  <cfif isObject(content) and StructKeyExists(content, "Summary") and Len(Trim(content.Summary))>
       <p class="lead fw-semibold mb-3">#EncodeForHTML(content.Summary)#</p>
-    </cfif>
+    </cfif> --->
 
     <cfif isObject(content) and StructKeyExists(content, "imageAttachment") and Len(Trim(content.imageAttachment))>
       <div class="row g-4">
