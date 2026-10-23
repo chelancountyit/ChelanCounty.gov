@@ -801,7 +801,8 @@ public struct function getWorkspace(required string siteid) {
 			SELECT TOP 1 id, code, name, alias, type, badge, badge_class, icon, description,
 			       folder_path, virtual_directory, redirect_url, department, department_category,
 			       contact_first_name, contact_last_name, contact_email, contact_phone, contact_fax,
-			       address, address2, city, state, zip, office_hours, color
+			       address, address2, city, state, zip, office_hours, color,
+			       leadership_type, job_title, contact_photo
 			FROM cms_workspaces
 			WHERE deletedat IS NULL
 			  AND is_active = 1
@@ -844,6 +845,11 @@ public struct function getWorkspace(required string siteid) {
 			local.ws.state = Trim(local.qWs.state ?: "");
 			local.ws.zip = Trim(local.qWs.zip ?: "");
 			local.ws.office_hours = Trim(local.qWs.office_hours ?: "");
+			local.ws.leadership_type = Trim(local.qWs.leadership_type ?: "");
+			local.ws.job_title = Trim(local.qWs.job_title ?: "");
+			local.ws.contacttitle = Len(Trim(local.qWs.job_title ?: "")) ? Trim(local.qWs.job_title) : Trim(local.qWs.name ?: "");
+			local.ws.contact_photo = Trim(local.qWs.contact_photo ?: "");
+			local.ws.officialPhoto = Len(Trim(local.qWs.contact_photo ?: "")) ? Trim(local.qWs.contact_photo) : "";
 
 			if (Len(Trim(local.qWs.contact_first_name ?: "")) && Len(Trim(local.qWs.contact_last_name ?: ""))) {
 				local.ws.contactfirstname = Trim(local.qWs.contact_first_name);

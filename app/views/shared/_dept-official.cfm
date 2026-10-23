@@ -16,17 +16,25 @@
 
 <cfset local.officialName = (isStruct(site) and StructKeyExists(site, "contactfirstname") and StructKeyExists(site, "contactlastname") and Len(Trim(site.contactfirstname & site.contactlastname)))
   ? Trim(site.contactfirstname & " " & site.contactlastname)
-  : "Wes Cornelius">
+  : ((isStruct(site) and StructKeyExists(site, "contact_first_name") and StructKeyExists(site, "contact_last_name") and Len(Trim(site.contact_first_name & site.contact_last_name)))
+      ? Trim(site.contact_first_name & " " & site.contact_last_name)
+      : local.fullTitle)>
 
 <cfset local.officialTitle = (isStruct(site) and StructKeyExists(site, "contacttitle") and Len(Trim(site.contacttitle)))
   ? Trim(site.contacttitle)
-  : local.fullTitle>
+  : ((isStruct(site) and StructKeyExists(site, "job_title") and Len(Trim(site.job_title)))
+      ? Trim(site.job_title)
+      : local.fullTitle)>
 
 <cfset local.photoSrc = Len(Trim(arguments.photoUrl))
   ? Trim(arguments.photoUrl)
   : ((isStruct(site) and StructKeyExists(site, "officialPhoto") and Len(Trim(site.officialPhoto)))
       ? Trim(site.officialPhoto)
-      : "/images/picjumbo/assessor-office-elected.jpg")>
+      : ((isStruct(site) and StructKeyExists(site, "contact_photo") and Len(Trim(site.contact_photo)))
+          ? Trim(site.contact_photo)
+          : (fileExists(expandPath("/images/logo/" & local.wsSlug & "-elected.jpg"))
+              ? "/images/logo/" & local.wsSlug & "-elected.jpg"
+              : "/images/picjumbo/assessor-office-elected.jpg")))>
 
 <cfset local.contactHref = Len(Trim(arguments.contactUrl))
   ? Trim(arguments.contactUrl)
