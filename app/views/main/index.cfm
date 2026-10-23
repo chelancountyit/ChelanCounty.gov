@@ -38,7 +38,7 @@
     </div>
 
     <div class="row g-4 pt-2">
-    <p>Geographically, the county covers approximately 2,994 square miles (2,921 square miles of land). It includes the incorporated cities of Wenatchee (the county seat), Chelan, Cashmere, Leavenworth, and Entiat, along with nearly 2,900 square miles of unincorporated land and wilderness.</p>
+    <p>Chelan County is situated on the eastern slopes of the Cascade Mountain Range in north-central Washington. Covering 2,994 square miles, it is the third-largest county by area in the state and features a diverse topography ranging from towering alpine peaks to deep glacial lakes and river valleys. It includes the incorporated cities of Wenatchee (the county seat), Chelan, Cashmere, Leavenworth, and Entiat, along with nearly 2,900 square miles of unincorporated land and wilderness.</p>
      
       <!-- 1. Populations and People -->
       <div class="col-12 col-md-6 col-lg-4">

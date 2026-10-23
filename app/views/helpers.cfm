@@ -450,7 +450,7 @@ public string function renderCmsContent(required string html) {
 	out = REReplaceNoCase(
 		out,
 		'\[chelan_form\s+slug=["'']([^"'']+)["'']\s*\]',
-		'<div class="cms-form-embed my-4" data-form-slug="\1"><iframe src="http://cmsadmin.chelancounty.gov/forms/preview?slug=\1" width="100%" height="750" frameborder="0" scrolling="no" style="border:none; width:100%; min-height:500px; overflow:hidden; transition:height 0.2s ease;" title="Online Form" loading="lazy"></iframe></div>',
+		'<div class="cms-form-embed my-4" data-form-slug="\1"><iframe src="http://cmsadmin.chelancounty.gov/forms/preview?slug=\1" width="100%" height="920" frameborder="0" scrolling="auto" style="border:none; width:100%; min-height:650px; transition:height 0.2s ease;" title="Online Form" loading="lazy"></iframe></div>',
 		"all"
 	);
 
@@ -458,13 +458,13 @@ public string function renderCmsContent(required string html) {
 	out = REReplaceNoCase(
 		out,
 		'\[chelan_form\s+id=["'']?([0-9]+)["'']?\s*\]',
-		'<div class="cms-form-embed my-4" data-form-id="\1"><iframe src="http://cmsadmin.chelancounty.gov/forms/preview?id=\1" width="100%" height="750" frameborder="0" scrolling="no" style="border:none; width:100%; min-height:500px; overflow:hidden; transition:height 0.2s ease;" title="Online Form" loading="lazy"></iframe></div>',
+		'<div class="cms-form-embed my-4" data-form-id="\1"><iframe src="http://cmsadmin.chelancounty.gov/forms/preview?id=\1" width="100%" height="920" frameborder="0" scrolling="auto" style="border:none; width:100%; min-height:650px; transition:height 0.2s ease;" title="Online Form" loading="lazy"></iframe></div>',
 		"all"
 	);
 
 	// Automatically attach responsive height listener if an embedded form is present on the page
 	if (FindNoCase("cms-form-embed", out)) {
-		out &= '<script>if(!window._chelanFormResizeAttached){window._chelanFormResizeAttached=true;window.addEventListener("message",function(e){if(e.data&&e.data.type==="chelan-form-resize"&&e.data.height){var targetHeight=Math.max(350,Math.min(parseInt(e.data.height,10),3000));var iframes=document.querySelectorAll(".cms-form-embed iframe");for(var i=0;i<iframes.length;i++){if(iframes[i].contentWindow===e.source){var cur=parseInt(iframes[i].style.height||0,10);if(Math.abs(cur-targetHeight)>4){iframes[i].style.height=targetHeight+"px";}}}}});}</script>';
+		out &= '<script>if(!window._chelanFormResizeAttached){window._chelanFormResizeAttached=true;window.addEventListener("message",function(e){if(e.data&&e.data.type==="chelan-form-resize"&&e.data.height){var targetHeight=Math.max(400,Math.min(parseInt(e.data.height,10),3500));var iframes=document.querySelectorAll(".cms-form-embed iframe");for(var i=0;i<iframes.length;i++){if(iframes[i].contentWindow===e.source||iframes.length===1){iframes[i].style.height=targetHeight+"px";iframes[i].style.minHeight=targetHeight+"px";iframes[i].setAttribute("height",targetHeight);}}}});}</script>';
 	}
 
 	return out;

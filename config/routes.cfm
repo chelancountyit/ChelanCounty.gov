@@ -9,6 +9,9 @@
 		.get(name="assessor", pattern="/assessor", to="assessor##index")
 		.get(name="assessorPage", pattern="/assessor/page/[slug]", to="assessor##page")
 		.get(name="assessorFile", pattern="/assessor/file", to="assessor##file")
+		.get(name="auditor", pattern="/auditor", to="auditor##index")
+		.get(name="auditorPage", pattern="/auditor/page/[slug]", to="auditor##page")
+		.get(name="auditorFile", pattern="/auditor/file", to="auditor##file")
 
 		// Liveness / warm-up endpoint. `wheels deploy`'s proxy healthcheck probes
 		// `/up` before traffic cutover; a 200 here also compiles the request path
