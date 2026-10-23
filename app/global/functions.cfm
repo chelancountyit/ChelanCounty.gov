@@ -166,12 +166,23 @@ public array function getNavigation(required string siteid, string menuKey = "si
 					|| CompareNoCase(local.destUrl, local.wsBasePath & "/index") == 0
 					|| CompareNoCase(local.destUrl, local.wsBasePath & "/page/home") == 0
 					|| CompareNoCase(local.destUrl, local.wsBasePath & "/page/index") == 0
+					|| CompareNoCase(local.destUrl, "/home") == 0
+					|| CompareNoCase(local.destUrl, "/index") == 0
+					|| CompareNoCase(local.destUrl, "/") == 0
 				) {
 					local.destUrl = local.wsBasePath;
 				} else if (REFindNoCase("^" & local.wsBasePath & "/(?!page/)[^/]+/?$", local.destUrl)) {
 					local.slugPart = ReReplaceNoCase(local.destUrl, "^" & local.wsBasePath & "/+", "", "one");
 					local.slugPart = ReReplace(local.slugPart, "/+$", "", "one");
 					local.destUrl = local.wsBasePath & "/page/" & local.slugPart;
+				} else if (REFindNoCase("^" & local.wsBasePath & "/page/[^/]+/?$", local.destUrl)) {
+					// already in /ws/page/slug format
+				} else if (!FindNoCase(local.wsBasePath, local.destUrl)) {
+					local.slugPart = ReReplace(local.destUrl, "^/+", "", "one");
+					local.slugPart = ReReplace(local.slugPart, "/+$", "", "one");
+					if (Len(local.slugPart)) {
+						local.destUrl = local.wsBasePath & "/page/" & local.slugPart;
+					}
 				}
 				if (local.destUrl != Trim(local.row.destination ?: "")) {
 					try {
