@@ -264,8 +264,16 @@ public query function getAttachedSidebars(any page = "") {
 		return local.empty;
 	}
 
+	// Respect page LayoutType: if set to Full (anything other than Right Sidebar), do not attach sidebars
+	local.rawLayout = StructKeyExists(arguments.page, "LayoutType") ? Trim(ToString(arguments.page.LayoutType ?: "")) : "";
+	if (CompareNoCase(local.rawLayout, "Right Sidebar") != 0 && CompareNoCase(local.rawLayout, "right-sidebar") != 0) {
+		return local.empty;
+	}
+
 	local.sidebarIds = [];
+	local.hasExplicitSidebarConfig = false;
 	if (StructKeyExists(arguments.page, "SidebarIDs") && Len(Trim(arguments.page.SidebarIDs))) {
+		local.hasExplicitSidebarConfig = true;
 		local.rawList = [];
 		try {
 			if (IsJSON(Trim(arguments.page.SidebarIDs))) {
@@ -282,8 +290,8 @@ public query function getAttachedSidebars(any page = "") {
 
 		for (local.item in local.rawList) {
 			local.cleanId = ReReplaceNoCase(Trim(ToString(local.item)), "^subpage-", "");
-			if (IsNumeric(local.cleanId) && Val(local.cleanId) > 0 && !ArrayFind(local.sidebarIds, Val(local.cleanId))) {
-				ArrayAppend(local.sidebarIds, Val(local.cleanId));
+			if (IsNumeric(local.cleanId) && Int(Val(local.cleanId)) > 0 && !ArrayFind(local.sidebarIds, Int(Val(local.cleanId)))) {
+				ArrayAppend(local.sidebarIds, Int(Val(local.cleanId)));
 			}
 		}
 	}
@@ -295,7 +303,8 @@ public query function getAttachedSidebars(any page = "") {
 		);
 	}
 
-	if (StructKeyExists(arguments.page, "ContentID") && IsNumeric(arguments.page.ContentID) && Val(arguments.page.ContentID) > 0) {
+	// Only fall back to ContentID lookup if SidebarIDs was never configured (null/empty string), not when explicitly "[]"
+	if (!local.hasExplicitSidebarConfig && StructKeyExists(arguments.page, "ContentID") && IsNumeric(arguments.page.ContentID) && Val(arguments.page.ContentID) > 0) {
 		return model("SubPage").findAll(
 			where="ContentID = #Val(arguments.page.ContentID)#",
 			order="Position ASC, ID ASC"
