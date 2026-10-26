@@ -25,10 +25,11 @@
     </ul>
     <ul class="list-unstyled mb-0">
       <li class="dropdown">
-        <a class="utility-bar-btn dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="translate-listbox">
-          <img src="https://flagcdn.com/us.svg" alt="Language Flags" class="flag-icon" width="20" height="15"> English
+        <button type="button" class="utility-bar-btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="translate-listbox" aria-label="English (current language — choose a different one)">
+          <img src="https://flagcdn.com/us.svg" alt="" aria-hidden="true" class="flag-icon" width="20" height="15"> English
           <span class="visually-hidden">(current language &mdash; choose a different one)</span>
-        </a>
+
+        </button>
         <ul class="dropdown-menu dropdown-menu-end translate-listbox" id="translate-listbox" aria-label="Choose a language">
           <!-- Populated by js/translate.js from data/languages.json once
                this partial has been injected (listens for main.js's

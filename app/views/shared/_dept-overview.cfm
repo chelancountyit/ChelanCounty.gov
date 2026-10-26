@@ -9,34 +9,74 @@
 <cfset local.fullTitle = FindNoCase("Chelan County", local.rawName) ? local.rawName : "Chelan County " & local.rawName>
 <cfset local.pageTitle = (isObject(content) and StructKeyExists(content, "Title") and Len(Trim(content.Title))) ? Trim(content.Title) : local.fullTitle>
 <cfset local.ariaLabel = local.isSubpage ? local.pageTitle : "Department Overview">
+<cfset local.isFullWidthLayout = not (isObject(content) and StructKeyExists(content, "LayoutType") and ListFindNoCase("Right Sidebar,Sidebar,right-sidebar", Trim(content.LayoutType)))>
+<cfset local.isDecCover = (isObject(content) and StructKeyExists(content, "imageDecorative") and Val(content.imageDecorative) EQ 1)>
+<cfset local.coverAlt = local.isDecCover ? "" : ((isObject(content) and StructKeyExists(content, "imageAlt") and Len(Trim(content.imageAlt))) ? Trim(content.imageAlt) : local.pageTitle)>
+<cfset local.coverSrc = (isObject(content) and StructKeyExists(content, "imageAttachment") and Len(Trim(content.imageAttachment))) ? Trim(content.imageAttachment) : "">
+<cfif Len(local.coverSrc) and isStruct(site) and StructKeyExists(site, "assets_domain")>
+  <cfset local.wsDom = ReReplace(Trim(site.assets_domain), "/+$", "", "all")>
+  <cfif Len(local.wsDom)>
+    <cfif not REFindNoCase("^https?://", local.wsDom)>
+      <cfset local.wsDom = "http://" & local.wsDom>
+    </cfif>
+    <cfset local.coverSrc = REReplaceNoCase(local.coverSrc, "^https?://assets\.chelancounty\.(?:com|gov)(/.+)$", local.wsDom & "\1", "one")>
+  <cfelse>
+    <cfset local.coverSrc = REReplaceNoCase(local.coverSrc, "^https?://assets\.chelancounty\.(?:com|gov)(/.+)$", "\1", "one")>
+  </cfif>
+</cfif>
 
 <cfoutput>
 <!-- Dynamic Page Content from `content` model (dbo.pages) -->
-<section  aria-label="#EncodeForHTMLAttribute(local.ariaLabel)#">
+<section aria-label="#EncodeForHTMLAttribute(local.ariaLabel)#">
   <cfif local.isSubpage>
     <cfif isObject(content)>
      <!---  <cfif StructKeyExists(content, "Summary") and Len(Trim(content.Summary))>
         <p class="lead fw-semibold mb-3">#EncodeForHTML(content.Summary)#</p>
       </cfif> --->
 
-      <cfif StructKeyExists(content, "imageAttachment") and Len(Trim(content.imageAttachment))>
+      <cfif Len(local.coverSrc) and not local.isFullWidthLayout>
         <div class="row g-4">
           <div class="col-md-8">
-            #renderCmsContent(content.Body)#
+            <div class="cms-page-body">
+              #renderCmsContent(content.Body)#
+            </div>
           </div>
           <div class="col-md-4">
-            <img src="#EncodeForHTMLAttribute(content.imageAttachment)#"
-                 alt="#EncodeForHTMLAttribute(Len(Trim(content.imageAlt)) ? content.imageAlt : content.Title)#"
+            <img src="#EncodeForHTMLAttribute(local.coverSrc)#"
+                 alt="#EncodeForHTMLAttribute(local.coverAlt)#"<cfif local.isDecCover> role="presentation"</cfif>
                  class="img-fluid rounded shadow-sm mb-2">
+            <cfif StructKeyExists(content, "imageTitle") and Len(Trim(content.imageTitle))>
+              <p class="text-muted small mb-1">#EncodeForHTML(content.imageTitle)#</p>
+            </cfif>
             <cfif StructKeyExists(content, "imageAttribution") and Len(Trim(content.imageAttribution))>
-              <p class="text-muted small mb-0">#EncodeForHTML(content.imageAttribution)#</p>
+              <p class="text-muted small mb-0"><em>#EncodeForHTML(content.imageAttribution)#</em></p>
             </cfif>
           </div>
         </div>
-      <cfelseif StructKeyExists(content, "Body") and Len(Trim(content.Body))>
-        <div class="cms-page-body">
-          #renderCmsContent(content.Body)#
-        </div>
+      <cfelseif Len(local.coverSrc) or (StructKeyExists(content, "Body") and Len(Trim(content.Body)))>
+        <cfif Len(local.coverSrc)>
+          <figure class="cms-cover-banner mb-4">
+            <img src="#EncodeForHTMLAttribute(local.coverSrc)#"
+                 alt="#EncodeForHTMLAttribute(local.coverAlt)#"<cfif local.isDecCover> role="presentation"</cfif>
+                 class="img-fluid w-100 rounded shadow-sm"
+                 style="max-height: 420px; object-fit: cover;">
+            <cfif (StructKeyExists(content, "imageTitle") and Len(Trim(content.imageTitle))) or (StructKeyExists(content, "imageAttribution") and Len(Trim(content.imageAttribution)))>
+              <figcaption class="text-muted small mt-2">
+                <cfif StructKeyExists(content, "imageTitle") and Len(Trim(content.imageTitle))>
+                  <span>#EncodeForHTML(content.imageTitle)#</span>
+                </cfif>
+                <cfif StructKeyExists(content, "imageAttribution") and Len(Trim(content.imageAttribution))>
+                  <span class="ms-1"><em>(#EncodeForHTML(content.imageAttribution)#)</em></span>
+                </cfif>
+              </figcaption>
+            </cfif>
+          </figure>
+        </cfif>
+        <cfif StructKeyExists(content, "Body") and Len(Trim(content.Body))>
+          <div class="cms-page-body">
+            #renderCmsContent(content.Body)#
+          </div>
+        </cfif>
       <cfelseif not ((isDefined("folderExplorers") and isQuery(folderExplorers) and folderExplorers.recordCount GT 0) or (isDefined("ctaCards") and isQuery(ctaCards) and ctaCards.recordCount GT 0))>
         <cfset local.wsCode = (isStruct(site) and StructKeyExists(site, "code") and Len(Trim(site.code))) ? LCase(Trim(site.code)) : "assessor">
         <cfset local.wsSlug = ReReplaceNoCase(local.wsCode, "^site-", "")>
@@ -102,14 +142,16 @@
       <p class="lead fw-semibold mb-3">#EncodeForHTML(content.Summary)#</p>
     </cfif> --->
 
-    <cfif isObject(content) and StructKeyExists(content, "imageAttachment") and Len(Trim(content.imageAttachment))>
+    <cfif isObject(content) and Len(local.coverSrc) and not local.isFullWidthLayout>
       <div class="row g-4">
         <div class="col-md-8">
-          #renderCmsContent(content.Body)#
+          <div class="cms-page-body">
+            #renderCmsContent(content.Body)#
+          </div>
         </div>
         <div class="col-md-4">
-          <img src="#EncodeForHTMLAttribute(content.imageAttachment)#"
-               alt="#EncodeForHTMLAttribute(Len(Trim(content.imageAlt)) ? content.imageAlt : content.Title)#"
+          <img src="#EncodeForHTMLAttribute(local.coverSrc)#"
+               alt="#EncodeForHTMLAttribute(local.coverAlt)#"<cfif local.isDecCover> role="presentation"</cfif>
                class="img-fluid rounded shadow-sm mb-2">
           <cfif StructKeyExists(content, "imageAttribution") and Len(Trim(content.imageAttribution))>
             <p class="text-muted small mb-0">#EncodeForHTML(content.imageAttribution)#</p>
@@ -117,7 +159,17 @@
         </div>
       </div>
     <cfelseif isObject(content) and StructKeyExists(content, "Body") and Len(Trim(ReReplace(content.Body, "<[^>]*>", "", "all"))) and CompareNoCase(Trim(ReReplace(content.Body, "<[^>]*>", "", "all")), "Home") NEQ 0>
-      #renderCmsContent(content.Body)#
+      <cfif Len(local.coverSrc)>
+        <figure class="cms-cover-banner mb-4">
+          <img src="#EncodeForHTMLAttribute(local.coverSrc)#"
+               alt="#EncodeForHTMLAttribute(local.coverAlt)#"<cfif local.isDecCover> role="presentation"</cfif>
+               class="img-fluid w-100 rounded shadow-sm"
+               style="max-height: 420px; object-fit: cover;">
+        </figure>
+      </cfif>
+      <div class="cms-page-body">
+        #renderCmsContent(content.Body)#
+      </div>
     <cfelse>
       <cfif isObject(content) and StructKeyExists(content, "Body") and Len(Trim(content.Body))>
         <div class="cms-page-body mb-3">
@@ -138,4 +190,3 @@
   </cfif>
 </section>
 </cfoutput>
-

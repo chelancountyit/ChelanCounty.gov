@@ -445,6 +445,16 @@ public string function renderCmsContent(required string html) {
 	if (!Len(Trim(arguments.html))) return "";
 	var out = renderCallToActionShortcodes(arguments.html);
 	out = normalizeCtaLinkIcons(out);
+	out = REReplaceNoCase(out, "\\n\s*(</figure>)", "\1", "all");
+	if (isDefined("site") && isStruct(site) && StructKeyExists(site, "assets_domain")) {
+		var wsDom = ReReplace(Trim(site.assets_domain), "/+$", "", "all");
+		if (Len(wsDom)) {
+			if (!REFindNoCase("^https?://", wsDom)) wsDom = "http://" & wsDom;
+			out = REReplaceNoCase(out, "https?://assets\.chelancounty\.(?:com|gov)(/[^""'\s>]+)", wsDom & "\1", "all");
+		} else {
+			out = REReplaceNoCase(out, "https?://assets\.chelancounty\.(?:com|gov)(/[^""'\s>]+)", "\1", "all");
+		}
+	}
 
 	// Replace [chelan_form slug="xyz"]
 	out = REReplaceNoCase(

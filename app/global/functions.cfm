@@ -274,6 +274,12 @@ public query function getAttachedSidebars(any page = "") {
 	if (!isPagePublishedAndActive(arguments.page)) {
 		return local.empty;
 	}
+	if (StructKeyExists(arguments.page, "LayoutType") && Len(Trim(arguments.page.LayoutType)) && !ListFindNoCase("Right Sidebar,Sidebar,right-sidebar", Trim(arguments.page.LayoutType))) {
+		return local.empty;
+	}
+	if (StructKeyExists(arguments.page, "SidebarIDs") && Trim(arguments.page.SidebarIDs) == "[]") {
+		return local.empty;
+	}
 
 	// Respect page LayoutType: if set to Full (anything other than Right Sidebar), do not attach sidebars
 	local.rawLayout = StructKeyExists(arguments.page, "LayoutType") ? Trim(ToString(arguments.page.LayoutType ?: "")) : "";
@@ -822,7 +828,7 @@ public struct function getWorkspace(required string siteid) {
 			       folder_path, virtual_directory, redirect_url, department, department_category,
 			       contact_first_name, contact_last_name, contact_email, contact_phone, contact_fax,
 			       address, address2, city, state, zip, office_hours, color,
-			       leadership_type, job_title, contact_photo
+			       leadership_type, job_title, contact_photo, assets_domain
 			FROM cms_workspaces
 			WHERE deletedat IS NULL
 			  AND is_active = 1
@@ -870,6 +876,7 @@ public struct function getWorkspace(required string siteid) {
 			local.ws.contacttitle = Len(Trim(local.qWs.job_title ?: "")) ? Trim(local.qWs.job_title) : Trim(local.qWs.name ?: "");
 			local.ws.contact_photo = Trim(local.qWs.contact_photo ?: "");
 			local.ws.officialPhoto = Len(Trim(local.qWs.contact_photo ?: "")) ? Trim(local.qWs.contact_photo) : "";
+			local.ws.assets_domain = StructKeyExists(local.qWs, "assets_domain") && !IsNull(local.qWs.assets_domain) ? ReReplace(Trim(local.qWs.assets_domain), "/+$", "", "all") : "";
 
 			if (Len(Trim(local.qWs.contact_first_name ?: "")) && Len(Trim(local.qWs.contact_last_name ?: ""))) {
 				local.ws.contactfirstname = Trim(local.qWs.contact_first_name);
