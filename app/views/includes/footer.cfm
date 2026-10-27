@@ -41,7 +41,7 @@
     </div>
 
     <div class="footer-bottom pt-4 d-flex flex-wrap justify-content-between gap-2 small">
-      <p class="mb-0">&copy; 2026 Chelan County, Washington | All Rights Reserved. <span class="text-end">Governed by USWDS | ADA.gov | WCAG</span></p>
+      <span class="mb-0">&copy; 2026 Chelan County, Washington | All Rights Reserved.</span> <span style="margin-left: auto;">Powered by Chelan County IT</span>
      
     </div>
   </div>

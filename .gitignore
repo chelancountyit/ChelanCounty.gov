@@ -18,3 +18,7 @@ desktop.ini
 .vscode/
 .idea/
 
+
+# Media Library files (stored on disk, keep only .gitkeep)
+/files/*
+!/files/.gitkeep

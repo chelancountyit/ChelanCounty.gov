@@ -8,8 +8,11 @@
 <cfset local.isSubpage = isBoolean(arguments.isSubpage) and arguments.isSubpage>
 <cfset local.showFallbackCards = isBoolean(arguments.showFallbackCards) and arguments.showFallbackCards>
 <cfset local.hasDbCards = isQuery(ctaCards) and ctaCards.recordCount GT 0>
+<cfset local.bodyHasEmbeddedCta = isObject(content) and StructKeyExists(content, "Body") and REFindNoCase("(jbd-cta-grid|jbd-cta-card|\[cta_grid|\[call_to_action|\[cta\b)", content.Body) GT 0>
 
-<cfif local.isSubpage>
+<cfif local.bodyHasEmbeddedCta>
+  <cfset local.ctaEnabled = false>
+<cfelseif local.isSubpage>
   <cfset local.ctaEnabled = isObject(content) and StructKeyExists(content, "hasCtaCards") and isBoolean(content.hasCtaCards) and content.hasCtaCards and (local.hasDbCards or local.showFallbackCards)>
 <cfelse>
   <cfset local.ctaEnabled = !(isObject(content) and StructKeyExists(content, "hasCtaCards") and isBoolean(content.hasCtaCards) and !content.hasCtaCards) and (local.hasDbCards or local.showFallbackCards)>
@@ -31,9 +34,20 @@
         <cfloop query="ctaCards">
           <cfset local.cardNewTab = isBoolean(ctaCards.OpenInNewTab) and ctaCards.OpenInNewTab>
           <cfset local.cardBtnText = Len(Trim(ctaCards.ButtonText ?: "")) ? Trim(ctaCards.ButtonText) : "Learn More">
-          <cfset local.cardBtnIcon = Len(Trim(ctaCards.ButtonIcon ?: "")) ? Trim(ctaCards.ButtonIcon) : (local.cardNewTab ? "fa-solid fa-arrow-up-right-from-square" : "fa-solid fa-arrow-right")>
-          <cfif NOT REFindNoCase("\bfa-(solid|regular|brands|light|thin|duotone)\b", local.cardBtnIcon)>
-            <cfset local.cardBtnIcon = "fa-solid " & local.cardBtnIcon>
+          <cfset local.rawIcon = LCase(Trim(ctaCards.ButtonIcon ?: ""))>
+          <cfif local.rawIcon EQ "external">
+            <cfset local.cardBtnIcon = "fa-solid fa-arrow-up-right-from-square">
+          <cfelseif local.rawIcon EQ "pdf">
+            <cfset local.cardBtnIcon = "fa-solid fa-file-pdf text-danger">
+          <cfelseif local.rawIcon EQ "none">
+            <cfset local.cardBtnIcon = "">
+          <cfelseif local.rawIcon EQ "arrow" OR NOT Len(local.rawIcon)>
+            <cfset local.cardBtnIcon = local.cardNewTab ? "fa-solid fa-arrow-up-right-from-square" : "fa-solid fa-arrow-right">
+          <cfelse>
+            <cfset local.cardBtnIcon = Trim(ctaCards.ButtonIcon)>
+            <cfif NOT REFindNoCase("\bfa-(solid|regular|brands|light|thin|duotone)\b", local.cardBtnIcon)>
+              <cfset local.cardBtnIcon = "fa-solid " & local.cardBtnIcon>
+            </cfif>
           </cfif>
           <div class="col" role="listitem">
             <a href="#EncodeForHTMLAttribute(Trim(ctaCards.DestinationUrl))#"<cfif local.cardNewTab> target="_blank" rel="noopener noreferrer"</cfif> class="action-card">
@@ -52,7 +66,7 @@
                 <span class="action-card-btn">
                   <span>#EncodeForHTML(local.cardBtnText)#</span>
                   <cfif local.cardNewTab><span class="visually-hidden"> (opens in a new tab)</span></cfif>
-                  <i class="#EncodeForHTMLAttribute(local.cardBtnIcon)#" aria-hidden="true"></i>
+                  <cfif Len(local.cardBtnIcon)><i class="#EncodeForHTMLAttribute(local.cardBtnIcon)#" aria-hidden="true"></i></cfif>
                 </span>
               </div>
             </a>

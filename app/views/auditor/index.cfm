@@ -45,6 +45,9 @@
       </h1>
       <hr>
 
+      <!-- Quick Services / CTA Cards -->
+      #includePartial(partial="/shared/_dept-cta-cards.cfm", showFallbackCards=false)#
+
       <!-- Dynamic Page Content / Department Overview -->
       #includePartial(partial="/shared/_dept-overview.cfm")#
 

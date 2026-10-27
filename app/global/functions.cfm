@@ -440,7 +440,7 @@ public query function getAttachedCtaCards(any page = "") {
 	}
 	if (StructKeyExists(arguments.page, "ContentID") && IsNumeric(arguments.page.ContentID) && Val(arguments.page.ContentID) > 0) {
 		try {
-			return queryExecute("
+			local.qCards = queryExecute("
 				SELECT c.ID, c.ContentID, c.SiteID, c.Title, c.ShortDescription, c.DestinationUrl,
 				       c.ImagePath, c.ImageAlt, c.ButtonText, c.ButtonIcon, c.OpenInNewTab, c.SortOrder, c.IsActive
 				FROM dbo.page_CtaCard c
@@ -456,6 +456,43 @@ public query function getAttachedCtaCards(any page = "") {
 			", {
 				contentId: { value: Val(arguments.page.ContentID), cfsqltype: "cf_sql_integer" }
 			}, { datasource: "ChelanCountyWebsite" });
+
+			if (local.qCards.recordCount > 0) {
+				return local.qCards;
+			}
+
+			if (
+				StructKeyExists(arguments.page, "Permalink") && LCase(Trim(arguments.page.Permalink)) == "home"
+				&& StructKeyExists(arguments.page, "SiteID") && Len(Trim(arguments.page.SiteID))
+			) {
+				local.qStudio = queryExecute("
+					SELECT cta.id AS ID,
+					       :contentId AS ContentID,
+					       cta.siteid AS SiteID,
+					       cta.title AS Title,
+					       cta.description AS ShortDescription,
+					       cta.link_url AS DestinationUrl,
+					       cta.image_url AS ImagePath,
+					       cta.image_alt AS ImageAlt,
+					       cta.link_text AS ButtonText,
+					       cta.link_icon AS ButtonIcon,
+					       cta.target_blank AS OpenInNewTab,
+					       cta.sort_order AS SortOrder,
+					       cta.is_published AS IsActive
+					FROM dbo.page_call_to_actions cta
+					WHERE LOWER(LTRIM(RTRIM(cta.siteid))) = LOWER(:siteId)
+					  AND cta.is_published = 1
+					  AND cta.deletedat IS NULL
+					ORDER BY cta.sort_order ASC, cta.id ASC
+				", {
+					contentId: { value: Val(arguments.page.ContentID), cfsqltype: "cf_sql_integer" },
+					siteId: { value: Trim(arguments.page.SiteID), cfsqltype: "cf_sql_nvarchar" }
+				}, { datasource: "ChelanCountyWebsite" });
+				if (local.qStudio.recordCount > 0) {
+					return local.qStudio;
+				}
+			}
+			return local.qCards;
 		} catch (any e) {
 			return local.empty;
 		}

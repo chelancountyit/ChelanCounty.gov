@@ -17,6 +17,19 @@
 		.get(name="elections", pattern="/elections", to="elections##index")
 		.get(name="electionsPage", pattern="/elections/page/[slug]", to="elections##page")
 		.get(name="electionsFile", pattern="/elections/file", to="elections##file")
+		.get(name="boardOfCommissioners", pattern="/board-of-commissioners", to="boardOfCommissioners##index")
+		.get(name="boardOfCommissionersPage", pattern="/board-of-commissioners/page/[slug]", to="boardOfCommissioners##page")
+		.get(name="boardOfCommissionersPagesLegacy", pattern="/board-of-commissioners/pages/[slug]", to="boardOfCommissioners##page")
+		.get(name="boardOfCommissionersFile", pattern="/board-of-commissioners/file", to="boardOfCommissioners##file")
+		.get(name="publicWorks", pattern="/public-works", to="publicWorks##index")
+		.get(name="publicWorksPage", pattern="/public-works/page/[slug]", to="publicWorks##page")
+		.get(name="publicWorksPagesLegacy", pattern="/public-works/pages/[slug]", to="publicWorks##page")
+		.get(name="publicWorksFile", pattern="/public-works/file", to="publicWorks##file")
+		.get(name="publicWorksContacts", pattern="/public-works/contacts", to="publicWorks##contacts")
+		.get(name="publicWorksHowDoI", pattern="/public-works/howdoi", to="publicWorks##howdoi")
+		.get(name="publicWorksBlog", pattern="/public-works/blog", to="publicWorks##blog")
+		.get(name="publicWorksBlogPost", pattern="/public-works/blog/[slug]", to="publicWorks##blog")
+		.get(name="publicWorksForm", pattern="/public-works/forms/[slug]", to="publicWorks##forms")
 
 		// Liveness / warm-up endpoint. `wheels deploy`'s proxy healthcheck probes
 		// `/up` before traffic cutover; a 200 here also compiles the request path

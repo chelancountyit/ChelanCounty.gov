@@ -46,7 +46,7 @@
       <hr>
 
       <!-- Quick Services / CTA Cards -->
-      <!--- #includePartial(partial="/shared/_dept-cta-cards.cfm")# --->
+      #includePartial(partial="/shared/_dept-cta-cards.cfm")#
 
       <!-- Dynamic Page Content / Department Overview -->
       #includePartial(partial="/shared/_dept-overview.cfm")#
