@@ -23,7 +23,12 @@
       <li><a href="https://www.facebook.com/ChelanCounty" target="_blank" rel="noopener noreferrer" aria-label="Facebook (opens in a new tab)"><i class="fa-brands fa-facebook icon" aria-hidden="true"></i> Facebook</a></li>
       <li><a href="https://www.youtube.com/channel/UCuTXhLpKsH4IXCbHM8rgzSA" target="_blank" rel="noopener noreferrer" aria-label="YouTube (opens in a new tab)"><i class="fa-brands fa-youtube icon" aria-hidden="true"></i> YouTube</a></li>
     </ul>
-    <ul class="list-unstyled mb-0">
+    <ul class="list-unstyled d-flex align-items-center gap-3 mb-0">
+      <li>
+        <button type="button" class="utility-bar-btn" onclick="window.ADAOverlay && window.ADAOverlay.open()" aria-label="Open Accessibility Adjustments">
+          <i class="fa-solid fa-universal-access icon" aria-hidden="true"></i> Accessibility
+        </button>
+      </li>
       <li class="dropdown">
         <button type="button" class="utility-bar-btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="translate-listbox" aria-label="English (current language — choose a different one)">
           <img src="https://flagcdn.com/us.svg" alt="" aria-hidden="true" class="flag-icon" width="20" height="15"> English

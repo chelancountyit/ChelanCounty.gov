@@ -85,8 +85,17 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
 #javaScriptIncludeTag(source="translate.js")#
 #javaScriptIncludeTag(source="hero-thought.js")#
+#javaScriptIncludeTag(source="ada-overlay.js")#
 <script>
 document.addEventListener("DOMContentLoaded", () => {
+  if (window.ADAOverlay) {
+    window.ADAOverlay.init({
+      position: "bottom-right",
+      showTrigger: true,
+      brandName: "CMSAdmin 2.0",
+      organization: "Chelan County, Washington"
+    });
+  }
   const db = document.getElementById("wheels-debugbar");
   if (db) {
     db.setAttribute("role", "region");

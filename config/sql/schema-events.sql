@@ -162,3 +162,4 @@ WHEN NOT MATCHED BY TARGET THEN
     INSERT (siteid, category_id, title, slug, summary, description, start_date, end_date, start_time, end_time, is_all_day, location_name, location_address, room_number, virtual_meeting_url, agenda_url, status, is_featured, is_public_notice, created_by)
     VALUES (Source.siteid, Source.category_id, Source.title, Source.slug, Source.summary, Source.description, Source.start_date, Source.end_date, Source.start_time, Source.end_time, Source.is_all_day, Source.location_name, Source.location_address, Source.room_number, Source.virtual_meeting_url, Source.agenda_url, Source.status, Source.is_featured, Source.is_public_notice, N'System');
 GO
+
