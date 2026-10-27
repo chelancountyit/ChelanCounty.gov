@@ -6,6 +6,8 @@
 
 	mapper()
 		// CLI-Appends-Here
+		.get(name="calendar", pattern="/calendar", to="calendar##index")
+		.get(name="calendarIcs", pattern="/calendar/ics", to="calendar##ics")
 		.get(name="assessor", pattern="/assessor", to="assessor##index")
 		.get(name="assessorPage", pattern="/assessor/page/[slug]", to="assessor##page")
 		.get(name="assessorFile", pattern="/assessor/file", to="assessor##file")

@@ -21,10 +21,6 @@
 
 <cfoutput>
 <style>
-  .dept-nav-card[data-ws-themed="true"] .dept-nav-header {
-    background: var(--dept-gradient, #local.wsGradient#);
-    background-color: var(--dept-color, #local.wsColor#);
-  }
   .dept-nav-card[data-ws-themed="true"] .dept-nav-link:hover,
   .dept-nav-card[data-ws-themed="true"] .dept-nav-link:focus-visible,
   .dept-nav-card[data-ws-themed="true"] .dept-subnav-link:hover,
@@ -44,7 +40,7 @@
 </style>
 <!-- Department Navigation (Driven by `nav` table) -->
 <nav class="dept-nav-card" data-ws-themed="true" aria-label="#EncodeForHTMLAttribute(local.shortName)# Department Navigation" style="--dept-color: #EncodeForHTMLAttribute(local.wsColor)#; --dept-color-dark: #EncodeForHTMLAttribute(local.wsColorDark)#; --dept-gradient: #EncodeForHTMLAttribute(local.wsGradient)#;">
-  <p class="dept-nav-header" style="background: #EncodeForHTMLAttribute(local.wsGradient)#; background-color: #EncodeForHTMLAttribute(local.wsColor)#;">
+  <p class="dept-nav-header">
     <i class="fa-solid fa-folder me-1" aria-hidden="true"></i> #EncodeForHTML(local.shortName)# Menu
   </p>
   <ul class="dept-nav-list">

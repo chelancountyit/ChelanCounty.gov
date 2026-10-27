@@ -887,4 +887,366 @@ public struct function getWorkspace(required string siteid) {
 
 	return local.ws;
 }
+
+/**
+ * Ensures CMSAdmin 2.0 calendar tables (dbo.calendar_event_categories and dbo.calendar_events)
+ * exist and have standard categories and initial county events if empty.
+ */
+public void function ensureCalendarEventsSchema() {
+	if (StructKeyExists(application, "calendarEventsSeedV2Ready") && application.calendarEventsSeedV2Ready == true) {
+		return;
+	}
+	try {
+		queryExecute("
+			IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[calendar_event_categories]') AND type in (N'U'))
+			BEGIN
+				CREATE TABLE [dbo].[calendar_event_categories] (
+					[id]          INT IDENTITY(1,1) NOT NULL,
+					[name]        NVARCHAR(120) NOT NULL,
+					[slug]        NVARCHAR(120) NOT NULL,
+					[color]       NVARCHAR(30)  NOT NULL CONSTRAINT [DF_cal_event_cat_color] DEFAULT (N'##0284c7'),
+					[badge_class] NVARCHAR(50)  NOT NULL CONSTRAINT [DF_cal_event_cat_badge] DEFAULT (N'badge-info'),
+					[icon]        NVARCHAR(50)  NOT NULL CONSTRAINT [DF_cal_event_cat_icon]  DEFAULT (N'calendar'),
+					[description] NVARCHAR(255) NULL,
+					[sort_order]  INT NOT NULL CONSTRAINT [DF_cal_event_cat_sort]   DEFAULT (0),
+					[is_active]   BIT NOT NULL CONSTRAINT [DF_cal_event_cat_active] DEFAULT (1),
+					[is_system]   BIT NOT NULL CONSTRAINT [DF_cal_event_cat_system] DEFAULT (0),
+					[createdat]   DATETIME2(7) NOT NULL CONSTRAINT [DF_cal_event_cat_createdat] DEFAULT (SYSUTCDATETIME()),
+					[updatedat]   DATETIME2(7) NOT NULL CONSTRAINT [DF_cal_event_cat_updatedat] DEFAULT (SYSUTCDATETIME()),
+					[deletedat]   DATETIME2(7) NULL,
+					CONSTRAINT [PK_calendar_event_categories] PRIMARY KEY CLUSTERED ([id] ASC)
+				);
+			END;
+
+			IF NOT EXISTS (SELECT 1 FROM dbo.calendar_event_categories WHERE deletedat IS NULL)
+			BEGIN
+				INSERT INTO dbo.calendar_event_categories (name, slug, color, badge_class, icon, description, sort_order, is_active, is_system)
+				VALUES
+				(N'Commissioners Meeting',       N'commissioners-meeting', N'##0284c7', N'badge-info',    N'building',     N'Board of County Commissioners regular sessions, workshops, and legislative briefings.', 10, 1, 1),
+				(N'Public Hearing',              N'public-hearing',        N'##b45309', N'badge-warning', N'megaphone',    N'Official public hearings, land use dockets, budget hearings, and ordinance reviews.', 20, 1, 1),
+				(N'Advisory Board & Committee',  N'advisory-board',        N'##7e22ce', N'badge-purple',  N'users',        N'Planning Commission, Noxious Weed Board, Lodging Tax, and citizen advisory committees.', 30, 1, 1),
+				(N'Community Event & Outreach',  N'community-event',       N'##15803d', N'badge-success', N'calendar',     N'County Expo Center events, town halls, parks activities, and public workshops.', 40, 1, 1),
+				(N'Holiday & Office Closure',    N'holiday-closure',       N'##b91c1c', N'badge-danger',  N'clock',        N'Official county holidays, courthouse closures, and modified department hours.', 50, 1, 1),
+				(N'Elections & Civic Deadlines', N'elections-deadlines',   N'##0f172a', N'badge-neutral', N'check-square', N'Voter registration deadlines, ballot drop dates, tax due dates, and public trainings.', 60, 1, 1);
+			END;
+
+			IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[calendar_events]') AND type in (N'U'))
+			BEGIN
+				CREATE TABLE [dbo].[calendar_events] (
+					[id]                  INT IDENTITY(1,1) NOT NULL,
+					[siteid]              NVARCHAR(100) NOT NULL CONSTRAINT [DF_calendar_events_siteid] DEFAULT (N'global'),
+					[category_id]         INT NOT NULL,
+					[title]               NVARCHAR(255) NOT NULL,
+					[slug]                NVARCHAR(255) NOT NULL,
+					[summary]             NVARCHAR(500) NULL,
+					[description]         NVARCHAR(MAX) NULL,
+					[start_date]          DATE NOT NULL,
+					[end_date]            DATE NOT NULL,
+					[start_time]          NVARCHAR(20) NULL,
+					[end_time]            NVARCHAR(20) NULL,
+					[is_all_day]          BIT NOT NULL CONSTRAINT [DF_calendar_events_allday] DEFAULT (0),
+					[location_name]       NVARCHAR(255) NULL,
+					[location_address]    NVARCHAR(255) NULL,
+					[room_number]         NVARCHAR(120) NULL,
+					[virtual_meeting_url] NVARCHAR(1000) NULL,
+					[virtual_meeting_id]  NVARCHAR(120) NULL,
+					[agenda_url]          NVARCHAR(1000) NULL,
+					[minutes_url]         NVARCHAR(1000) NULL,
+					[contact_name]        NVARCHAR(150) NULL,
+					[contact_email]       NVARCHAR(150) NULL,
+					[contact_phone]       NVARCHAR(60) NULL,
+					[is_featured]         BIT NOT NULL CONSTRAINT [DF_calendar_events_featured] DEFAULT (0),
+					[is_public_notice]    BIT NOT NULL CONSTRAINT [DF_calendar_events_notice] DEFAULT (0),
+					[status]              NVARCHAR(30) NOT NULL CONSTRAINT [DF_calendar_events_status] DEFAULT (N'Published'),
+					[publish_at]          DATETIME2 NULL,
+					[unpublish_at]        DATETIME2 NULL,
+					[created_by]          NVARCHAR(255) NULL,
+					[modified_by]         NVARCHAR(255) NULL,
+					[createdat]           DATETIME2(7) NOT NULL CONSTRAINT [DF_calendar_events_createdat] DEFAULT (SYSUTCDATETIME()),
+					[updatedat]           DATETIME2(7) NOT NULL CONSTRAINT [DF_calendar_events_updatedat] DEFAULT (SYSUTCDATETIME()),
+					[deletedat]           DATETIME2(7) NULL,
+					CONSTRAINT [PK_calendar_events] PRIMARY KEY CLUSTERED ([id] ASC),
+					CONSTRAINT [FK_calendar_events_categories] FOREIGN KEY ([category_id]) REFERENCES [dbo].[calendar_event_categories] ([id])
+				);
+			END;
+
+			IF COL_LENGTH(N'dbo.calendar_events', N'publish_at') IS NULL
+			BEGIN
+				ALTER TABLE [dbo].[calendar_events] ADD [publish_at] DATETIME2 NULL;
+			END;
+			IF COL_LENGTH(N'dbo.calendar_events', N'unpublish_at') IS NULL
+			BEGIN
+				ALTER TABLE [dbo].[calendar_events] ADD [unpublish_at] DATETIME2 NULL;
+			END;
+		", {}, { datasource: "ChelanCountyWebsite" });
+
+		// Seed standard county calendar events for testing if not already present (idempotent by slug)
+		queryExecute("
+			DECLARE @catComm INT = (SELECT TOP 1 id FROM dbo.calendar_event_categories WHERE slug = N'community-event' AND deletedat IS NULL);
+			DECLARE @catElec INT = (SELECT TOP 1 id FROM dbo.calendar_event_categories WHERE slug = N'elections-deadlines' AND deletedat IS NULL);
+			DECLARE @catAdv  INT = (SELECT TOP 1 id FROM dbo.calendar_event_categories WHERE slug = N'advisory-board' AND deletedat IS NULL);
+			DECLARE @catBocc INT = (SELECT TOP 1 id FROM dbo.calendar_event_categories WHERE slug = N'commissioners-meeting' AND deletedat IS NULL);
+			DECLARE @catHear INT = (SELECT TOP 1 id FROM dbo.calendar_event_categories WHERE slug = N'public-hearing' AND deletedat IS NULL);
+			DECLARE @catHol  INT = (SELECT TOP 1 id FROM dbo.calendar_event_categories WHERE slug = N'holiday-closure' AND deletedat IS NULL);
+			IF @catComm IS NULL SET @catComm = (SELECT TOP 1 id FROM dbo.calendar_event_categories ORDER BY id ASC);
+			IF @catElec IS NULL SET @catElec = @catComm;
+			IF @catAdv  IS NULL SET @catAdv  = @catComm;
+			IF @catBocc IS NULL SET @catBocc = @catComm;
+			IF @catHear IS NULL SET @catHear = @catComm;
+			IF @catHol  IS NULL SET @catHol  = @catComm;
+
+			MERGE INTO dbo.calendar_events AS Target
+			USING (VALUES
+				(N'board-of-commissioners', @catBocc, N'Board of County Commissioners Regular Session', N'bocc-regular-session-oct-5', N'Weekly legislative session and department briefings with the Board of County Commissioners.', N'Regular public session of the Chelan County Board of Commissioners, including public comment, consent agenda, and administrative updates.', '2026-10-05', '2026-10-05', N'09:00', N'12:00', 0, N'County Administration Building', N'400 Douglas St, Wenatchee, WA 98801', N'Suite 201', N'https://zoom.us/j/chelancounty', N'/board-of-commissioners', N'Published', 1, 0),
+				(N'board-of-commissioners', @catComm, N'District 1 Fall Community Meeting', N'district-1-fall-community-meeting', N'Community town hall and county update for District 1 residents.', N'Join Chelan County leadership for the District 1 Fall Community Meeting in Wenatchee to discuss road projects, county services, and upcoming priorities.', '2026-10-07', '2026-10-07', N'18:00', N'19:30', 0, N'Wenatchee Community Center', N'400 Douglas St, Wenatchee, WA 98801', N'Main Hall', N'', N'', N'Published', 1, 0),
+				(N'elections', @catElec, N'Local Voters'' Pamphlet Mailed', N'local-voters-pamphlet-mailed', N'Official Chelan County Local Voters'' Pamphlets mailed to all residential households.', N'The Chelan County Elections Office mails the Official Local Voters'' Pamphlet for the November General Election to registered households county-wide.', '2026-10-09', '2026-10-09', N'', N'', 1, N'Elections Office', N'350 Orondo Ave, Wenatchee, WA 98801', N'Level 3', N'', N'/elections', N'Published', 0, 0),
+				(N'board-of-commissioners', @catHear, N'Public Hearing: 2027 Preliminary County Budget', N'public-hearing-2027-preliminary-budget', N'Official public hearing on departmental budget requests and revenue forecasts for 2027.', N'The Board of County Commissioners holds a public hearing to review the 2027 preliminary county budget and take public testimony.', '2026-10-13', '2026-10-13', N'10:30', N'12:00', 0, N'BOCC Chambers', N'400 Douglas St, Wenatchee, WA 98801', N'Suite 201', N'https://zoom.us/j/chelancounty', N'/board-of-commissioners', N'Published', 1, 1),
+				(N'elections', @catAdv, N'Logic & Accuracy Test (Public Meeting)', N'logic-and-accuracy-test-public-meeting', N'Official pre-election Logic & Accuracy test of ballot tabulation equipment.', N'Public test of the Chelan County ballot tabulation system prior to the General Election. Open to public observation in accordance with Washington State election law.', '2026-10-15', '2026-10-15', N'10:00', N'11:30', 0, N'Chelan County Elections', N'350 Orondo Ave, Wenatchee, WA 98801', N'Suite 306', N'', N'/elections', N'Published', 1, 1),
+				(N'elections', @catElec, N'Ballots Mailed — General Election', N'ballots-mailed-general-election', N'General Election ballots mailed to all active registered voters in Chelan County.', N'Ballots for the November General Election are mailed today. Official ballot drop boxes open across Chelan County.', '2026-10-16', '2026-10-16', N'', N'', 1, N'Chelan County Elections', N'350 Orondo Ave, Wenatchee, WA 98801', N'', N'', N'/elections', N'Published', 1, 0),
+				(N'global', @catComm, N'Wenatchee Kennel Club Dog Show', N'wenatchee-kennel-club-dog-show', N'Annual Wenatchee Kennel Club all-breed dog show and agility trials.', N'Hosted at the Chelan County Expo Center in Cashmere. Open to spectators and exhibitors throughout the weekend.', '2026-10-16', '2026-10-18', N'08:00', N'17:00', 0, N'Chelan County Expo Center', N'5700 Wescott Dr, Cashmere, WA 98815', N'Pavilion', N'', N'', N'Published', 0, 0),
+				(N'community-development', @catAdv, N'Chelan County Planning Commission Meeting', N'planning-commission-meeting-oct-21', N'Monthly public meeting of the Chelan County Planning Commission.', N'Review of comprehensive plan amendments, land use dockets, and community development updates.', '2026-10-21', '2026-10-21', N'17:30', N'19:30', 0, N'Community Development', N'316 Washington St, Wenatchee, WA 98801', N'Suite 301', N'https://zoom.us/j/chelancounty', N'', N'Published', 0, 1),
+				(N'board-of-commissioners', @catBocc, N'Board of County Commissioners Regular Session', N'bocc-regular-session-oct-26', N'Weekly legislative session and department briefings with the Board of County Commissioners.', N'Regular public session of the Chelan County Board of Commissioners, including public comment, consent agenda, and administrative updates.', '2026-10-26', '2026-10-26', N'09:00', N'12:00', 0, N'County Administration Building', N'400 Douglas St, Wenatchee, WA 98801', N'Suite 201', N'https://zoom.us/j/chelancounty', N'/board-of-commissioners', N'Published', 1, 0),
+				(N'elections', @catElec, N'Online & Mail Voter Registration Deadline', N'voter-registration-deadline-oct-26', N'Last day for online and mail-in voter registrations and address updates for the General Election.', N'Voters may still register or update their registration in person at the Chelan County Elections Office through Election Day.', '2026-10-26', '2026-10-26', N'08:00', N'17:00', 0, N'Chelan County Elections', N'350 Orondo Ave, Wenatchee, WA 98801', N'Suite 306', N'', N'/elections', N'Published', 1, 1),
+				(N'natural-resources', @catAdv, N'Noxious Weed Control Board Quarterly Meeting', N'noxious-weed-board-oct-28', N'Quarterly board meeting covering seasonal weed management and landowner outreach.', N'Public meeting of the Chelan County Noxious Weed Control Board.', '2026-10-28', '2026-10-28', N'13:30', N'15:00', 0, N'Natural Resources Department', N'411 Washington St, Wenatchee, WA 98801', N'Suite 201', N'', N'', N'Published', 0, 0),
+				(N'board-of-commissioners', @catBocc, N'Board of County Commissioners Regular Session', N'bocc-regular-session-nov-2', N'Weekly legislative session and department briefings with the Board of County Commissioners.', N'Regular public session of the Chelan County Board of Commissioners.', '2026-11-02', '2026-11-02', N'09:00', N'12:00', 0, N'County Administration Building', N'400 Douglas St, Wenatchee, WA 98801', N'Suite 201', N'https://zoom.us/j/chelancounty', N'/board-of-commissioners', N'Published', 1, 0),
+				(N'elections', @catElec, N'General Election Day — Ballots Due by 8:00 PM', N'general-election-day-nov-3', N'Ballots must be deposited in an official drop box by 8:00 PM or postmarked by Election Day.', N'Chelan County Elections Office and official ballot drop boxes remain open until 8:00 PM sharp on Election Day.', '2026-11-03', '2026-11-03', N'08:00', N'20:00', 0, N'County-Wide Drop Boxes & Elections Office', N'350 Orondo Ave, Wenatchee, WA 98801', N'Suite 306', N'', N'/elections', N'Published', 1, 1),
+				(N'public-works', @catComm, N'Monthly Drop-Off Saturday — Moderate Risk Waste', N'monthly-drop-off-saturday-nov-7', N'Drop-Off Saturday at the Chelan County Moderate Risk Waste Facility.', N'Hosted by Chelan County Solid Waste Management for household hazardous waste disposal.', '2026-11-07', '2026-11-07', N'09:00', N'15:00', 0, N'Moderate Risk Waste Facility', N'Wenatchee, WA', N'', N'', N'', N'Published', 0, 0),
+				(N'community-development', @catHear, N'Planning Commission Public Hearing', N'planning-commission-hearing-nov-18', N'Public hearing on zoning code updates and short-term rental regulations.', N'Public hearing before the Chelan County Planning Commission.', '2026-11-18', '2026-11-18', N'17:30', N'19:30', 0, N'Community Development', N'316 Washington St, Wenatchee, WA 98801', N'Suite 301', N'https://zoom.us/j/chelancounty', N'', N'Published', 1, 1),
+				(N'elections', @catElec, N'County Canvassing Board — Election Certification', N'canvassing-board-certification-nov-24', N'Official certification of the November General Election returns.', N'The Chelan County Canvassing Board convenes in public session to certify the official results of the General Election.', '2026-11-24', '2026-11-24', N'10:00', N'11:00', 0, N'Chelan County Elections', N'350 Orondo Ave, Wenatchee, WA 98801', N'Suite 306', N'', N'/elections', N'Published', 1, 1),
+				(N'board-of-commissioners', @catHear, N'Public Hearing: Final 2027 County Budget Adoption', N'public-hearing-2027-final-budget-dec-1', N'Final public hearing and adoption of the 2027 Chelan County Operating and Capital Budget.', N'The Board of County Commissioners conducts the final public hearing on the 2027 budget.', '2026-12-01', '2026-12-01', N'10:00', N'12:00', 0, N'BOCC Chambers', N'400 Douglas St, Wenatchee, WA 98801', N'Suite 201', N'https://zoom.us/j/chelancounty', N'/board-of-commissioners', N'Published', 1, 1),
+				(N'board-of-commissioners', @catBocc, N'Board of County Commissioners Regular Session', N'bocc-regular-session-dec-7', N'Weekly legislative session and department briefings with the Board of County Commissioners.', N'Regular public session of the Chelan County Board of Commissioners.', '2026-12-07', '2026-12-07', N'09:00', N'12:00', 0, N'County Administration Building', N'400 Douglas St, Wenatchee, WA 98801', N'Suite 201', N'https://zoom.us/j/chelancounty', N'/board-of-commissioners', N'Published', 1, 0),
+				(N'global', @catHol, N'Christmas Day — County Offices Closed', N'christmas-day-closure-2026', N'Chelan County Courthouse and administrative offices closed in observance of Christmas Day.', N'All non-emergency county offices are closed in observance of Christmas Day.', '2026-12-25', '2026-12-25', N'', N'', 1, N'Chelan County Courthouse', N'400 Douglas St, Wenatchee, WA 98801', N'', N'', N'', N'Published', 0, 0)
+			) AS Source (siteid, category_id, title, slug, summary, description, start_date, end_date, start_time, end_time, is_all_day, location_name, location_address, room_number, virtual_meeting_url, agenda_url, status, is_featured, is_public_notice)
+			ON Target.slug = Source.slug AND Target.deletedat IS NULL
+			WHEN NOT MATCHED BY TARGET THEN
+				INSERT (siteid, category_id, title, slug, summary, description, start_date, end_date, start_time, end_time, is_all_day, location_name, location_address, room_number, virtual_meeting_url, agenda_url, status, is_featured, is_public_notice, created_by)
+				VALUES (Source.siteid, Source.category_id, Source.title, Source.slug, Source.summary, Source.description, Source.start_date, Source.end_date, Source.start_time, Source.end_time, Source.is_all_day, Source.location_name, Source.location_address, Source.room_number, Source.virtual_meeting_url, Source.agenda_url, Source.status, Source.is_featured, Source.is_public_notice, N'System');
+		", {}, { datasource: "ChelanCountyWebsite" });
+
+		application.calendarEventsSeedV2Ready = true;
+	} catch (any e) {
+		application.calendarEventsLastError = e.message & " | " & (e.detail ?: "");
+	}
+}
+
+/**
+ * Formats a 24-hour time string ("18:00" or "09:30") into "6:00 PM" / "9:30 AM"
+ */
+public string function formatCalendarTime(string rawTime = "") {
+	local.t = Trim(arguments.rawTime);
+	if (!Len(local.t)) {
+		return "";
+	}
+	if (REFindNoCase("(am|pm)$", local.t)) {
+		return UCase(local.t);
+	}
+	try {
+		local.parsed = ParseDateTime("2000-01-01 " & local.t);
+		return TimeFormat(local.parsed, "h:nn tt");
+	} catch (any e) {
+		return local.t;
+	}
+}
+
+/**
+ * Maps CMSAdmin 2.0 category icon names to Font Awesome 6 classes
+ */
+public string function mapCalendarCategoryIcon(string iconName = "", string categorySlug = "") {
+	local.ic = LCase(Trim(arguments.iconName));
+	local.slug = LCase(Trim(arguments.categorySlug));
+	if (FindNoCase("fa-", local.ic)) {
+		return FindNoCase("fa-solid", local.ic) || FindNoCase("fa-regular", local.ic) ? local.ic : ("fa-solid " & local.ic);
+	}
+	switch (local.ic) {
+		case "building":     return "fa-solid fa-building-columns";
+		case "megaphone":    return "fa-solid fa-bullhorn";
+		case "users":        return "fa-solid fa-users";
+		case "clock":        return "fa-regular fa-clock";
+		case "check-square": return "fa-solid fa-check-to-slot";
+		case "calendar":     return "fa-solid fa-calendar-day";
+	}
+	if (FindNoCase("election", local.slug)) return "fa-solid fa-check-to-slot";
+	if (FindNoCase("hearing", local.slug))  return "fa-solid fa-bullhorn";
+	if (FindNoCase("board", local.slug))    return "fa-solid fa-users";
+	if (FindNoCase("commissioner", local.slug)) return "fa-solid fa-building-columns";
+	if (FindNoCase("holiday", local.slug))  return "fa-regular fa-clock";
+	return "fa-solid fa-calendar-day";
+}
+
+/**
+ * Loads active Calendar Event Categories from CMSAdmin 2.0 (dbo.calendar_event_categories)
+ */
+public array function getCalendarCategories() {
+	ensureCalendarEventsSchema();
+	local.cats = [];
+	try {
+		local.q = queryExecute("
+			SELECT c.id, c.name, c.slug, c.color, c.badge_class, c.icon, c.description, c.sort_order
+			FROM dbo.calendar_event_categories c
+			WHERE c.deletedat IS NULL AND c.is_active = 1
+			ORDER BY c.sort_order ASC, c.name ASC
+		", {}, { datasource: "ChelanCountyWebsite" });
+
+		for (local.r in local.q) {
+			ArrayAppend(local.cats, {
+				id:          Val(local.r.id),
+				name:        Trim(local.r.name ?: ""),
+				slug:        Trim(local.r.slug ?: ""),
+				color:       Len(Trim(local.r.color ?: "")) ? Trim(local.r.color) : "##0284c7",
+				badgeClass:  Len(Trim(local.r.badge_class ?: "")) ? Trim(local.r.badge_class) : "badge-info",
+				icon:        Trim(local.r.icon ?: "calendar"),
+				faIcon:      mapCalendarCategoryIcon(local.r.icon ?: "", local.r.slug ?: ""),
+				description: Trim(local.r.description ?: "")
+			});
+		}
+	} catch (any e) {}
+	return local.cats;
+}
+
+/**
+ * Loads published Calendar Events from CMSAdmin 2.0 (dbo.calendar_events)
+ */
+public array function getCalendarEvents(string siteid = "", boolean includeAllWorkspaces = true) {
+	ensureCalendarEventsSchema();
+	local.events = [];
+	try {
+		local.wsNames = { "global": "County-Wide" };
+		try {
+			local.qWs = queryExecute("
+				SELECT LOWER(LTRIM(RTRIM(code))) AS code,
+				       LOWER(LTRIM(RTRIM(ISNULL(alias, '')))) AS alias,
+				       LOWER(LTRIM(RTRIM(ISNULL(virtual_directory, '')))) AS vdir,
+				       name
+				FROM dbo.cms_workspaces
+				WHERE deletedat IS NULL AND is_active = 1
+			", {}, { datasource: "ChelanCountyWebsite" });
+			for (local.w in local.qWs) {
+				if (Len(local.w.code))  local.wsNames[local.w.code]  = Trim(local.w.name);
+				if (Len(local.w.alias)) local.wsNames[local.w.alias] = Trim(local.w.name);
+				if (Len(local.w.vdir))  local.wsNames[local.w.vdir]  = Trim(local.w.name);
+			}
+		} catch (any eWs) {}
+
+		local.params = {};
+		local.whereClause = "
+			WHERE e.deletedat IS NULL
+			  AND c.deletedat IS NULL
+			  AND (c.is_active = 1 OR c.is_active IS NULL)
+			  AND e.status IN (N'Published', N'Scheduled')
+			  AND (e.publish_at IS NULL OR e.publish_at <= SYSUTCDATETIME())
+			  AND (e.unpublish_at IS NULL OR e.unpublish_at > SYSUTCDATETIME())
+		";
+
+		if (!arguments.includeAllWorkspaces && Len(Trim(arguments.siteid)) && !ListFindNoCase("all,global", Trim(arguments.siteid))) {
+			local.cands = resolveCandidateSiteIds(arguments.siteid);
+			if (!ArrayFindNoCase(local.cands, "global")) {
+				ArrayAppend(local.cands, "global");
+			}
+			local.inPlaceholders = [];
+			for (local.i = 1; local.i <= ArrayLen(local.cands); local.i++) {
+				local.pKey = "calSite" & local.i;
+				ArrayAppend(local.inPlaceholders, ":" & local.pKey);
+				local.params[local.pKey] = { value: LCase(local.cands[local.i]), cfsqltype: "cf_sql_nvarchar", maxlength: 100 };
+			}
+			if (ArrayLen(local.inPlaceholders)) {
+				local.whereClause &= " AND LOWER(LTRIM(RTRIM(e.siteid))) IN (" & ArrayToList(local.inPlaceholders, ", ") & ")";
+			}
+		}
+
+		local.q = queryExecute("
+			SELECT e.id, e.siteid, e.category_id, e.title, e.slug, e.summary, e.description,
+			       e.start_date, e.end_date, e.start_time, e.end_time, e.is_all_day,
+			       e.location_name, e.location_address, e.room_number,
+			       e.virtual_meeting_url, e.virtual_meeting_id, e.agenda_url, e.minutes_url,
+			       e.contact_name, e.contact_email, e.contact_phone,
+			       e.is_featured, e.is_public_notice, e.status,
+			       c.name AS category_name, c.slug AS category_slug, c.color AS category_color,
+			       c.badge_class AS category_badge, c.icon AS category_icon
+			FROM dbo.calendar_events e
+			INNER JOIN dbo.calendar_event_categories c ON c.id = e.category_id
+			" & local.whereClause & "
+			ORDER BY e.start_date ASC,
+			         CASE WHEN e.is_all_day = 1 THEN '00:00' ELSE ISNULL(NULLIF(LTRIM(RTRIM(e.start_time)), ''), '09:00') END ASC,
+			         e.title ASC
+		", local.params, { datasource: "ChelanCountyWebsite" });
+
+		for (local.r in local.q) {
+			local.sDate = IsDate(local.r.start_date) ? ParseDateTime(local.r.start_date) : Now();
+			local.eDate = IsDate(local.r.end_date) ? ParseDateTime(local.r.end_date) : local.sDate;
+			if (DateCompare(local.eDate, local.sDate, "d") < 0) {
+				local.eDate = local.sDate;
+			}
+			local.sDateIso = DateFormat(local.sDate, "yyyy-mm-dd");
+			local.eDateIso = DateFormat(local.eDate, "yyyy-mm-dd");
+			local.isAllDay = (local.r.is_all_day == 1 || local.r.is_all_day == true);
+			local.startTimeFormatted = local.isAllDay ? "" : formatCalendarTime(local.r.start_time ?: "");
+			local.endTimeFormatted = local.isAllDay ? "" : formatCalendarTime(local.r.end_time ?: "");
+			local.timeLabel = "";
+			if (local.isAllDay) {
+				local.timeLabel = "All Day";
+			} else if (Len(local.startTimeFormatted) && Len(local.endTimeFormatted)) {
+				local.timeLabel = local.startTimeFormatted & " – " & local.endTimeFormatted;
+			} else if (Len(local.startTimeFormatted)) {
+				local.timeLabel = local.startTimeFormatted;
+			}
+
+			local.sKey = LCase(ReReplaceNoCase(Trim(local.r.siteid ?: "global"), "^site-", ""));
+			local.deptName = (local.sKey == "global" || local.sKey == "all")
+				? "County-Wide"
+				: (StructKeyExists(local.wsNames, local.sKey) ? local.wsNames[local.sKey] : REReplace(local.sKey, "(^|-)([a-z])", " \U\2", "all"));
+			if (CompareNoCase(Trim(local.deptName), "All Workspaces") == 0) {
+				local.deptName = "County-Wide";
+			}
+
+			local.faIcon = mapCalendarCategoryIcon(local.r.category_icon ?: "", local.r.category_slug ?: "");
+
+			ArrayAppend(local.events, {
+				id:                Val(local.r.id),
+				siteId:            Trim(local.r.siteid ?: "global"),
+				departmentName:    Trim(local.deptName),
+				categoryId:        Val(local.r.category_id),
+				categoryName:      Trim(local.r.category_name ?: "County Event"),
+				categorySlug:      Trim(local.r.category_slug ?: "event"),
+				categoryColor:     Len(Trim(local.r.category_color ?: "")) ? Trim(local.r.category_color) : "##0284c7",
+				categoryIcon:      local.faIcon,
+				title:             Trim(local.r.title ?: ""),
+				slug:              Trim(local.r.slug ?: ""),
+				summary:           Trim(local.r.summary ?: ""),
+				description:       Trim(local.r.description ?: ""),
+				startDate:         local.sDateIso,
+				endDate:           local.eDateIso,
+				startYear:         Year(local.sDate),
+				startMonth:        Month(local.sDate),
+				startDay:          Day(local.sDate),
+				monthAbbr:         DateFormat(local.sDate, "mmm"),
+				dateDisplay:       (local.sDateIso == local.eDateIso)
+					? DateFormat(local.sDate, "mmmm d, yyyy")
+					: (DateFormat(local.sDate, "mmm d") & " – " & DateFormat(local.eDate, "mmm d, yyyy")),
+				startTime:         Trim(local.r.start_time ?: ""),
+				endTime:           Trim(local.r.end_time ?: ""),
+				startTimeDisplay:  local.startTimeFormatted,
+				endTimeDisplay:    local.endTimeFormatted,
+				timeDisplay:       local.timeLabel,
+				isAllDay:          local.isAllDay,
+				locationName:      Trim(local.r.location_name ?: ""),
+				locationAddress:   Trim(local.r.location_address ?: ""),
+				roomNumber:        Trim(local.r.room_number ?: ""),
+				virtualMeetingUrl: Trim(local.r.virtual_meeting_url ?: ""),
+				virtualMeetingId:  Trim(local.r.virtual_meeting_id ?: ""),
+				agendaUrl:         Trim(local.r.agenda_url ?: ""),
+				minutesUrl:        Trim(local.r.minutes_url ?: ""),
+				contactName:       Trim(local.r.contact_name ?: ""),
+				contactEmail:      Trim(local.r.contact_email ?: ""),
+				contactPhone:      Trim(local.r.contact_phone ?: ""),
+				isFeatured:        (local.r.is_featured == 1 || local.r.is_featured == true),
+				isPublicNotice:    (local.r.is_public_notice == 1 || local.r.is_public_notice == true),
+				icsUrl:            "/calendar/ics?id=" & Val(local.r.id),
+				url:               "/calendar?event=" & Val(local.r.id)
+			});
+		}
+	} catch (any e) {
+		writeLog(type="error", file="calendar", text="getCalendarEvents error: #e.message# #e.detail ?: ''#");
+	}
+	return local.events;
+}
 </cfscript>

@@ -66,7 +66,15 @@
   <!-- Application Action Content -->
   #includeContent()#
 
-  #includePartial(partial="/shared/_calendar.cfm")#
+  <cfif not isDefined("params.controller") or params.controller eq "Main" or params.controller eq "">
+    <div class="container my-5">
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          #includePartial(partial="/shared/_calendar.cfm")#
+        </div>
+      </div>
+    </div>
+  </cfif>
 </main>
 
 <!-- Footer ColdFusion Include -->
