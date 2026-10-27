@@ -106,7 +106,6 @@ h2.section-title{
 .news-card a strong{ font-weight:700; }
 
 a{ text-underline-offset:.15em; text-decoration-thickness:.08em; }
-a:not(.btn):not(.nav-link):not(.dropdown-item):not(.navbar-brand):visited{ color:#C14444; } /* AA-checked: 5:1 on white — the lightest red that still clears 4.5:1 */
 a.btn-primary, a.btn-primary:visited, a.btn-primary:hover, a.btn-primary:focus{
   background-color:var(--brand-800);
   border-color:var(--brand-800);
